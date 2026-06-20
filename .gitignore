@@ -1,0 +1,26 @@
+# Node Modules
+frontend/node_modules/
+backend/node_modules/
+
+# Environment Files
+frontend/.env
+backend/.env
+backend/tem1.js
+backend/tem2.js
+backend/tem3.js
+
+# Logs
+*.log
+
+# Build folders
+frontend/dist/
+frontend/build/
+frontend/src/tem1.jsx
+frontend/src/tem2.jsx
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
