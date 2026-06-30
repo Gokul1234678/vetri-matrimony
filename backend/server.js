@@ -344,6 +344,74 @@ const profileSchema = new mongoose.Schema(
 const Profile = mongoose.model("Profile", profileSchema);
 
 
+// ===========================================
+// PROFILE VIEW SCHEMA
+// ===========================================
+const profileViewSchema = new mongoose.Schema(
+
+    {
+
+        // Logged-in user who viewed the profile
+        viewerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+
+        // Profile that was viewed
+        viewedProfileId: {
+
+            type: mongoose.Schema.Types.ObjectId,
+
+            ref: "Profile",
+
+            required: true,
+
+        },
+
+        // Date & Time of unlock/view
+        viewedAt: {
+
+            type: Date,
+
+            default: Date.now,
+
+        },
+
+    },
+    {
+        timestamps: true,
+    }
+);
+
+// ===========================================
+// PREVENT DUPLICATE UNLOCKS
+// ===========================================
+// A user can unlock the same profile only once.
+profileViewSchema.index(
+    {
+        viewerId: 1,
+        viewedProfileId: 1
+    },
+    {
+        unique: true
+    }
+);
+
+// ===========================================
+// CREATE MODEL
+// ===========================================
+const ProfileView = mongoose.model(
+    "ProfileView",
+    profileViewSchema
+);
+
+
+
+
+
+
+
 
 // AUTHENTICATION MIDDLEWARE this middleware function checks if the user is authenticated by verifying the JWT token stored in the cookies. If the token is valid, it retrieves the user information from the database and attaches it to the request object for use in subsequent middleware or route handlers. If the token is missing, invalid, or expired, it returns a 401 Unauthorized response with an appropriate error message.
 const isAuthenticatedUser = async (
@@ -1444,6 +1512,1127 @@ app.put("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
 
 }
 
+);
+
+
+
+// ✅UPDATE PROFILE STATUS API (🛡️ADMIN Only)
+app.patch("/admin/profiles/:id/status", isAuthenticatedUser, isAdmin,
+    async (req, res) => {
+
+        // purpose of this API is to update the status of a profile (active or inactive). It uses the isAuthenticatedUser and isAdmin middleware to ensure that only authenticated admin users can access this endpoint. The profile ID is obtained from the URL parameters, and the new status is obtained from the request body. The API validates the profile ID, 
+        // checks if the profile exists, and updates the status accordingly. If successful, it returns a success response with the updated profile information; otherwise, it returns appropriate error messages for invalid input or internal server errors.
+        try {
+
+            // ===========================================
+            // Get Profile ID
+            // ===========================================
+            const { id } = req.params;
+
+            // ===========================================
+            // Validate MongoDB ObjectId
+            // ===========================================
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Invalid profile id",
+
+                });
+
+            }
+
+            // ===========================================
+            // Get Status From Request Body
+            // ===========================================
+            const { status } = req.body;
+
+            // ===========================================
+            // Validate Status
+            // ===========================================
+            if (!status) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Status is required",
+
+                });
+
+            }
+
+            // Allow only active or inactive
+            if (
+                status !== "active" &&
+                status !== "inactive"
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Status must be active or inactive",
+
+                });
+
+            }
+
+            // ===========================================
+            // Find Profile
+            // ===========================================
+            const profile =
+                await Profile.findById(id);
+
+            if (!profile) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Profile not found",
+
+                });
+
+            }
+
+            // ===========================================
+            // Update Status
+            // ===========================================
+            profile.status = status;
+
+            await profile.save();
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                message: "Profile status updated successfully",
+
+                profile: {
+
+                    profileId: profile.profileId,
+
+                    fullName: profile.fullName,
+
+                    status: profile.status,
+
+                }
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to update profile status",
+
+                error: error.message,
+
+            });
+
+        }
+
+    }
+);
+
+
+// ✅ ADD CREDITS API (🛡️ADMIN Only)
+app.patch("/admin/profiles/:id/credits", isAuthenticatedUser, isAdmin,
+    async (req, res) => {
+        // this API is to add credits to a profile. It uses the isAuthenticatedUser 
+        // and isAdmin middleware to ensure that only authenticated admin users can
+        //  access this endpoint. The profile ID is obtained from the URL parameters,
+        //  and the number of credits to add is obtained from the request body. 
+        // The API validates the profile ID, checks if the profile exists, and adds
+        //  the specified number of credits to the profile's existing credits. 
+        // If successful, it returns a success response with the updated profile 
+        // information; otherwise, it returns appropriate error messages for invalid input or internal server errors.
+        try {
+
+            // ===========================================
+            // Get Profile ID
+            // ===========================================
+            const { id } = req.params;
+
+            // ===========================================
+            // Validate MongoDB ObjectId
+            // ===========================================
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Invalid profile id",
+
+                });
+
+            }
+
+            // ===========================================
+            // Get Credits To Add
+            // ===========================================
+            const { credits } = req.body;
+
+            // ===========================================
+            // Validate Credits
+            // ===========================================
+            if (credits === undefined) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Credits are required",
+
+                });
+
+            }
+
+            if (
+                typeof credits !== "number" ||
+                credits <= 0
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Credits must be greater than 0",
+
+                });
+
+            }
+
+            // ===========================================
+            // Find Profile
+            // ===========================================
+            const profile =
+                await Profile.findById(id);
+
+            if (!profile) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Profile not found",
+
+                });
+
+            }
+
+            // ===========================================
+            // Add Credits
+            // ===========================================
+            profile.credits += credits;
+
+            await profile.save();
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                message: "Credits added successfully",
+
+                profile: {
+
+                    profileId: profile.profileId,
+
+                    fullName: profile.fullName,
+
+                    credits: profile.credits,
+
+                }
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to add credits",
+
+                error: error.message,
+
+            });
+
+        }
+
+    }
+);
+
+
+// ✅ DELETE PROFILE API (🛡️ADMIN Only)
+app.delete("/admin/profiles/:id", isAuthenticatedUser, isAdmin,
+    // this API is to delete a profile and its linked user. It uses the isAuthenticatedUser and isAdmin middleware to ensure that only authenticated admin users can access this endpoint. The profile ID is obtained from the URL parameters. The API validates the profile ID, checks if the profile exists, and then deletes both the profile and the linked user from the database. If successful, it returns a success response; otherwise, it returns appropriate error messages for invalid input or internal server errors. 
+    async (req, res) => {
+
+        try {
+
+            // ===========================================
+            // Get Profile ID
+            // ===========================================
+            const { id } = req.params;
+
+            // ===========================================
+            // Validate MongoDB ObjectId
+            // ===========================================
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Invalid profile id",
+
+                });
+
+            }
+
+            // ===========================================
+            // Find Profile
+            // ===========================================
+            const profile = await Profile.findById(id);
+
+            if (!profile) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Profile not found",
+
+                });
+
+            }
+
+            // ===========================================
+            // Find Linked User
+            // ===========================================
+            const user = await User.findById(profile.userId);
+
+            if (!user) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "User not found",
+
+                });
+
+            }
+
+            // ===========================================
+            // Delete User and Profile
+            const deletedUser = await User.findByIdAndDelete(user._id);
+
+            // ===========================================
+            // Check if user was deleted
+            if (!deletedUser) {
+
+                return res.status(500).json({
+
+                    success: false,
+
+                    message: "Failed to delete user",
+
+                });
+
+            }
+
+            // this will delete the profile from the database using the profile's _id. It will also delete the linked user from the User collection using the userId field in the Profile collection. If both deletions are successful, it will return a success response with a message indicating that the profile was deleted successfully. If either deletion fails, it will return an error response with an appropriate message.
+            await Profile.findByIdAndDelete(profile._id);
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                message: "Profile deleted successfully",
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to delete profile",
+
+                error: error.message,
+
+            });
+
+        }
+
+    }
+);
+
+
+
+
+// ✅ GET PUBLIC PROFILES API 
+app.get("/public/profiles",async (req, res) => {
+// this API is to get all public profiles with pagination. 
+// It retrieves only the active profiles from the database and 
+// returns them in a paginated format along with pagination 
+// metadata such as current page, total pages, total profiles, 
+// and limit. The API accepts query parameters for pagination (page and limit) 
+// and returns only the name and profile photo of each profile.    
+        try {
+
+            // ===========================================
+            // Get Page & Limit From Query
+            // ===========================================
+            const page = Number(req.query.page) || 1;
+
+            const limit = Number(req.query.limit) || 10;
+
+            // Skip Records For Pagination
+            const skip = (page - 1) * limit;
+
+            // ===========================================
+            // Get Total Active Profiles
+            // ===========================================
+            const totalProfiles =
+                await Profile.countDocuments({
+                    status: "active"
+                });
+
+            // ===========================================
+            // Get Active Profiles
+            // Only Name & Profile Photo
+            // ===========================================
+            const profiles =
+                await Profile.find(
+                    {
+                        status: "active"
+                    },
+                    {
+                        fullName: 1,
+                        profilePhoto: 1
+                    }
+                )
+                    .sort({
+                        createdAt: -1
+                    })
+                    .skip(skip)
+                    .limit(limit);
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                currentPage: page,
+
+                totalPages: Math.ceil(totalProfiles / limit),
+
+                totalProfiles,
+
+                profiles,
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to fetch profiles",
+
+                error: error.message,
+
+            });
+
+        }
+
+    }
+);
+
+
+// ✅ GET PROFILES (LOGGED-IN USER)
+app.get("/profiles",isAuthenticatedUser,async (req, res) => {
+// this API is to get all profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves only the active profiles from the database, excluding the profile of the logged-in user, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, age, district, and profile photo of each profile.
+        try {
+
+            // ===========================================
+            // Get Page & Limit
+            // ===========================================
+            const page = Number(req.query.page) || 1;
+
+            const limit = Number(req.query.limit) || 10;
+
+            const skip = (page - 1) * limit;
+
+         
+
+            // ===========================================
+            // Get Total Profiles
+            // ===========================================
+            const totalProfiles = await Profile.countDocuments({
+
+                status: "active",
+
+                userId: {
+
+                    $ne: req.user._id
+
+                }
+
+            });
+
+            // ===========================================
+            // Get Profiles
+            // ===========================================
+            const profiles = await Profile.find(
+
+                {
+
+                    status: "active",
+
+                    // Don't show own profile
+                    userId: {
+
+                        $ne: req.user._id
+
+                    }
+
+                },
+
+                {
+
+                    fullName: 1,
+
+                    age: 1,
+
+                    district: 1,
+
+                    profilePhoto: 1
+
+                }
+
+            )
+
+                .sort({
+
+                    createdAt: -1
+
+                })
+
+                .skip(skip)
+
+                .limit(limit);
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                currentPage: page,
+
+                totalPages: Math.ceil(totalProfiles / limit),
+
+                totalProfiles,
+
+                profiles
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to fetch profiles",
+
+                error: error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+
+// Every profile unlock costs 1 credit
+const UNLOCK_CREDIT_COST = 1;
+
+// ✅ UNLOCK PROFILE API using credits (LOGGED-IN USER)
+app.post("/profiles/:id/unlock",isAuthenticatedUser,async (req, res) => {
+// this API is to unlock a profile for a logged-in user.
+//  It uses the isAuthenticatedUser middleware to ensure 
+// that only authenticated users can access this endpoint. 
+// The API retrieves the profile to be unlocked using the provided ID,
+//  checks if the logged-in user has enough credits, and deducts the
+//  required credits from the user's profile. It also creates a record 
+// of the profile view in the ProfileView collection. If successful, it 
+// returns a success response with the remaining credits; otherwise, 
+// it returns appropriate error messages for invalid input or insufficient credits.
+        try {
+
+            // ===========================================
+            // Get Profile ID From URL
+            // ===========================================
+            const { id } = req.params;
+
+            // ===========================================
+            // Validate MongoDB ObjectId
+            // ===========================================
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Invalid profile id"
+
+                });
+
+            }
+
+            // ===========================================
+            // Find Profile To Unlock
+            // ===========================================
+            const profileToUnlock = await Profile.findById(id);
+
+            if (!profileToUnlock) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Profile not found"
+
+                });
+
+            }
+
+            // ===========================================
+            // Find Logged-in User Profile
+            // Credits are stored in Profile collection
+            // ===========================================
+            const myProfile = await Profile.findOne({
+
+                userId: req.user._id
+
+            });
+
+            if (!myProfile) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Your profile not found"
+
+                });
+
+            }
+
+            // ===========================================
+            // User Cannot Unlock Own Profile
+            // ===========================================
+            if (
+
+                profileToUnlock.userId.toString() ===
+                req.user._id.toString()
+
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "You cannot unlock your own profile"
+
+                });
+
+            }
+
+            // ===========================================
+            // Check Whether Already Unlocked
+            // ===========================================
+            const alreadyUnlocked = await ProfileView.findOne({
+
+                viewerId: req.user._id,
+
+                viewedProfileId: profileToUnlock._id
+
+            });
+
+            if (alreadyUnlocked) {
+
+                return res.status(200).json({
+
+                    success: true,
+
+                    message: "Profile already unlocked",
+
+                    remainingCredits: myProfile.credits
+
+                });
+
+            }
+
+            // ===========================================
+            // Check User Credits
+            // ===========================================
+            if (
+
+                myProfile.credits < UNLOCK_CREDIT_COST
+
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Not enough credits"
+
+                });
+
+            }
+
+            // ===========================================
+            // Save Current Credits
+            // Needed For Rollback
+            // ===========================================
+            const oldCredits = myProfile.credits;
+
+            // ===========================================
+            // PART - 2 STARTS HERE
+            // ===========================================
+            // ===========================================
+            // DEDUCT USER CREDITS
+            // ===========================================
+            myProfile.credits -= UNLOCK_CREDIT_COST;
+
+            try {
+
+                // ===========================================
+                // SAVE UPDATED CREDITS
+                // ===========================================
+                await myProfile.save();
+
+                // ===========================================
+                // CREATE PROFILE VIEW RECORD
+                // ===========================================
+                await ProfileView.create({
+
+                    viewerId: req.user._id,
+
+                    viewedProfileId: profileToUnlock._id,
+
+                });
+
+                // ===========================================
+                // PART - 3 STARTS HERE
+                // ===========================================
+
+            } catch (error) {
+
+                // ===========================================
+                // ROLLBACK USER CREDITS
+                // ===========================================
+                try {
+
+                    myProfile.credits = oldCredits;
+
+                    await myProfile.save();
+
+                } catch (rollbackError) {
+
+                    console.error(
+                        "Credit Rollback Failed:",
+                        rollbackError
+                    );
+
+                }
+
+                console.error(error);
+
+                return res.status(500).json({
+
+                    success: false,
+
+                    message: "Failed to unlock profile",
+
+                    error: error.message,
+
+                });
+
+            }
+            // ===========================================
+            // SUCCESS RESPONSE
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                message: "Profile unlocked successfully",
+
+                remainingCredits: myProfile.credits,
+
+            });
+
+        }
+
+         catch (error) {
+
+    console.error(error);
+
+    return res.status(500).json({
+
+        success: false,
+
+        message: "Failed to unlock profile",
+
+        error: error.message,
+
+    });
+
+}
+
+    }
+);
+
+
+
+
+// ===========================================
+// ✅ GET SINGLE PROFILE (FULL DETAILS) after unlock profile using credits (LOGGED-IN USER)
+// ===========================================
+app.get("/profiles/:id",isAuthenticatedUser, async (req, res) => {
+// this API is to get the full details of a single profile for a logged-in user. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. 
+// The API retrieves the profile using the provided ID, checks if the logged-in user is viewing their own profile or if they have unlocked the profile, and returns the full profile details accordingly. If successful, it returns a success response with the profile information; otherwise, it returns appropriate error messages for invalid input or unauthorized access.
+        try {
+
+            // ===========================================
+            // Get Profile ID
+            // ===========================================
+            const { id } = req.params;
+
+            // ===========================================
+            // Validate MongoDB ObjectId
+            // ===========================================
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message: "Invalid profile id"
+
+                });
+
+            }
+
+            // Find Profile
+            // why select("-__v")? because we don't want to return the __v field in the response. The __v field is a version key that is automatically added by Mongoose to track document revisions. It is not needed in the API response, so we exclude it using select("-__v").
+            const profile = await Profile.findById(id).select("-__v");
+
+            if (!profile) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Profile not found"
+
+                });
+
+            }
+
+            // ===========================================
+            // If User Is Viewing Own Profile
+            // Allow Direct Access
+            // ===========================================
+            if (
+
+                profile.userId.toString() ===
+                req.user._id.toString()
+
+            ) {
+
+                return res.status(200).json({
+
+                    success: true,
+
+                    profile
+
+                });
+
+            }
+
+            // ===========================================
+            // Check Whether Profile Is Unlocked
+            // ===========================================
+            const unlocked = await ProfileView.findOne({
+
+                viewerId: req.user._id,
+
+                viewedProfileId: profile._id
+
+            });
+
+            // ===========================================
+            // Not Unlocked
+            // ===========================================
+            if (!unlocked) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message: "Please unlock this profile first."
+
+                });
+
+            }
+
+            // ===========================================
+            // Return Full Profile
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                profile
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to fetch profile",
+
+                error: error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+
+// ===========================================
+// ✅ GET MY UNLOCKED PROFILES API
+// ===========================================
+app.get("/user/unlocked-profiles",isAuthenticatedUser,async (req, res) => {
+// this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
+        try {
+
+            // ===========================================
+            // Get Page & Limit
+            // ===========================================
+            const page = Number(req.query.page) || 1;
+
+            const limit = Number(req.query.limit) || 10;
+
+            const skip = (page - 1) * limit;
+
+            // ===========================================
+            // Count Total Unlocked Profiles
+            // ===========================================
+            const totalProfiles = await ProfileView.countDocuments({
+
+                viewerId: req.user._id
+
+            });
+
+            // ===========================================
+            // Get Unlocked Profile Records
+            // ===========================================
+            const unlockedProfiles = await ProfileView.find({
+
+                viewerId: req.user._id
+
+            })
+            // why use populate? Your ProfileView collection stores only IDs: MongoDB automatically fetches the corresponding profile details, so you don't need to manually query the Profile collection again.
+                .populate({
+
+                    path: "viewedProfileId",
+
+                    select: "fullName age district profilePhoto profileId status"
+
+                })
+
+                .sort({
+
+                    createdAt: -1
+
+                })
+
+                .skip(skip)
+
+                .limit(limit);
+
+            // ===========================================
+            // Remove Deleted/Inactive Profiles
+            // ===========================================
+            const profiles = unlockedProfiles
+                .map(item => item.viewedProfileId)
+                .filter(profile => profile && profile.status === "active");
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                currentPage: page,
+
+                totalPages: Math.ceil(totalProfiles / limit),
+
+                totalProfiles,
+
+                profiles
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to fetch unlocked profiles",
+
+                error: error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+
+// ===========================================
+// ✅ GET MY PROFILE details API
+// ===========================================
+app.get("/user/profile",isAuthenticatedUser,async (req, res) => {
+// this API is to get the profile of the logged-in user. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the profile associated with the logged-in user's ID and returns it along with basic user information such as ID, username, and role. If successful, it returns a success response with the profile details; otherwise, it returns appropriate error messages for invalid input or internal server errors.
+        try {
+
+            // ===========================================
+            // Find Logged-in User Profile
+            // ===========================================
+            const profile = await Profile.findOne({
+
+                userId: req.user._id
+
+            });
+
+            // ===========================================
+            // Check Profile Exists
+            // ===========================================
+            if (!profile) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Profile not found"
+
+                });
+
+            }
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+            return res.status(200).json({
+
+                success: true,
+
+                user: {
+
+                    id: req.user._id,
+
+                    username: req.user.username,
+
+                    role: req.user.role
+
+                },
+
+                profile
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: "Failed to fetch your profile",
+
+                error: error.message
+
+            });
+
+        }
+
+    }
 );
 
 
