@@ -1,0 +1,101 @@
+/* ===========================
+   PAGINATION
+=========================== */
+
+.pagination-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:50px;
+
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.page-btn,
+
+.page-number{
+
+    border:none;
+
+    background:#fff;
+
+    color:#333;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+}
+
+.page-btn:hover,
+
+.page-number:hover{
+
+    background:#0b7d39;
+
+    color:#fff;
+
+}
+
+/* ===========================
+   ACTIVE PAGE
+=========================== */
+
+.page-number.active{
+
+    background:#0b7d39;
+
+    color:#fff;
+
+}
+
+/* ===========================
+   DOTS
+=========================== */
+
+.dots{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    color:#777;
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:576px){
+
+    .page-btn,
+
+    .page-number{
+
+        padding:8px 12px;
+
+        font-size:13px;
+
+    }
+
+}

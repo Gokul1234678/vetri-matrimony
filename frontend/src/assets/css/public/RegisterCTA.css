@@ -1,0 +1,211 @@
+/* ==============================
+   REGISTER CTA
+================================*/
+
+.register-cta{
+
+    padding:40px 20px;
+
+}
+
+.register-box{
+
+    max-width:1250px;
+
+    margin:auto;
+
+    background:#3d2415;
+
+    border-radius:12px;
+
+    padding:35px 45px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:40px;
+
+}
+
+/* Left */
+
+.register-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+}
+
+.register-icon{
+
+    width:90px;
+
+    height:90px;
+
+    border:2px solid #f4b400;
+
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+
+}
+
+.register-icon i{
+
+    color:#f4b400;
+
+    font-size:45px;
+
+}
+
+.register-left h3{
+
+    color:#fff;
+
+    font-size:32px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.register-left p{
+
+    color:#ddd;
+
+    margin:0;
+
+    font-size:17px;
+
+    max-width:600px;
+
+}
+
+/* Right */
+
+.register-right{
+
+    text-align:center;
+
+}
+
+.register-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    background:#f4b400;
+
+    color:#222;
+
+    padding:18px 40px;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.register-btn:hover{
+
+    background:#d89a00;
+
+    color:#fff;
+
+}
+
+.register-right small{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:#ddd;
+
+}
+
+/* Tablet */
+
+@media(max-width:992px){
+
+    .register-box{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .register-left{
+
+        flex-direction:column;
+
+    }
+
+}
+
+/* Mobile */
+
+@media(max-width:576px){
+
+    .register-box{
+
+        padding:25px;
+
+    }
+
+    .register-left h3{
+
+        font-size:24px;
+
+    }
+
+    .register-left p{
+
+        font-size:15px;
+
+    }
+
+    .register-icon{
+
+        width:70px;
+
+        height:70px;
+
+    }
+
+    .register-icon i{
+
+        font-size:34px;
+
+    }
+
+    .register-btn{
+
+        width:100%;
+
+    }
+
+}

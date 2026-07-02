@@ -1,0 +1,166 @@
+.profiles-section{
+
+    padding:70px 0;
+
+}
+
+.section-heading{
+
+    text-align:center;
+
+    margin-bottom:50px;
+
+}
+
+.section-heading h2{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+.section-heading p{
+
+    color:#777;
+
+    margin-top:12px;
+
+}
+
+.profiles-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4, 1fr);
+
+    gap:25px;
+
+}
+
+/* Large Laptop */
+@media (max-width:1200px){
+
+    .profiles-grid{
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+}
+
+/* Tablet */
+@media (max-width:992px){
+
+    .profiles-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+/* Mobile */
+@media (max-width:576px){
+
+    .profiles-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/* ===========================
+   SECTION HEADING
+=========================== */
+
+.section-heading{
+
+    text-align:center;
+
+    margin-bottom:45px;
+
+}
+
+.heading-decoration{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:15px;
+
+}
+
+.heading-decoration .line{
+
+    width:80px;
+
+    height:2px;
+
+    background:#0b7d39;
+
+}
+
+.heart-icon{
+
+    color:#0b7d39;
+
+    font-size:14px;
+
+}
+
+.section-heading h2{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:#222;
+
+    margin-bottom:10px;
+
+}
+
+.section-heading p{
+
+    color:#777;
+
+    font-size:16px;
+
+    margin:0;
+
+}
+
+
+@media (max-width:768px){
+
+    .section-heading h2{
+
+        font-size:28px;
+
+    }
+
+    .section-heading p{
+
+        font-size:14px;
+
+        padding:0 15px;
+
+    }
+
+    .heading-decoration .line{
+
+        width:50px;
+
+    }
+
+}
