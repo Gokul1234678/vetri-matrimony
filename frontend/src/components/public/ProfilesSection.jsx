@@ -1,51 +1,144 @@
+import { useEffect, useState } from "react";
+
 import "../../assets/css/public/ProfilesSection.css";
+
 import ProfileCard from "./ProfileCard";
 
 import Pagination from "../common/Pagination";
 
+import api from "../../services/api";
 
-// Temporary dummy data
-const dummyProfiles = [
+function ProfilesSection({ filters }) {
 
-    {
-        id: 1,
-        fullName: "Priya"
-    },
+    // ==========================
+    // States
+    // ==========================
 
-    {
-        id: 2,
-        fullName: "Kavya"
-    },
+    const [profiles, setProfiles] = useState([]);
 
-    {
-        id: 3,
-        fullName: "Divya"
-    },
+    const [loading, setLoading] = useState(true);
 
-    {
-        id: 4,
-        fullName: "Nivetha"
-    },
+    const [currentPage, setCurrentPage] = useState(1);
 
-    {
-        id: 5,
-        fullName: "Harini"
-    },
+    const [totalPages, setTotalPages] = useState(1);
 
-    {
-        id: 6,
-        fullName: "Anitha"
+    // ==========================
+    // Fetch Profiles
+    // ==========================
+
+    const fetchProfiles = async () => {
+
+        try {
+
+            setLoading(true);
+
+            // ==========================
+            // Build Query Parameters
+            // ==========================
+
+            const params = new URLSearchParams();
+
+            params.append("page", currentPage);
+
+            // Pagination
+            params.append("limit", 3); // change to 8 later
+
+            // Gender
+            if (filters.gender) {
+
+                params.append("gender", filters.gender);
+
+            }
+
+            // Religion
+            if (filters.religion) {
+
+                params.append("religion", filters.religion);
+
+            }
+
+            // Caste
+            if (filters.caste) {
+
+                params.append("caste", filters.caste);
+
+            }
+
+            // Age
+            if (filters.ageFrom) {
+
+                params.append("ageFrom", filters.ageFrom);
+
+            }
+
+            if (filters.ageTo) {
+
+                params.append("ageTo", filters.ageTo);
+
+            }
+
+            const { data } = await api.get(
+
+                `/public/profiles?${params.toString()}`
+
+            );
+
+            if (data.success) {
+
+                setProfiles(data.profiles);
+
+                setTotalPages(data.totalPages);
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    // ==========================
+    // Load Profiles
+    // ==========================
+
+    useEffect(() => {
+
+        fetchProfiles();
+
+    }, [currentPage]);
+
+
+ useEffect(() => {
+
+    if (currentPage === 1) {
+
+        fetchProfiles();
+
+    } else {
+
+        setCurrentPage(1);
+
     }
 
-];
-
-function ProfilesSection() {
+}, [filters]);
 
     return (
 
         <section className="profiles-section">
 
             <div className="container">
+
+                {/* Heading */}
 
                 <div className="section-heading">
 
@@ -62,33 +155,92 @@ function ProfilesSection() {
                     <h2>Our Profiles</h2>
 
                     <p>
+
                         Find your perfect match from our trusted profiles
+
                     </p>
 
                 </div>
 
-                <div className="profiles-grid">
+                {/* Loading */}
 
-                    {
+                {
 
-                        dummyProfiles.map((profile) => (
+                    loading ?
 
-                            <ProfileCard
+                        (
 
-                                key={profile.id}
+                            <h4
+                                style={{
+                                    textAlign: "center"
+                                }}
+                            >
 
-                                profile={profile}
+                                Loading Profiles...
 
-                            />
+                            </h4>
 
-                        ))
+                        )
 
-                    }
+                        :
 
-                </div>
+                        profiles.length === 0 ?
 
+                            (
 
-                <Pagination />
+                                <h4
+                                    style={{
+                                        textAlign: "center"
+                                    }}
+                                >
+
+                                    No Profiles Found
+
+                                </h4>
+
+                            )
+
+                            :
+
+                            (
+
+                                <>
+
+                                    <div className="profiles-grid">
+
+                                        {
+
+                                            profiles.map((profile) => (
+
+                                                <ProfileCard
+
+                                                    key={profile._id}
+
+                                                    profile={profile}
+
+                                                />
+
+                                            ))
+
+                                        }
+
+                                    </div>
+
+                                    <Pagination
+
+                                        currentPage={currentPage}
+
+                                        totalPages={totalPages}
+
+                                        onPageChange={setCurrentPage}
+
+                                    />
+
+                                </>
+
+                            )
+
+                }
 
             </div>
 

@@ -1,0 +1,620 @@
+/* ===========================================
+   USER NAVBAR
+=========================================== */
+
+.user-navbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    width:100%;
+
+    background:linear-gradient(90deg,#2b160d,#4b2c17);
+
+    transition:.3s;
+
+}
+
+.user-navbar.scrolled{
+
+    box-shadow:0 10px 25px rgba(0,0,0,.18);
+
+}
+
+.user-navbar-wrapper{
+
+    max-width:1400px;
+
+    margin:auto;
+
+    height:88px;
+
+    padding:0 30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+/* ===========================================
+   LOGO
+=========================================== */
+
+.user-logo img{
+
+    height:62px;
+
+    object-fit:contain;
+
+}
+
+/* ===========================================
+   DESKTOP MENU
+=========================================== */
+
+.user-desktop-menu{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:38px;
+
+}
+
+.user-nav-link{
+
+    color:#ffffff;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    position:relative;
+
+    transition:.3s;
+
+    text-transform:uppercase;
+
+}
+
+.user-nav-link:hover{
+
+    color:#f7b733;
+
+}
+
+.user-nav-link::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-10px;
+
+    width:0;
+
+    height:2px;
+
+    background:#f7b733;
+
+    transition:.3s;
+
+}
+
+.user-nav-link:hover::after,
+
+.active-link::after{
+
+    width:100%;
+
+}
+
+.active-link{
+
+    color:#f7b733;
+
+}
+
+/* ===========================================
+   RIGHT SECTION
+=========================================== */
+
+.user-right-section{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+/* ===========================================
+   CREDITS CARD
+=========================================== */
+
+.credits-card{
+
+    background:#f7b733;
+
+    color:#222;
+
+    min-width:92px;
+
+    height:60px;
+
+    border-radius:10px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:700;
+
+    box-shadow:0 6px 16px rgba(0,0,0,.18);
+
+}
+
+.credits-card small{
+
+    font-size:11px;
+
+    line-height:1;
+
+}
+
+.credits-card h5{
+
+    margin:4px 0 0;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+/* ===========================================
+   USER DROPDOWN
+=========================================== */
+
+.user-dropdown{
+
+    position:relative;
+
+}
+
+.user-dropdown-btn{
+
+    background:none;
+
+    border:none;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.user-dropdown-btn i:first-child{
+
+    font-size:30px;
+
+}
+
+.dropdown-menu-box{
+
+    position:absolute;
+
+    top:58px;
+
+    right:0;
+
+    width:220px;
+
+    background:#fff;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+
+    animation:fadeDown .25s ease;
+
+}
+
+.dropdown-menu-box a,
+
+.dropdown-menu-box button{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    text-decoration:none;
+
+    color:#333;
+
+    background:#fff;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.dropdown-menu-box a:hover,
+
+.dropdown-menu-box button:hover{
+
+    background:#f8f8f8;
+
+    color:#0b7d39;
+
+}
+
+@keyframes fadeDown{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ===========================================
+   HAMBURGER BUTTON
+=========================================== */
+
+.user-menu-btn{
+
+    display:none;
+
+    width:36px;
+
+    height:36px;
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:5px;
+
+    padding:0;
+
+}
+
+.user-menu-btn span{
+
+    width:24px;
+
+    height:2.5px;
+
+    background:#fff;
+
+    border-radius:3px;
+
+    transition:.3s;
+
+}
+
+.user-menu-btn.open span:nth-child(1){
+
+    transform:translateY(7px) rotate(45deg);
+
+}
+
+.user-menu-btn.open span:nth-child(2){
+
+    opacity:0;
+
+}
+
+.user-menu-btn.open span:nth-child(3){
+
+    transform:translateY(-8px) rotate(-45deg);
+
+}
+
+/* ===========================================
+   MOBILE MENU
+=========================================== */
+
+.user-mobile-menu{
+
+    position:fixed;
+
+    top:0;
+
+    right:-320px;
+
+    width:300px;
+
+    height:100vh;
+
+    background:#fff;
+
+    padding:100px 25px 30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    transition:.35s;
+
+    z-index:1100;
+
+    box-shadow:-6px 0 30px rgba(0,0,0,.18);
+
+}
+
+.user-mobile-menu.show{
+
+    right:0;
+
+}
+
+.user-mobile-link{
+
+    text-decoration:none;
+
+    color:#333;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    padding:15px 0;
+
+    border-bottom:1px solid #ececec;
+
+    transition:.25s;
+
+}
+
+.user-mobile-link:hover,
+
+.user-mobile-link.active-link{
+
+    color:#0b7d39;
+
+    padding-left:8px;
+
+}
+
+/* ===========================================
+   MOBILE CREDITS
+=========================================== */
+
+.mobile-credits{
+
+    margin-top:25px;
+
+    padding:16px;
+
+    background:#f7b733;
+
+    border-radius:10px;
+
+    text-align:center;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    color:#222;
+
+}
+
+.mobile-credits strong{
+
+    display:block;
+
+    font-size:28px;
+
+    margin-top:6px;
+
+}
+
+/* ===========================================
+   MOBILE LOGOUT
+=========================================== */
+
+.mobile-logout-btn{
+
+    margin-top:25px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#d32f2f;
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.25s;
+
+}
+
+.mobile-logout-btn:hover{
+
+    background:#b71c1c;
+
+}
+
+/* ===========================================
+   BACKDROP
+=========================================== */
+
+.user-backdrop{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:1000;
+
+}
+
+/* ===========================================
+   TABLET
+=========================================== */
+
+@media(max-width:992px){
+
+    .user-navbar-wrapper{
+
+        padding:0 20px;
+
+    }
+
+    .user-desktop-menu{
+
+        display:none;
+
+    }
+
+    .credits-card{
+
+        display:none;
+
+    }
+
+    .user-dropdown{
+
+        display:none;
+
+    }
+
+    .user-menu-btn{
+
+        display:flex;
+
+    }
+
+}
+
+/* ===========================================
+   MOBILE
+=========================================== */
+
+@media(max-width:768px){
+
+    .user-navbar-wrapper{
+
+        height:74px;
+
+    }
+
+    .user-logo img{
+
+        height:48px;
+
+    }
+
+    .user-mobile-menu{
+
+        width:280px;
+
+    }
+
+}
+
+/* ===========================================
+   SMALL MOBILE
+=========================================== */
+
+@media(max-width:480px){
+
+    .user-mobile-menu{
+
+        width:100%;
+
+        right:-100%;
+
+    }
+
+    .user-navbar-wrapper{
+
+        padding:0 16px;
+
+    }
+
+    .user-logo img{
+
+        height:42px;
+
+    }
+
+}

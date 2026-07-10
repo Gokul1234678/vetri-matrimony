@@ -99,3 +99,67 @@
     }
 
 }
+
+
+
+
+
+
+.page-btn:disabled,
+.page-number:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+.page-btn:disabled:hover,
+.page-number:disabled:hover{
+
+    background:#fff;
+
+    color:#333;
+
+}
+
+
+/* ===========================
+   PAGE INFO
+=========================== */
+
+.page-info{
+
+    text-align:center;
+
+    margin:35px 0 15px;
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+.page-info strong{
+
+    color:#0b7d39;
+
+}
+
+/* Disabled Buttons */
+
+.page-btn:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}
+
+.page-btn:disabled:hover{
+
+    background:#fff;
+
+    color:#333;
+
+}

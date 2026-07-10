@@ -5,11 +5,7 @@ export const NAV_LINKS = [
         path: "/"
     },
 
-    {
-        name: "Browse Profiles",
-        path: "/browse-profiles"
-    },
-
+    
     {
         name: "About Us",
         path: "/about-us"

@@ -1,6 +1,17 @@
 import "../../assets/css/public/SearchSection.css";
+import { RELIGIONS } from "../../config/religions";
+import { CASTES } from "../../config/castes";
 
-function SearchSection() {
+
+function SearchSection({
+
+    filters,
+
+    setFilters,
+
+    onSearch
+
+}) {
 
     return (
 
@@ -10,23 +21,36 @@ function SearchSection() {
 
                 <div className="search-grid">
 
-                    {/* Looking For */}
+                    {/* Gender */}
 
                     <div className="search-group">
 
                         <label>Looking For</label>
 
-                        <select>
+                        <select
 
-                            <option>Bride</option>
+                            value={filters.gender}
 
-                            <option>Groom</option>
+                            onChange={(e) =>
+                                setFilters({
+                                    ...filters,
+                                    gender: e.target.value
+                                })
+                            }
+
+                        >
+
+                            <option value="">All</option>
+
+                            <option value="male">Male</option>
+
+                            <option value="female">Female</option>
 
                         </select>
 
                     </div>
 
-                    {/* Age From */}
+                    {/* Age */}
 
                     <div className="search-group">
 
@@ -34,36 +58,72 @@ function SearchSection() {
 
                         <div className="age-wrapper">
 
-                            <select>
+                            <select
+
+                                value={filters.ageFrom}
+
+                                onChange={(e) =>
+                                    setFilters({
+                                        ...filters,
+                                        ageFrom: e.target.value
+                                    })
+                                }
+
+                            >
+
+                                <option value="">From</option>
 
                                 {
+
                                     Array.from({ length: 43 }, (_, i) => (
 
-                                        <option key={i}>
+                                        <option
+                                            key={i}
+                                            value={18 + i}
+                                        >
 
                                             {18 + i}
 
                                         </option>
 
                                     ))
+
                                 }
 
                             </select>
 
                             <span>To</span>
 
-                            <select defaultValue={60}>
+                            <select
+
+                                value={filters.ageTo}
+
+                                onChange={(e) =>
+                                    setFilters({
+                                        ...filters,
+                                        ageTo: e.target.value
+                                    })
+                                }
+
+                            >
+
+                                <option value="">To</option>
 
                                 {
+
                                     Array.from({ length: 43 }, (_, i) => (
 
-                                        <option key={i}>
+                                        <option
+                                            key={i}
+                                            value={18 + i}
+                                        >
 
                                             {18 + i}
 
                                         </option>
 
                                     ))
+
                                 }
 
                             </select>
@@ -78,15 +138,34 @@ function SearchSection() {
 
                         <label>Religion</label>
 
-                        <select>
+                        <select
+                            value={filters.religion}
+                            onChange={(e) =>
+                                setFilters({
+                                    ...filters,
+                                    religion: e.target.value
+                                })
+                            }
+                        >
 
-                            <option>All Religions</option>
+                            <option value="">All Religions</option>
 
-                            <option>Hindu</option>
+                            {
 
-                            <option>Christian</option>
+                                RELIGIONS.map((religion) => (
 
-                            <option>Muslim</option>
+                                    <option
+                                        key={religion}
+                                        value={religion}
+                                    >
+
+                                        {religion}
+
+                                    </option>
+
+                                ))
+
+                            }
 
                         </select>
 
@@ -98,19 +177,50 @@ function SearchSection() {
 
                         <label>Caste</label>
 
-                        <select>
+                        <select
+                            value={filters.caste}
+                            onChange={(e) =>
+                                setFilters({
+                                    ...filters,
+                                    caste: e.target.value
+                                })
+                            }
+                        >
 
-                            <option>All Castes</option>
+                            <option value="">All Castes</option>
+
+                            {
+
+                                CASTES.map((caste) => (
+
+                                    <option
+                                        key={caste}
+                                        value={caste}
+                                    >
+
+                                        {caste}
+
+                                    </option>
+
+                                ))
+
+                            }
 
                         </select>
 
                     </div>
 
-                    {/* Search */}
+                    {/* Search Button */}
 
                     <div className="search-btn-wrapper">
 
-                        <button>
+                        <button
+
+                            type="button"
+
+                            onClick={onSearch}
+
+                        >
 
                             Search
 

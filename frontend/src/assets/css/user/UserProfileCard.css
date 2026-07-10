@@ -1,0 +1,118 @@
+/* =====================================
+   USER PROFILE CARD
+===================================== */
+
+.user-profile-card{
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 4px 14px rgba(0,0,0,.06);
+    transition:.3s;
+    display:flex;
+    flex-direction:column;
+}
+
+.user-profile-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 24px rgba(0,0,0,.1);
+}
+
+/* =====================================
+   IMAGE
+===================================== */
+
+.user-profile-image{
+    width:100%;
+    aspect-ratio:1/1;
+    overflow:hidden;
+}
+
+.user-profile-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .35s ease;
+}
+
+.user-profile-card:hover .user-profile-image img{
+    transform:scale(1.06);
+}
+
+/* =====================================
+   BODY
+===================================== */
+
+.user-profile-body{
+    padding:16px 16px 4px;
+    text-align:center;
+}
+
+.user-profile-body h4{
+    font-size:17px;
+    font-weight:700;
+    color:#1c1c1c;
+    margin-bottom:6px;
+}
+
+.user-profile-body p{
+    font-size:13.5px;
+    color:#777;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin:0;
+}
+
+.user-profile-body p span{
+    color:#0e7a34;
+    font-size:11px;
+}
+
+/* =====================================
+   VIEW PROFILE BUTTON
+===================================== */
+
+.view-profile-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin:16px;
+    margin-top:14px;
+    background:#eef6f0;
+    color:#0e7a34;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    padding:11px;
+    border-radius:8px;
+    transition:.25s;
+}
+
+.view-profile-btn i{
+    font-size:15px;
+}
+
+.view-profile-btn:hover{
+    background:#0e7a34;
+    color:#fff;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:480px){
+
+    .user-profile-body h4{
+        font-size:16px;
+    }
+
+    .view-profile-btn{
+        font-size:13.5px;
+        padding:10px;
+    }
+
+}
