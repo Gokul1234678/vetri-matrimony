@@ -1,0 +1,371 @@
+/* ==========================================
+   PAGE
+========================================== */
+
+.browse-page{
+
+    background:#f8f9fb;
+
+    min-height:100vh;
+
+    padding-bottom:60px;
+
+}
+
+/* ==========================================
+   TOP BANNER
+========================================== */
+
+.browse-banner{
+
+    height:220px;
+
+    border-radius:18px;
+
+    margin:25px 0;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 50px;
+
+    position:relative;
+
+    background-image:url("../../images/hero-banner.jpg");
+
+    background-size:cover;
+
+    background-position:right center;
+
+}
+
+/* White Gradient */
+
+.browse-banner::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+
+        90deg,
+
+        rgba(255,255,255,.98) 0%,
+
+        rgba(255,255,255,.96) 35%,
+
+        rgba(255,255,255,.55) 55%,
+
+        rgba(255,255,255,0) 75%
+
+    );
+
+}
+
+/* Content */
+
+.browse-banner-content{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.browse-banner h1{
+
+    font-size:56px;
+
+    font-weight:700;
+
+    color:#2c1d10;
+
+    margin-bottom:10px;
+
+}
+
+.browse-banner p{
+
+    font-size:18px;
+
+    color:#555;
+
+    margin:0;
+
+}
+
+/* ==========================================
+   PROFILE CONTAINER
+========================================== */
+
+.browse-profiles-container{
+
+    margin-top:30px;
+
+}
+
+
+
+
+/* ==========================================
+   RESULTS HEADER
+========================================== */
+
+/* .browse-results-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:35px 0 25px;
+
+} */
+
+.browse-results-header{
+
+    margin:35px 0 25px;
+
+}
+
+.browse-results-header h3{
+
+    margin:0;
+
+    font-size:30px;
+
+    color:#2b160d;
+
+}
+
+.browse-results-header p{
+
+    margin-top:5px;
+
+    color:#666;
+
+}
+
+/* ==========================================
+   PROFILE GRID
+========================================== */
+
+.browse-profiles-container .profiles-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:22px;
+
+}
+
+
+
+@media(max-width:992px){
+
+    .browse-profiles-container .profiles-grid{
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+   
+    .browse-profiles-container .profiles-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .browse-results-header h3{
+
+        font-size:24px;
+
+    }
+
+}
+
+
+
+
+
+/* =====================================
+   BROWSE BANNER
+===================================== */
+
+.browse-banner{
+    position:relative;
+    display:flex;
+    align-items:center;
+    min-height:180px;
+    overflow:hidden;
+    background:#fdfcfa;
+    padding:36px 40px;
+}
+
+/* =====================================
+   CONTENT
+===================================== */
+
+.browse-banner-content{
+    position:relative;
+    z-index:2;
+    max-width:55%;
+}
+
+.browse-banner-content h1{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:34px;
+    font-weight:500;
+    color:#1c1c1c;
+    margin-bottom:10px;
+}
+
+/* Decorative accent line beside heading */
+.title-divider{
+    display:inline-block;
+    width:70px;
+    height:2px;
+    background:#0e7a34;
+    position:relative;
+}
+
+.title-divider::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#0e7a34;
+}
+
+.browse-banner-content p{
+    font-size:15.5px;
+    color:#666;
+    margin:0;
+}
+
+/* =====================================
+   IMAGE
+===================================== */
+
+.browse-banner-image{
+    position:absolute;
+    inset:0;
+    z-index:1;
+}
+
+.browse-banner-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:right center;
+    display:block;
+}
+
+.browse-banner-image::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,
+        #fdfcfa 0%,
+        #fdfcfa 30%,
+        rgba(253,252,250,.85) 42%,
+        rgba(253,252,250,.25) 58%,
+        rgba(253,252,250,0) 72%
+    );
+    z-index:2;
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media(max-width:992px){
+
+    .browse-banner{
+        padding:30px 28px;
+        min-height:160px;
+    }
+
+    .browse-banner-content{
+        max-width:65%;
+    }
+
+    .browse-banner-content h1{
+        font-size:28px;
+    }
+
+    .browse-banner-image::before{
+        background:linear-gradient(90deg,
+            #fdfcfa 0%,
+            #fdfcfa 40%,
+            rgba(253,252,250,.9) 55%,
+            rgba(253,252,250,.3) 70%,
+            rgba(253,252,250,0) 85%
+        );
+    }
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media(max-width:768px){
+
+    .browse-banner-content{
+        max-width:100%;
+    }
+
+    .browse-banner-image{
+        display:none;
+    }
+
+    .browse-banner-content h1{
+        font-size:24px;
+    }
+
+    .browse-banner-content p{
+        font-size:14px;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .browse-banner{
+        padding:24px 20px;
+    }
+
+    .browse-banner-content h1{
+        font-size:21px;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .title-divider{
+        width:44px;
+    }
+
+}

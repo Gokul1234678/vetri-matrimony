@@ -8,6 +8,7 @@ import Login from "../pages/public/Login";
 
 // User Pages
 import UserDashboard from "../pages/user/UserDashboard";
+import BrowseProfiles from "../pages/user/BrowseProfiles";
 // import ProfileDetails from "../pages/user/ProfileDetails";
 // import MyProfile from "../pages/user/MyProfile";
 // import UnlockedProfiles from "../pages/user/UnlockedProfiles";
@@ -33,14 +34,22 @@ function AppRoutes() {
 
             {/* User */}
 
-<Route
-    path="/user/dashboard"
-    element={
-        <ProtectedRoute role="user">
-            <UserDashboard />
-        </ProtectedRoute>
-    }
-/>
+            <Route
+                path="/user/dashboard"
+                element={
+                    <ProtectedRoute role="user">
+                        <UserDashboard />
+                    </ProtectedRoute>
+                }
+            />
+
+            {/* browse profiles */}
+            <Route path="/browse-profiles"
+                element={
+                    <ProtectedRoute role="user">
+                        <BrowseProfiles />
+                    </ProtectedRoute>
+                } />
 
             {/* <Route path="/profiles/:id" element={<ProfileDetails />} />
 
@@ -51,13 +60,13 @@ function AppRoutes() {
             {/* Admin */}
 
             <Route
-    path="/admin/dashboard"
-    element={
-        <ProtectedRoute role="admin">
-            <AdminDashboard />
-        </ProtectedRoute>
-    }
-/>
+                path="/admin/dashboard"
+                element={
+                    <ProtectedRoute role="admin">
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                }
+            />
             {/* <Route path="/admin/profiles" element={<ManageProfiles />} />
 
             <Route path="/admin/profiles/create" element={<CreateProfile />} />

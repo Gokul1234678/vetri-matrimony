@@ -109,7 +109,7 @@ const profileSchema = new mongoose.Schema(
 
         gender: {
             type: String,
-            enum: ["male", "female"],
+            enum: ["male", "female","Male", "Female"],
             required: true,
         },
 
@@ -2059,57 +2059,172 @@ app.get("/public/profiles", async (req, res) => {
 );
 
 
+// ===========================================
 // ✅ GET PROFILES (LOGGED-IN USER)
+// ===========================================
 app.get("/profiles", isAuthenticatedUser, async (req, res) => {
-    // this API is to get all profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves only the active profiles from the database,
-    //  excluding the profile of the logged-in user, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, age, district, and profile photo of each profile.
+    // this API is to get all profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the profiles from the database based on the logged-in user's ID and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, profile photo, age, gender, religion, caste
     try {
 
         // ===========================================
-        // Get Page & Limit
+        // Get Query Parameters
         // ===========================================
         const page = Number(req.query.page) || 1;
 
         const limit = Number(req.query.limit) || 10;
+        // const limit = Number(req.query.limit) || 3;
 
         const skip = (page - 1) * limit;
 
+        const {
 
+    search,
+
+    gender,
+
+    ageFrom,
+
+    ageTo,
+
+    religion,
+
+    caste,
+
+    district
+
+} = req.query;
 
         // ===========================================
-        // Get Total Profiles
+        // Build Filter Query
         // ===========================================
-        const totalProfiles = await Profile.countDocuments({
+        const filter = {
 
             status: "active",
 
+            // Don't show logged-in user's own profile
             userId: {
 
                 $ne: req.user._id
 
             }
 
-        });
+        };
+
+// ===========================================
+// Search By Profile ID OR Full Name
+// ===========================================
+if (search) {
+
+    filter.$or = [
+
+        {
+
+            profileId: {
+
+                $regex: search,
+
+                $options: "i"
+
+            }
+
+        },
+
+        {
+
+            fullName: {
+
+                $regex: search,
+
+                $options: "i"
+
+            }
+
+        }
+
+    ];
+
+}
+
+ 
+
+        // ===========================================
+        // Gender
+        // ===========================================
+        if (gender) {
+
+            filter.gender = gender;
+
+        }
+
+        // ===========================================
+        // Religion
+        // ===========================================
+        if (religion) {
+
+            filter.religion = religion;
+
+        }
+
+        // ===========================================
+        // Caste
+        // ===========================================
+        if (caste) {
+
+            filter.caste = caste;
+
+        }
+
+        // ===========================================
+        // District
+        // ===========================================
+        if (district) {
+
+            filter.district = {
+
+                $regex: district,
+
+                $options: "i"
+
+            };
+
+        }
+
+        // ===========================================
+        // Age Range
+        // ===========================================
+        if (ageFrom || ageTo) {
+
+            filter.age = {};
+
+            if (ageFrom) {
+
+                filter.age.$gte = Number(ageFrom);
+
+            }
+
+            if (ageTo) {
+
+                filter.age.$lte = Number(ageTo);
+
+            }
+
+        }
+
+        // ===========================================
+        // Total Profiles
+        // ===========================================
+        const totalProfiles = await Profile.countDocuments(filter);
 
         // ===========================================
         // Get Profiles
         // ===========================================
         const profiles = await Profile.find(
 
-            {
-
-                status: "active",
-
-                // Don't show own profile
-                userId: {
-
-                    $ne: req.user._id
-
-                }
-
-            },
+            filter,
 
             {
+
+                profileId: 1,
 
                 fullName: 1,
 
@@ -2117,7 +2232,13 @@ app.get("/profiles", isAuthenticatedUser, async (req, res) => {
 
                 district: 1,
 
-                profilePhoto: 1
+                profilePhoto: 1,
+
+                gender: 1,
+
+                religion: 1,
+
+                caste: 1
 
             }
 
@@ -2168,8 +2289,7 @@ app.get("/profiles", isAuthenticatedUser, async (req, res) => {
 
     }
 
-}
-);
+});
 
 
 

@@ -1,0 +1,206 @@
+/* =====================================
+   BROWSE SEARCH PANEL
+===================================== */
+
+.browse-search{
+    background:#fff;
+    border-radius:16px;
+    padding:26px 28px;
+    box-shadow:0 4px 14px rgba(0,0,0,.06);
+    margin-bottom:28px;
+}
+
+/* =====================================
+   FILTER GRID
+===================================== */
+
+.browse-search-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:20px;
+}
+
+.search-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.search-group label{
+    font-size:13px;
+    font-weight:600;
+    color:#333;
+    margin-bottom:8px;
+}
+
+/* =====================================
+   INPUTS & SELECTS
+===================================== */
+
+.search-group input,
+.search-group select{
+    width:100%;
+    height:46px;
+    border:1px solid #e0e0e0;
+    border-radius:8px;
+    padding:0 14px;
+    font-size:14px;
+    color:#333;
+    background:#fafafa;
+    outline:none;
+    transition:.25s;
+    appearance:none;
+}
+
+.search-group select{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23777' stroke-width='1.6' fill='none' fill-rule='evenodd'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    padding-right:34px;
+}
+
+.search-group input::placeholder{
+    color:#999;
+}
+
+.search-group input:focus,
+.search-group select:focus{
+    border-color:#0e7a34;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(14,122,52,.1);
+}
+
+/* =====================================
+   AGE RANGE
+===================================== */
+
+.age-wrapper{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.age-wrapper select{
+    flex:1;
+}
+
+.age-wrapper span{
+    font-size:13px;
+    color:#888;
+    flex-shrink:0;
+}
+
+/* =====================================
+   BUTTONS
+===================================== */
+
+.browse-search-buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:14px;
+    margin-top:24px;
+}
+
+.search-btn,
+.clear-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:14.5px;
+    font-weight:600;
+    border:none;
+    border-radius:8px;
+    padding:12px 26px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.search-btn{
+    background:#0e7a34;
+    color:#fff;
+}
+
+.search-btn:hover{
+    background:#0a5e28;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(14,122,52,.25);
+}
+
+.clear-btn{
+    background:#f2f2f2;
+    color:#555;
+}
+
+.clear-btn:hover{
+    background:#e6e6e6;
+    color:#222;
+}
+
+.search-btn i,
+.clear-btn i{
+    font-size:14px;
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media(max-width:1200px){
+
+    .browse-search-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .browse-search{
+        padding:22px;
+    }
+
+    .browse-search-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:16px;
+    }
+
+    .browse-search-buttons{
+        justify-content:stretch;
+    }
+
+    .search-btn,
+    .clear-btn{
+        flex:1;
+    }
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media(max-width:576px){
+
+    .browse-search{
+        padding:18px;
+        border-radius:14px;
+    }
+
+    .browse-search-grid{
+        grid-template-columns:1fr;
+        gap:14px;
+    }
+
+    .browse-search-buttons{
+        flex-direction:column;
+        gap:10px;
+        margin-top:20px;
+    }
+
+    .search-group input,
+    .search-group select{
+        height:44px;
+        font-size:13.5px;
+    }
+
+}
