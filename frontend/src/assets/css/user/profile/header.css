@@ -1,0 +1,323 @@
+/* =====================================
+   PROFILE HEADER
+===================================== */
+
+.profile-header{
+    display:flex;
+    gap:28px;
+    background:#fff;
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 4px 14px rgba(0,0,0,.06);
+}
+
+/* =====================================
+   MAIN IMAGE
+===================================== */
+
+.profile-main-image{
+    position:relative;
+    width:280px;
+    flex-shrink:0;
+    border-radius:14px;
+    overflow:hidden;
+    aspect-ratio:3/4;
+}
+
+.profile-main-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    cursor:pointer;
+    transition:transform .3s ease;
+}
+
+.profile-main-image img:hover{
+    transform:scale(1.03);
+}
+
+.profile-id{
+    position:absolute;
+    left:12px;
+    bottom:12px;
+    background:rgba(0,0,0,.65);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:600;
+    padding:6px 12px;
+    border-radius:6px;
+    letter-spacing:.3px;
+}
+
+/* =====================================
+   RIGHT SIDE
+===================================== */
+
+.profile-header-right{
+    flex:1;
+    padding-top:4px;
+}
+
+.profile-header-right h1{
+    font-size:30px;
+    font-weight:800;
+    color:#1c1c1c;
+    margin-bottom:10px;
+}
+
+.profile-basic-details{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:15px;
+    color:#444;
+    margin-bottom:8px;
+}
+
+.profile-basic-details span{
+    color:#444;
+}
+
+.profile-basic-details span:nth-child(even){
+    color:#bbb;
+    font-size:12px;
+}
+
+.profile-location{
+    font-size:14.5px;
+    color:#777;
+    margin-bottom:24px;
+}
+
+/* =====================================
+   GALLERY THUMBNAILS
+===================================== */
+
+.profile-gallery{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.gallery-thumb{
+    width:100px;
+    height:100px;
+    border-radius:10px;
+    overflow:hidden;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:.2s;
+    flex-shrink:0;
+}
+
+.gallery-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.gallery-thumb:hover{
+    border-color:#c9e3d3;
+}
+
+.gallery-thumb.active-thumb{
+    border-color:#0e7a34;
+}
+
+.gallery-more{
+    width:100px;
+    height:100px;
+    border-radius:10px;
+    background:#faf6ee;
+    border:1px dashed #e3d9c2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:.2s;
+}
+
+.gallery-more:hover{
+    background:#f5eedd;
+}
+
+.more-count{
+    font-size:20px;
+    font-weight:800;
+    color:#1c1c1c;
+}
+
+.more-label{
+    font-size:11.5px;
+    color:#888;
+    margin-top:2px;
+    text-align:center;
+}
+
+/* =====================================
+   LIGHTBOX
+===================================== */
+
+.photo-lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2000;
+    animation:lightboxFade .2s ease;
+}
+
+@keyframes lightboxFade{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+.lightbox-image{
+    max-width:88vw;
+    max-height:86vh;
+    object-fit:contain;
+    border-radius:8px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    cursor:default;
+}
+
+.lightbox-close{
+    position:absolute;
+    top:24px;
+    right:28px;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.lightbox-close:hover{
+    background:rgba(255,255,255,.25);
+    transform:rotate(90deg);
+}
+
+.lightbox-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.lightbox-nav:hover{
+    background:rgba(255,255,255,.25);
+}
+
+.lightbox-prev{
+    left:24px;
+}
+
+.lightbox-next{
+    right:24px;
+}
+
+.lightbox-counter{
+    position:absolute;
+    bottom:26px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#fff;
+    font-size:13.5px;
+    background:rgba(255,255,255,.12);
+    padding:6px 16px;
+    border-radius:20px;
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media(max-width:900px){
+
+    .profile-header{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+
+    .profile-main-image{
+        width:220px;
+    }
+
+    .profile-basic-details,
+    .profile-gallery{
+        justify-content:center;
+    }
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media(max-width:600px){
+
+    .profile-header{
+        padding:18px;
+    }
+
+    .profile-header-right h1{
+        font-size:24px;
+    }
+
+    .gallery-thumb,
+    .gallery-more{
+        width:76px;
+        height:76px;
+    }
+
+    .lightbox-nav{
+        width:40px;
+        height:40px;
+        font-size:16px;
+    }
+
+    .lightbox-prev{
+        left:10px;
+    }
+
+    .lightbox-next{
+        right:10px;
+    }
+
+    .lightbox-close{
+        top:14px;
+        right:14px;
+        width:38px;
+        height:38px;
+    }
+
+}
+
+
+

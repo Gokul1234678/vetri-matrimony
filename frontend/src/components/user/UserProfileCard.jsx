@@ -17,9 +17,9 @@ function UserProfileCard({ profile }) {
 
                 <img
 
-                    src={profile.profilePhoto || defaultProfile}
+                    src={profile?.profilePhoto || defaultProfile}
 
-                    alt={profile.fullName}
+                    alt={profile?.fullName || "Profile"}
 
                 />
 
@@ -31,27 +31,27 @@ function UserProfileCard({ profile }) {
 
                 <h4>
 
-                    {profile.fullName}
+                    {profile?.fullName}
 
                 </h4>
 
                 <p>
 
-                    {profile.age} Yrs
+                    {profile?.age} Yrs
 
-                    <span>•</span>
+                    <span> • </span>
 
-                    {profile.district}
+                    {profile?.district}
 
                 </p>
 
             </div>
 
-            {/* View Button */}
+            {/* View Profile */}
 
             <Link
 
-                to={`/profiles/${profile._id}`}
+                to={`/profiles/${profile?._id}`}
 
                 className="view-profile-btn"
 

@@ -2064,6 +2064,9 @@ app.get("/public/profiles", async (req, res) => {
 // ===========================================
 app.get("/profiles", isAuthenticatedUser, async (req, res) => {
     // this API is to get all profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the profiles from the database based on the logged-in user's ID and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, profile photo, age, gender, religion, caste
+    
+    // this api is used to fetch profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the profiles from the database based on the logged-in user's ID and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, profile photo, age
+    // this used for ✅ Browse Profiles page ✅ Search ✅ Filters ✅ Pagination
     try {
 
         // ===========================================
@@ -2293,6 +2296,189 @@ if (search) {
 
 
 
+// ===========================================
+// ✅ GET SINGLE User PROFILE (with full details and we need unlock that profile first to get full details) (LOGGED-IN USER)
+// ===========================================
+app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
+
+    // This API returns a single profile (with full details) for a logged-in user.
+    //
+    // Business Logic:
+    // 1. If the logged-in user is viewing their own profile,
+    //    return the complete profile.
+    //
+    // 2. If the logged-in user has already unlocked the profile,
+    //    return the complete profile.
+    //
+    // 3. If the profile is not unlocked,
+    //    return only the basic information required for the
+    //    locked profile page.
+
+    try {
+
+        // ===========================================
+        // Get Profile ID
+        // ===========================================
+        const { id } = req.params;
+
+        // ===========================================
+        // Validate MongoDB ObjectId
+        // ===========================================
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Invalid profile id"
+
+            });
+
+        }
+
+        // ===========================================
+        // Find Profile
+        // ===========================================
+        // Exclude __v because it is not needed
+        const profile = await Profile.findById(id).select("-__v");
+
+        if (!profile) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Profile not found"
+
+            });
+
+        }
+
+        // ===========================================
+        // Get Logged-in User Profile
+        // (Credits are stored in Profile collection)
+        // ===========================================
+        const myProfile = await Profile.findOne({
+
+            userId: req.user._id
+
+        });
+
+        if (!myProfile) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Your profile not found"
+
+            });
+
+        }
+
+        // ===========================================
+        // Own Profile
+        // Return Complete Profile
+        // ===========================================
+        if (
+
+            profile.userId.toString() ===
+            req.user._id.toString()
+
+        ) {
+
+            return res.status(200).json({
+
+                success: true,
+
+                isUnlocked: true,
+
+                credits: myProfile.credits,
+
+                profile
+
+            });
+        }
+
+        // ===========================================
+        // Check Whether Profile Is Already Unlocked
+        // ===========================================
+        const unlocked = await ProfileView.findOne({
+
+            viewerId: req.user._id,
+
+            viewedProfileId: profile._id
+
+        });
+
+        // ===========================================
+        // Profile Locked
+        // Return Only Basic Information
+        // ===========================================
+        if (!unlocked) {
+
+            return res.status(200).json({
+
+                success: true,
+
+                isUnlocked: false,
+
+                credits: myProfile.credits,
+
+                profile: {
+
+                    _id: profile._id,
+
+                    profileId: profile.profileId,
+
+                    fullName: profile.fullName,
+
+                    age: profile.age,
+
+                    district: profile.district,
+
+                    profilePhoto: profile.profilePhoto
+
+                }
+
+            });
+
+        }
+
+        // ===========================================
+        // Profile Already Unlocked
+        // Return Complete Profile
+        // ===========================================
+        return res.status(200).json({
+            success: true,
+            isUnlocked: true,
+            credits: myProfile.credits,
+            profile
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: "Failed to fetch profile",
+
+            error: error.message
+
+        });
+
+    }
+
+});
+
+
+
+
 // Every profile unlock costs 1 credit
 const UNLOCK_CREDIT_COST = 1;
 
@@ -2401,17 +2587,19 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
 
         if (alreadyUnlocked) {
 
-            return res.status(200).json({
+    return res.status(200).json({
 
-                success: true,
+        success: true,
 
-                message: "Profile already unlocked",
+        message: "Profile already unlocked",
 
-                remainingCredits: myProfile.credits
+        remainingCredits: myProfile.credits,
 
-            });
+        unlocked: true
 
-        }
+    });
+
+}
 
         // ===========================================
         // Check User Credits
@@ -2426,7 +2614,8 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
 
                 success: false,
 
-                message: "Not enough credits"
+                message: "Not enough credits",
+                remainingCredits: myProfile.credits
 
             });
 
@@ -2506,13 +2695,15 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
         // ===========================================
         return res.status(200).json({
 
-            success: true,
+    success: true,
 
-            message: "Profile unlocked successfully",
+    message: "Profile unlocked successfully",
 
-            remainingCredits: myProfile.credits,
+    remainingCredits: myProfile.credits,
 
-        });
+    unlocked: true
+
+});
 
     }
 

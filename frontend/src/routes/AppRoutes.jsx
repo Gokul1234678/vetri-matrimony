@@ -9,7 +9,7 @@ import Login from "../pages/public/Login";
 // User Pages
 import UserDashboard from "../pages/user/UserDashboard";
 import BrowseProfiles from "../pages/user/BrowseProfiles";
-// import ProfileDetails from "../pages/user/ProfileDetails";
+import ProfileDetails from "../pages/user/ProfileDetails";
 // import MyProfile from "../pages/user/MyProfile";
 // import UnlockedProfiles from "../pages/user/UnlockedProfiles";
 
@@ -51,11 +51,25 @@ function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-            {/* <Route path="/profiles/:id" element={<ProfileDetails />} />
+          <Route
 
-            <Route path="/my-profile" element={<MyProfile />} />
+    path="/profiles/:id"
 
-            <Route path="/unlocked-profiles" element={<UnlockedProfiles />} />  */}
+    element={
+
+        <ProtectedRoute role="user">
+
+            <ProfileDetails />
+
+        </ProtectedRoute>
+
+    }
+
+/>
+
+            {/* <Route path="/my-profile" element={<MyProfile />} />
+
+            <Route path="/unlocked-profiles" element={<UnlockedProfiles />} />   */}
 
             {/* Admin */}
 

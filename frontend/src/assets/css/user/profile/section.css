@@ -1,0 +1,283 @@
+/* =====================================
+   SECTION CARD
+===================================== */
+
+.profile-section-card{
+    background:#fff;
+    border-radius:14px;
+    padding:22px 24px;
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+}
+
+/* =====================================
+   SECTION TITLE
+===================================== */
+
+.profile-section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid #f0f0f0;
+}
+
+.profile-section-title h3{
+    font-size:17px;
+    font-weight:700;
+    color:#1c1c1c;
+    margin:0;
+}
+
+.profile-section-icon{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.profile-section-icon i{
+    font-size:15px;
+    color:#fff;
+}
+
+/* Icon color variants — pass color="..." to ProfileSection */
+.icon-pink{ background:#e0507a; }
+.icon-green{ background:#0e7a34; }
+.icon-blue{ background:#2f7fd6; }
+.icon-purple{ background:#8b5cd6; }
+.icon-orange{ background:#e8792e; }
+.icon-teal{ background:#159c9c; }
+.icon-gold{ background:#e8a12e; }
+
+/* =====================================
+   SECTION CONTENT
+===================================== */
+
+.profile-section-content{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+/* =====================================
+   FIELD ROW
+===================================== */
+
+.profile-field{
+    display:flex;
+    align-items:flex-start;
+    font-size:14.5px;
+}
+
+.profile-label{
+    width:150px;
+    flex-shrink:0;
+    color:#777;
+}
+
+.profile-colon{
+    width:16px;
+    flex-shrink:0;
+    color:#777;
+}
+
+.profile-value{
+    flex:1;
+    color:#222;
+    font-weight:600;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:600px){
+
+    .profile-section-card{
+        padding:18px;
+    }
+
+    .profile-label{
+        width:120px;
+    }
+
+    .profile-field{
+        font-size:13.5px;
+    }
+
+}
+
+@media(max-width:420px){
+
+    .profile-field{
+        flex-wrap:wrap;
+    }
+
+    .profile-label{
+        width:auto;
+        margin-right:6px;
+    }
+
+    .profile-colon{
+        display:none;
+    }
+
+}
+
+
+/* =====================================
+   SECTION CARD
+===================================== */
+
+.profile-section-card{
+    background:#fff;
+    border-radius:14px;
+    padding:22px 24px;
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+}
+
+/* =====================================
+   SECTION TITLE
+===================================== */
+
+.profile-section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid #f0f0f0;
+}
+
+.profile-section-title h3{
+    font-size:17px;
+    font-weight:700;
+    color:#1c1c1c;
+    margin:0;
+}
+
+.profile-section-subtitle{
+    font-size:13.5px;
+    font-weight:500;
+    color:#0e7a34;
+    margin-left:4px;
+}
+
+.profile-section-icon{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.profile-section-icon i{
+    font-size:15px;
+    color:#fff;
+}
+
+/* Icon color variants — pass color="..." to ProfileSection */
+.icon-pink{ background:#e0507a; }
+.icon-green{ background:#0e7a34; }
+.icon-blue{ background:#2f7fd6; }
+.icon-purple{ background:#8b5cd6; }
+.icon-orange{ background:#e8792e; }
+.icon-teal{ background:#159c9c; }
+.icon-gold{ background:#e8a12e; }
+
+/* =====================================
+   SECTION CONTENT
+===================================== */
+
+.profile-section-content{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+/* =====================================
+   FIELD ROW
+===================================== */
+
+.profile-field{
+    display:flex;
+    align-items:flex-start;
+    font-size:14.5px;
+}
+
+.profile-label{
+    width:150px;
+    flex-shrink:0;
+    color:#777;
+}
+
+.profile-colon{
+    width:16px;
+    flex-shrink:0;
+    color:#777;
+}
+
+.profile-value{
+    flex:1;
+    color:#222;
+    font-weight:600;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:600px){
+
+    .profile-section-card{
+        padding:18px;
+    }
+
+    .profile-label{
+        width:120px;
+    }
+
+    .profile-field{
+        font-size:13.5px;
+    }
+
+}
+
+@media(max-width:420px){
+
+    .profile-field{
+        flex-wrap:wrap;
+    }
+
+    .profile-label{
+        width:auto;
+        margin-right:6px;
+    }
+
+    .profile-colon{
+        display:none;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

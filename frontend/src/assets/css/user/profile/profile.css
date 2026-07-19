@@ -1,0 +1,118 @@
+
+
+/* =====================================
+   FULL PROFILE WRAPPER
+===================================== */
+.back-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-bottom:20px;
+
+    padding:10px 18px;
+
+    background:#fff;
+
+    color:#8B4513;
+
+    border:1px solid #d6c4b6;
+
+    border-radius:8px;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    transition:all .3s ease;
+
+}
+
+.back-btn:hover{
+
+    background:#8B4513;
+
+    color:#fff;
+
+    border-color:#8B4513;
+
+}
+
+.back-btn i{
+
+    font-size:18px;
+
+}
+.full-profile{
+    max-width:1200px;
+    margin:0 auto;
+    padding:24px 20px 60px;
+}
+
+/* =====================================
+   BACK LINK (place above FullProfile in
+   your page component, styled here for
+   consistency)
+===================================== */
+
+.back-to-browse{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#333;
+    text-decoration:none;
+    font-size:14.5px;
+    font-weight:500;
+    margin-bottom:16px;
+    transition:.2s;
+}
+
+.back-to-browse:hover{
+    color:#0e7a34;
+}
+
+/* =====================================
+   SECTIONS GRID
+   (Personal / Location / Education /
+   Family / Horoscope / Lifestyle / Contact)
+===================================== */
+
+.profile-sections-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:24px;
+}
+
+/* Contact card spans full width since it's
+   the last item in an odd-count grid */
+.profile-sections-grid > *:last-child{
+    grid-column:1 / -1;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:900px){
+
+    .profile-sections-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile-sections-grid > *:last-child{
+        grid-column:auto;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .full-profile{
+        padding:16px 14px 40px;
+    }
+
+}
