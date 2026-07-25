@@ -1,0 +1,110 @@
+/* =====================================
+   PROFILE CHANGES NOTICE
+===================================== */
+
+.profile-changes-notice p{
+    font-size:14px;
+    color:#555;
+    line-height:1.7;
+    margin-bottom:18px;
+}
+
+/* =====================================
+   LIST
+===================================== */
+
+.profile-changes-notice ul{
+    list-style:none;
+    padding:0;
+    margin:0 0 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.profile-changes-notice li{
+    position:relative;
+    font-size:14px;
+    color:#333;
+    padding-left:24px;
+}
+
+.profile-changes-notice li::before{
+    content:"\F633";               /* bi-check-circle-fill codepoint */
+    font-family:"bootstrap-icons";
+    position:absolute;
+    left:0;
+    top:0;
+    color:#0e7a34;
+    font-size:14px;
+}
+
+/* =====================================
+   NOTICE BOX
+===================================== */
+
+.notice-box{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:#fff8ea;
+    border:1px solid #f5e2b8;
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:22px;
+}
+
+.notice-box i{
+    color:#e0a52e;
+    font-size:16px;
+    margin-top:1px;
+    flex-shrink:0;
+}
+
+.notice-box span{
+    font-size:13.5px;
+    color:#7a5b1e;
+    line-height:1.6;
+}
+
+/* =====================================
+   CONTACT ADMIN BUTTON
+===================================== */
+
+.contact-admin-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#0e7a34;
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    padding:12px 24px;
+    border-radius:8px;
+    transition:.25s;
+}
+
+.contact-admin-btn:hover{
+    background:#0a5e28;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(14,122,52,.25);
+    color:#fff;
+}
+
+.contact-admin-btn i{
+    font-size:14px;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:480px){
+
+    .contact-admin-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+}

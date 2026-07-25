@@ -48,7 +48,7 @@ function ProfileHeader({ profile }) {
         e.stopPropagation();
         setActiveIndex((prev) => (prev === allPhotos.length - 1 ? 0 : prev + 1));
     };
-
+console.log(allPhotos);
     return (
 
         <div className="profile-header">

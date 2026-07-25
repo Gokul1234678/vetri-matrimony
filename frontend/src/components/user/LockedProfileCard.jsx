@@ -38,208 +38,125 @@ function LockedProfileCard({
 
             <div className="locked-profile-card">
 
-                {/* Lock Icon */}
+                {/* Left Column */}
+                <div className="locked-left">
 
-                <div className="lock-icon">
-
-                    <i className="bi bi-lock-fill"></i>
-
-                </div>
-
-                {/* Title */}
-
-                <h2>
-
-                    Profile Locked
-
-                </h2>
-
-                <p className="locked-description">
-
-                    Unlock this profile to view complete profile details.
-
-                </p>
-
-                {/* Benefits */}
-
-                <div className="unlock-benefits">
-
-                    <h4>
-
-                        After Unlock You Can View
-
-                    </h4>
-
-                    <ul>
-
-                        <li>
-
-                            <i className="bi bi-check-circle-fill"></i>
-
-                            Personal Information
-
-                        </li>
-
-                        <li>
-
-                            <i className="bi bi-check-circle-fill"></i>
-
-                            Education & Occupation
-
-                        </li>
-
-                        <li>
-
-                            <i className="bi bi-check-circle-fill"></i>
-
-                            Family Information
-
-                        </li>
-
-                        <li>
-
-                            <i className="bi bi-check-circle-fill"></i>
-
-                            Horoscope
-
-                        </li>
-
-                        <li>
-
-                            <i className="bi bi-check-circle-fill"></i>
-
-                            Partner Expectations
-
-                        </li>
-
-                        <li>
-
-                            <i className="bi bi-check-circle-fill"></i>
-
-                            Contact Details
-
-                        </li>
-
-                    </ul>
-
-                </div>
-
-                {/* Credits */}
-
-                <div className="credits-summary">
-
-                    <div>
-
-                        <span>
-
-                            Current Credits
-
-                        </span>
-
-                        <strong>
-
-                            {currentCredits}
-
-                        </strong>
-
+                    {/* Lock Icon */}
+                    <div className="lock-icon">
+                        <i className="bi bi-lock-fill"></i>
                     </div>
 
-                    <div>
+                    {/* Title */}
+                    <h2>
+                        Profile Locked
+                    </h2>
 
-                        <span>
+                    <p className="locked-description">
+                        Unlock this profile to view complete profile details.
+                    </p>
 
-                            Unlock Cost
+                    {/* Benefits */}
+                    <div className="unlock-benefits">
 
-                        </span>
+                        <h4>
+                            After Unlock You Can View
+                        </h4>
 
-                        <strong>
+                        <ul>
 
-                            {unlockCost} Credit
+                            <li>
+                                <i className="bi bi-check-circle-fill"></i>
+                                Personal Information
+                            </li>
 
-                        </strong>
+                            <li>
+                                <i className="bi bi-check-circle-fill"></i>
+                                Education & Occupation
+                            </li>
+<li>
+                                <i className="bi bi-check-circle-fill"></i>
+                                Contact Details
+                            </li>
+                            <li>
+                                <i className="bi bi-check-circle-fill"></i>
+                                Family Information
+                            </li>
 
-                    </div>
+                            <li>
+                                <i className="bi bi-check-circle-fill"></i>
+                                Horoscope
+                            </li>
 
-                    <div>
+                            
 
-                        <span>
+                            
 
-                            Remaining After Unlock
-
-                        </span>
-
-                        <strong className="remaining-credit">
-
-                            {remainingCredits}
-
-                        </strong>
+                        </ul>
 
                     </div>
 
                 </div>
 
-                {/* Warning */}
+                {/* Right Column */}
+                <div className="locked-right">
 
-                {
+                    {/* Credits */}
+                    <div className="credits-summary">
 
-                    !hasEnoughCredits && (
-
-                        <div className="credit-warning">
-
-                            <i className="bi bi-exclamation-triangle-fill"></i>
-
-                            <span>
-
-                                You don't have enough credits to unlock this profile.
-                                Please contact the matrimony office to add more credits.
-
-                            </span>
-
+                        <div>
+                            <span>Current Credits</span>
+                            <strong>{currentCredits}</strong>
                         </div>
 
-                    )
+                        <div>
+                            <span>Unlock Cost</span>
+                            <strong>{unlockCost} Credit</strong>
+                        </div>
 
-                }
+                        <div>
+                            <span>Remaining After Unlock</span>
+                            <strong className="remaining-credit">{remainingCredits}</strong>
+                        </div>
 
-                {/* Buttons */}
+                    </div>
 
-                <div className="locked-actions">
+                    {/* Warning */}
+                    {
+                        !hasEnoughCredits && (
+                            <div className="credit-warning">
+                                <i className="bi bi-exclamation-triangle-fill"></i>
+                                <span>
+                                    You don't have enough credits to unlock this profile.
+                                    Please contact the matrimony office to add more credits.
+                                </span>
+                            </div>
+                        )
+                    }
 
-                    <button
+                    {/* Buttons */}
+                    <div className="locked-actions">
 
-                        className="cancel-btn"
+                        <button
+                            className="cancel-btn"
+                            onClick={() => navigate(-1)}
+                        >
+                            Cancel
+                        </button>
 
-                        onClick={() => navigate(-1)}
+                        <button
+                            className={`unlock-btn ${!hasEnoughCredits ? "disabled-btn" : ""}`}
+                            disabled={!hasEnoughCredits}
+                            onClick={onUnlock}
+                        >
+                            <i className="bi bi-unlock-fill"></i>
+                            {
+                                hasEnoughCredits
+                                    ? "Unlock"
+                                    : "Not Enough Credits"
+                            }
+                        </button>
 
-                    >
-
-                        Cancel
-
-                    </button>
-
-                    <button
-
-                        className={`unlock-btn ${!hasEnoughCredits ? "disabled-btn" : ""}`}
-
-                        disabled={!hasEnoughCredits}
-
-                        onClick={onUnlock}
-
-                    >
-
-                        <i className="bi bi-unlock-fill"></i>
-
-                        {
-
-                            hasEnoughCredits
-
-                                ? "Unlock"
-
-                                : "Not Enough Credits"
-
-                        }
-
-                    </button>
+                    </div>
 
                 </div>
 

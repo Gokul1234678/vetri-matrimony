@@ -1,0 +1,25 @@
+.my-profile-page{
+
+    padding:40px 0;
+
+}
+
+.profile-sections-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:24px;
+
+}
+
+@media(max-width:992px){
+
+    .profile-sections-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

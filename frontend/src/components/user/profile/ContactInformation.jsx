@@ -2,16 +2,21 @@ import ProfileSection from "./ProfileSection";
 
 import "../../../assets/css/user/profile/contact.css";
 
-function ContactInformation({ profile }) {
+function ContactInformation({
+    profile,
+    title = "Contact Information",
+    subtitle = "You can contact this member directly",
+    showUnlockNotice = true
+}) {
 
     return (
 
-        <ProfileSection
-            title="Contact Information"
-            icon="bi bi-telephone-fill"
-            color="gold"
-            subtitle="You can contact this member directly"
-        >
+       <ProfileSection
+    title={title}
+    icon="bi bi-telephone-fill"
+    color="gold"
+    subtitle={subtitle}
+>
 
             <div className="contact-boxes">
 
@@ -38,12 +43,12 @@ function ContactInformation({ profile }) {
             </div>
 
             {
-                profile.unlockedDate &&
-                <div className="unlock-notice">
-                    <i className="bi bi-unlock-fill"></i>
-                    This profile has been unlocked using 1 credit on {profile.unlockedDate}.
-                </div>
-            }
+    showUnlockNotice && profile.unlockedDate &&
+    <div className="unlock-notice">
+        <i className="bi bi-unlock-fill"></i>
+        This profile has been unlocked using 1 credit on {profile.unlockedDate}.
+    </div>
+}
 
         </ProfileSection>
 

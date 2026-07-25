@@ -5,12 +5,13 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 // Public Pages
 import Home from "../pages/public/Home";
 import Login from "../pages/public/Login";
+import ContactUs from "../pages/public/ContactUs";
 
 // User Pages
 import UserDashboard from "../pages/user/UserDashboard";
 import BrowseProfiles from "../pages/user/BrowseProfiles";
 import ProfileDetails from "../pages/user/ProfileDetails";
-// import MyProfile from "../pages/user/MyProfile";
+import MyProfile from "../pages/user/MyProfile";
 // import UnlockedProfiles from "../pages/user/UnlockedProfiles";
 
 // // Admin Pages
@@ -31,6 +32,10 @@ function AppRoutes() {
             <Route path="/" element={<Home />} />
 
             <Route path="/login" element={<Login />} />
+            
+            <Route path="/contact-us" element={<ContactUs />} />
+
+
 
             {/* User */}
 
@@ -51,25 +56,25 @@ function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-          <Route
+            {/* profile details */}
+            <Route
+                path="/profiles/:id"
+                element={
+                    <ProtectedRoute role="user">
+                        <ProfileDetails />
+                    </ProtectedRoute>
+                } />
+            {/* my profile */}
+            <Route
+                path="/my-profile"
+                element={
+                    <ProtectedRoute>
+                        <MyProfile />
+                    </ProtectedRoute>
+                }
+            />
 
-    path="/profiles/:id"
-
-    element={
-
-        <ProtectedRoute role="user">
-
-            <ProfileDetails />
-
-        </ProtectedRoute>
-
-    }
-
-/>
-
-            {/* <Route path="/my-profile" element={<MyProfile />} />
-
-            <Route path="/unlocked-profiles" element={<UnlockedProfiles />} />   */}
+            {/*  <Route path="/unlocked-profiles" element={<UnlockedProfiles />} />   */}
 
             {/* Admin */}
 

@@ -7,6 +7,7 @@ function AboutMe({ profile }) {
         <ProfileSection
             title="About Me"
             icon="bi bi-chat-left-text-fill"
+            
         >
 
             <p className="about-me-text">

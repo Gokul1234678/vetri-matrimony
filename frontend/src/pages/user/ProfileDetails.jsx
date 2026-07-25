@@ -8,6 +8,7 @@ import Footer from "../../components/common/Footer";
 
 import LockedProfileCard from "../../components/user/LockedProfileCard";
 import FullProfile from "../../components/user/FullProfile";
+import ProfileDetailsSkeleton from "../../components/user/ProfileDetailsSkeleton";
 
 import api from "../../services/api";
 
@@ -125,11 +126,7 @@ function ProfileDetails() {
 
                             (
 
-                                <h3 className="profile-loading">
-
-                                    Loading...
-
-                                </h3>
+                                <ProfileDetailsSkeleton />
 
                             )
 

@@ -1,0 +1,127 @@
+/* =====================================
+   MY PROFILE TITLE ROW
+===================================== */
+
+.my-profile-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:24px;
+    margin-bottom:28px;
+}
+
+.my-profile-title h1{
+    font-size:28px;
+    font-weight:800;
+    color:#1c1c1c;
+    margin-bottom:6px;
+}
+
+.my-profile-title p{
+    font-size:14px;
+    color:#777;
+    line-height:1.6;
+    margin:0;
+}
+
+/* =====================================
+   STATS ROW
+===================================== */
+
+.profile-stats{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.profile-stat-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#fff;
+    border-radius:14px;
+    padding:16px 20px;
+    box-shadow:0 4px 14px rgba(0,0,0,.06);
+    min-width:190px;
+}
+
+/* =====================================
+   ICON CIRCLE
+   (background/color set inline via JSX)
+===================================== */
+
+.profile-stat-icon{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    font-size:19px;
+}
+
+/* =====================================
+   TEXT
+===================================== */
+
+.profile-stat-card small{
+    display:block;
+    font-size:12.5px;
+    color:#888;
+    margin-bottom:4px;
+}
+
+.profile-stat-card h4{
+    font-size:17px;
+    font-weight:700;
+    color:#1c1c1c;
+    margin:0;
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media(max-width:900px){
+
+    .my-profile-title{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .profile-stats{
+        width:100%;
+    }
+
+    .profile-stat-card{
+        flex:1;
+        min-width:160px;
+    }
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media(max-width:600px){
+
+    .my-profile-title h1{
+        font-size:24px;
+    }
+
+    .profile-stats{
+        flex-direction:column;
+    }
+
+    .profile-stat-card{
+        width:100%;
+    }
+
+}
+
+
+
+

@@ -1,0 +1,33 @@
+.credit-summary{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.credit-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:16px;
+}
+
+.credit-row span:first-child{
+    color:#555;
+}
+
+.credit-row span:last-child{
+    font-weight:600;
+    color:#222;
+}
+
+.credit-remaining{
+    background:#f8f5ee;
+    border:1px solid #e6d5bc;
+    border-radius:10px;
+    padding:14px 16px;
+}
+
+.credit-remaining span{
+    color:#2e7d32 !important;
+    font-weight:700 !important;
+}

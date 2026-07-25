@@ -109,7 +109,7 @@ const profileSchema = new mongoose.Schema(
 
         gender: {
             type: String,
-            enum: ["male", "female","Male", "Female"],
+            enum: ["male", "female", "Male", "Female"],
             required: true,
         },
 
@@ -127,12 +127,14 @@ const profileSchema = new mongoose.Schema(
         mobileNumber: {
             type: String,
             required: true,
-            match: [/^[6-9]\d{9}$/, "Please enter a valid mobile number"],
+            // match: [/^[6-9]\d{9}$/, "Please enter a valid mobile number"],
+             match: [/^\d{10}$/, "Please enter a valid 10-digit mobile number"],
         },
 
         whatsappNumber: {
             type: String,
-            match: [/^[6-9]\d{9}$/, "Please enter a valid WhatsApp number"],
+            // match: [/^[6-9]\d{9}$/, "Please enter a valid WhatsApp number"],
+             match: [/^\d{10}$/, "Please enter a valid WhatsApp number"],
         },
 
         // Personal Information
@@ -326,6 +328,10 @@ const profileSchema = new mongoose.Schema(
             type: Number,
             default: 0,
             min: 0,
+        },
+        totalCredits: {
+            type: Number,
+            default: 0
         },
 
         // Profile Status
@@ -791,7 +797,7 @@ app.post("/admin/profiles", isAuthenticatedUser,
             // ============================
             // Create User
             // ============================
-            const user = await User.create({
+            user = await User.create({
                 username,
                 password: hashedPassword,
                 role: "user",
@@ -879,6 +885,7 @@ app.post("/admin/profiles", isAuthenticatedUser,
                     horoscopeImage,
 
                     credits,
+                    totalCredits: credits,
 
                 });
 
@@ -893,10 +900,19 @@ app.post("/admin/profiles", isAuthenticatedUser,
                     profile.profileId,
             });
 
-        } catch (error) {
+        }
+        
+        catch (error) {
             // Rollback user creation
             if (user) {
                 await User.findByIdAndDelete(user._id);
+            }
+
+            if (error.name === "ValidationError") {
+                return res.status(400).json({
+                    success: false,
+                    message: error.message
+                });
             }
 
             console.log(error);
@@ -1736,7 +1752,7 @@ app.patch("/admin/profiles/:id/credits", isAuthenticatedUser, isAdmin,
             // Add Credits
             // ===========================================
             profile.credits += credits;
-
+            profile.totalCredits += credits;
             await profile.save();
 
             // ===========================================
@@ -1749,13 +1765,10 @@ app.patch("/admin/profiles/:id/credits", isAuthenticatedUser, isAdmin,
                 message: "Credits added successfully",
 
                 profile: {
-
                     profileId: profile.profileId,
-
                     fullName: profile.fullName,
-
                     credits: profile.credits,
-
+                    totalCredits: profile.totalCredits,
                 }
 
             });
@@ -2064,7 +2077,7 @@ app.get("/public/profiles", async (req, res) => {
 // ===========================================
 app.get("/profiles", isAuthenticatedUser, async (req, res) => {
     // this API is to get all profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the profiles from the database based on the logged-in user's ID and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, profile photo, age, gender, religion, caste
-    
+
     // this api is used to fetch profiles for a logged-in user with pagination. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the profiles from the database based on the logged-in user's ID and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns only the name, profile photo, age
     // this used for ✅ Browse Profiles page ✅ Search ✅ Filters ✅ Pagination
     try {
@@ -2081,21 +2094,21 @@ app.get("/profiles", isAuthenticatedUser, async (req, res) => {
 
         const {
 
-    search,
+            search,
 
-    gender,
+            gender,
 
-    ageFrom,
+            ageFrom,
 
-    ageTo,
+            ageTo,
 
-    religion,
+            religion,
 
-    caste,
+            caste,
 
-    district
+            district
 
-} = req.query;
+        } = req.query;
 
         // ===========================================
         // Build Filter Query
@@ -2113,42 +2126,42 @@ app.get("/profiles", isAuthenticatedUser, async (req, res) => {
 
         };
 
-// ===========================================
-// Search By Profile ID OR Full Name
-// ===========================================
-if (search) {
+        // ===========================================
+        // Search By Profile ID OR Full Name
+        // ===========================================
+        if (search) {
 
-    filter.$or = [
+            filter.$or = [
 
-        {
+                {
 
-            profileId: {
+                    profileId: {
 
-                $regex: search,
+                        $regex: search,
 
-                $options: "i"
+                        $options: "i"
 
-            }
+                    }
 
-        },
+                },
 
-        {
+                {
 
-            fullName: {
+                    fullName: {
 
-                $regex: search,
+                        $regex: search,
 
-                $options: "i"
+                        $options: "i"
 
-            }
+                    }
+
+                }
+
+            ];
 
         }
 
-    ];
 
-}
-
- 
 
         // ===========================================
         // Gender
@@ -2587,19 +2600,19 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
 
         if (alreadyUnlocked) {
 
-    return res.status(200).json({
+            return res.status(200).json({
 
-        success: true,
+                success: true,
 
-        message: "Profile already unlocked",
+                message: "Profile already unlocked",
 
-        remainingCredits: myProfile.credits,
+                remainingCredits: myProfile.credits,
 
-        unlocked: true
+                unlocked: true
 
-    });
+            });
 
-}
+        }
 
         // ===========================================
         // Check User Credits
@@ -2695,15 +2708,15 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
         // ===========================================
         return res.status(200).json({
 
-    success: true,
+            success: true,
 
-    message: "Profile unlocked successfully",
+            message: "Profile unlocked successfully",
 
-    remainingCredits: myProfile.credits,
+            remainingCredits: myProfile.credits,
 
-    unlocked: true
+            unlocked: true
 
-});
+        });
 
     }
 

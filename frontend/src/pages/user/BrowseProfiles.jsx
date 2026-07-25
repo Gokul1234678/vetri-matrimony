@@ -158,23 +158,23 @@ function BrowseProfiles() {
 
                 <div className="container">
 
-                   
+
 
                     {/* Page Banner */}
-<div className="browse-banner">
-    <div className="browse-banner-content">
-        <h1>
-            Browse Profiles
-            <span className="title-divider"></span>
-        </h1>
-        <p>
-            Find your perfect match from our trusted and verified profiles.
-        </p>
-    </div>
-    <div className="browse-banner-image">
-        <img src={coupleImage} alt="Couple" />
-    </div>
-</div>
+                    <div className="browse-banner">
+                        <div className="browse-banner-content">
+                            <h1>
+                                Browse Profiles
+                                <span className="title-divider"></span>
+                            </h1>
+                            <p>
+                                Find your perfect match from our trusted and verified profiles.
+                            </p>
+                        </div>
+                        <div className="browse-banner-image">
+                            <img src={coupleImage} alt="Couple" />
+                        </div>
+                    </div>
 
                     {/* Search */}
 

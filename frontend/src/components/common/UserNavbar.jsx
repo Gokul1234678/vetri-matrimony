@@ -26,7 +26,7 @@ const USER_NAV_LINKS = [
 
     {
         name: "My Profile",
-        path: "/user/profile"
+        path: "/my-profile"
     }
 
 ];
