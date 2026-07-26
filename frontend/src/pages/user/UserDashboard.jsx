@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+
 import "../../assets/css/user/Dashboard.css";
 
 import UserNavbar from "../../components/common/UserNavbar";
@@ -18,13 +19,18 @@ import { Link } from "react-router-dom";
 
 function UserDashboard() {
 
+const [stats, setStats] = useState({
+    credits: 0,
+    unlockedProfiles: 0
+});
+
     const { user } = useAuth();
 
     // for testing 
-    const LIMIT = 2;
+    // const LIMIT = 2;
 
     // for production
-    // const LIMIT = 8;
+    const LIMIT = 8;
 
     const [profiles, setProfiles] = useState([]);
 
@@ -79,6 +85,44 @@ function UserDashboard() {
         fetchProfiles();
 
     }, [currentPage]);
+
+
+const fetchDashboardStats = async () => {
+
+    try {
+
+        const { data } = await api.get(
+
+            "/user/dashboard-stats"
+
+        );
+
+        if (data.success) {
+
+            setStats({
+
+                credits: data.credits,
+
+                unlockedProfiles: data.unlockedProfiles
+
+            });
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+};
+useEffect(() => {
+
+    fetchDashboardStats();
+
+}, []);
 
     return (
 
@@ -171,7 +215,7 @@ function UserDashboard() {
                             </div>
                             <div className="stat-text">
                                 <p className="stat-label">Profiles Unlocked</p>
-                                <h3>0</h3>
+                                <h3>{stats.unlockedProfiles}</h3>
                                 <p className="stat-desc">Profiles you have unlocked</p>
                             </div>
                         </div>
@@ -307,11 +351,11 @@ function UserDashboard() {
 
                         </div>
 
-                        <button>
+<Link to="/contact-us" className="contact-admin-btn1">
 
-                            Contact Admin
+    Contact Admin
 
-                        </button>
+</Link>
 
                     </div>
 

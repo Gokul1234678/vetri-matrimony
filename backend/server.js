@@ -663,12 +663,59 @@ app.post("/logout", (req, res) => {
 
 
 
-// ✅ CURRENT LOGGED IN USER 
-// this will return like admin or user based on the logged in user. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it returns the user's information (excluding the password) in the response.
+// //  CURRENT LOGGED IN USER 
+// // this will return like admin or user based on the logged in user. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it returns the user's information (excluding the password) in the response.
+// app.get("/me", isAuthenticatedUser, async (req, res) => {
+//     res.status(200).json({
+//         success: true, user: req.user,
+//     });
+// });
+
+// ===========================================
+// ✅ CURRENT LOGGED IN USER
+// ===========================================
 app.get("/me", isAuthenticatedUser, async (req, res) => {
-    res.status(200).json({
-        success: true, user: req.user,
-    });
+// this API is to get the currently logged-in user's information along with their profile credits. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it retrieves the user's information from the database and also fetches their profile credits from the Profile collection. The response includes the user's details along with their credits and totalCredits. If any error occurs during this process, it returns a 500 Internal Server Error response.
+    try {
+
+        const profile = await Profile.findOne({
+
+            userId: req.user._id
+
+        }).select("credits totalCredits");
+
+        res.status(200).json({
+
+            success: true,
+
+            user: {
+
+                ...req.user.toObject(),
+
+                credits: profile?.credits || 0,
+
+                totalCredits: profile?.totalCredits || 0
+
+            }
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: "Failed to load user."
+
+        });
+
+    }
+
 });
 
 
@@ -2866,106 +2913,6 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
 );
 
 
-
-// ===========================================
-// ✅ GET MY UNLOCKED PROFILES API
-// ===========================================
-app.get("/user/unlocked-profiles", isAuthenticatedUser, async (req, res) => {
-    // this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
-    try {
-
-        // ===========================================
-        // Get Page & Limit
-        // ===========================================
-        const page = Number(req.query.page) || 1;
-
-        const limit = Number(req.query.limit) || 10;
-
-        const skip = (page - 1) * limit;
-
-        // ===========================================
-        // Count Total Unlocked Profiles
-        // ===========================================
-        const totalProfiles = await ProfileView.countDocuments({
-
-            viewerId: req.user._id
-
-        });
-
-        // ===========================================
-        // Get Unlocked Profile Records
-        // ===========================================
-        const unlockedProfiles = await ProfileView.find({
-
-            viewerId: req.user._id
-
-        })
-            // why use populate? Your ProfileView collection stores only IDs: MongoDB automatically fetches the corresponding profile details, so you don't need to manually query the Profile collection again.
-            .populate({
-
-                path: "viewedProfileId",
-
-                select: "fullName age district profilePhoto profileId status"
-
-            })
-
-            .sort({
-
-                createdAt: -1
-
-            })
-
-            .skip(skip)
-
-            .limit(limit);
-
-        // ===========================================
-        // Remove Deleted/Inactive Profiles
-        // ===========================================
-        const profiles = unlockedProfiles
-            .map(item => item.viewedProfileId)
-            .filter(profile => profile && profile.status === "active");
-
-        // ===========================================
-        // Success Response
-        // ===========================================
-        return res.status(200).json({
-
-            success: true,
-
-            currentPage: page,
-
-            totalPages: Math.ceil(totalProfiles / limit),
-
-            totalProfiles,
-
-            profiles
-
-        });
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-
-            success: false,
-
-            message: "Failed to fetch unlocked profiles",
-
-            error: error.message
-
-        });
-
-    }
-
-}
-);
-
-
-
 // ===========================================
 // ✅ GET MY PROFILE details API
 // ===========================================
@@ -3038,6 +2985,374 @@ app.get("/user/profile", isAuthenticatedUser, async (req, res) => {
 
 }
 );
+
+
+
+// // ===========================================
+// //  GET  UNLOCKED PROFILES 
+// // ===========================================
+// app.get("/user/unlocked-profiles", isAuthenticatedUser, async (req, res) => {
+//     // this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
+//     try {
+
+//         // ===========================================
+//         // Get Page & Limit
+//         // ===========================================
+//         const page = Number(req.query.page) || 1;
+
+//         const limit = Number(req.query.limit) || 10;
+
+//         const skip = (page - 1) * limit;
+
+//         // ===========================================
+//         // Count Total Unlocked Profiles
+//         // ===========================================
+//         const totalProfiles = await ProfileView.countDocuments({
+
+//             viewerId: req.user._id
+
+//         });
+
+//         // ===========================================
+//         // Get Unlocked Profile Records
+//         // ===========================================
+//         const unlockedProfiles = await ProfileView.find({
+
+//             viewerId: req.user._id
+
+//         })
+//             // why use populate? Your ProfileView collection stores only IDs: MongoDB automatically fetches the corresponding profile details, so you don't need to manually query the Profile collection again.
+//             .populate({
+
+//                 path: "viewedProfileId",
+
+//                 select: "fullName age district profilePhoto profileId status"
+
+//             })
+
+//             .sort({
+
+//                 createdAt: -1
+
+//             })
+
+//             .skip(skip)
+
+//             .limit(limit);
+
+//         // ===========================================
+//         // Remove Deleted/Inactive Profiles
+//         // ===========================================
+//         const profiles = unlockedProfiles
+//             .map(item => item.viewedProfileId)
+//             .filter(profile => profile && profile.status === "active");
+
+//         // ===========================================
+//         // Success Response
+//         // ===========================================
+//         return res.status(200).json({
+
+//             success: true,
+
+//             currentPage: page,
+
+//             totalPages: Math.ceil(totalProfiles / limit),
+
+//             totalProfiles,
+
+//             profiles
+
+//         });
+
+//     }
+
+//     catch (error) {
+
+//         console.error(error);
+
+//         return res.status(500).json({
+
+//             success: false,
+
+//             message: "Failed to fetch unlocked profiles",
+
+//             error: error.message
+
+//         });
+
+//     }
+
+// }
+// );
+
+// ===========================================
+// ✅ GET MY UNLOCKED PROFILES API
+// ===========================================
+app.get("/api/user/unlocked-profiles",isAuthenticatedUser, async (req, res) => {
+// this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
+    try {
+
+        const userId = req.user.id;
+
+        const page = parseInt(req.query.page) || 1;
+
+        const limit = parseInt(req.query.limit) || 9;
+
+        const search = req.query.search?.trim() || "";
+
+        const district = req.query.district?.trim() || "";
+
+        const sort = req.query.sort || "recent";
+
+        // -------------------------------------
+        // Find unlocked profile ids
+        // -------------------------------------
+
+        const unlockedProfiles = await ProfileView.find({
+
+            viewerId: userId
+
+        }).lean();
+
+        const profileIds = unlockedProfiles.map(
+
+            item => item.viewedProfileId
+
+        );
+
+        if (profileIds.length === 0) {
+
+            return res.status(200).json({
+
+                success: true,
+
+                totalProfiles: 0,
+
+                totalPages: 0,
+
+                currentPage: page,
+
+                profiles: []
+
+            });
+
+        }
+
+        // -------------------------------------
+        // Build Query
+        // -------------------------------------
+
+        const query = {
+
+            _id: {
+
+                $in: profileIds
+
+            },
+
+            status: "active"
+
+        };
+
+        if (district) {
+
+            query.district = district;
+
+        }
+
+        if (search) {
+
+            query.$or = [
+
+                {
+
+                    fullName: {
+
+                        $regex: search,
+
+                        $options: "i"
+
+                    }
+
+                },
+
+                {
+
+                    profileId: {
+
+                        $regex: search,
+
+                        $options: "i"
+
+                    }
+
+                }
+
+            ];
+
+        }
+
+        // -------------------------------------
+        // Sorting
+        // -------------------------------------
+
+        let sortOption = {};
+
+        switch (sort) {
+
+            case "oldest":
+
+                sortOption = {
+
+                    createdAt: 1
+
+                };
+
+                break;
+
+            case "name":
+
+                sortOption = {
+
+                    fullName: 1
+
+                };
+
+                break;
+
+            default:
+
+                sortOption = {
+
+                    createdAt: -1
+
+                };
+
+        }
+
+        const totalProfiles = await Profile.countDocuments(query);
+
+        const profiles = await Profile.find(query)
+
+            .select(
+
+                "profileId fullName age district profilePhoto"
+
+            )
+
+            .sort(sortOption)
+
+            .skip((page - 1) * limit)
+
+            .limit(limit)
+
+            .lean();
+
+        // -------------------------------------
+        // Attach Unlock Date
+        // -------------------------------------
+
+        const result = profiles.map(profile => {
+
+            const viewed = unlockedProfiles.find(
+
+                item =>
+
+                    item.viewedProfileId.toString() ===
+
+                    profile._id.toString()
+
+            );
+
+            return {
+
+                ...profile,
+
+                unlockedAt: viewed?.viewedAt || null
+
+            };
+
+        });
+
+        res.status(200).json({
+
+            success: true,
+
+            totalProfiles,
+
+            totalPages: Math.ceil(totalProfiles / limit),
+
+            currentPage: page,
+
+            profiles: result
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: "Failed to fetch unlocked profiles."
+
+        });
+
+    }
+
+});
+
+
+// ===========================================
+//  ✅ USER DASHBOARD STATS
+// ===========================================
+app.get("/user/dashboard-stats", isAuthenticatedUser, async (req, res) => {
+
+    try {
+
+        const unlockedProfiles = await ProfileView.countDocuments({
+
+            viewerId: req.user._id
+
+        });
+
+        const profile = await Profile.findOne({
+
+            userId: req.user._id
+
+        }).select("credits");
+
+        res.status(200).json({
+
+            success: true,
+
+            credits: profile?.credits || 0,
+
+            unlockedProfiles
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: "Failed to fetch dashboard stats."
+
+        });
+
+    }
+
+});
 
 
 

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "../../assets/css/user/profile/profile.css";
 
@@ -16,7 +16,12 @@ import PartnerExpectations from "./profile/PartnerExpectations";
 
 
 function FullProfile({ profile }) {
-
+    // ===========================================
+    // Get Location
+    // ===========================================
+    const location = useLocation();
+    const backUrl = location.state?.from || "/user/dashboard";
+    
     return (
 
         <div className="full-profile">
@@ -24,11 +29,11 @@ function FullProfile({ profile }) {
 
 
             <Link
-                to="/browse-profiles"
+                to={backUrl}
                 className="back-btn"
             >
                 <i className="bi bi-arrow-left"></i>
-                Back to Browse Profiles
+                Back
             </Link>
 
 

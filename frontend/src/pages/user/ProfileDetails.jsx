@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import { useAuth } from "../../context/AuthContext";
 
 import "../../assets/css/user/ProfileDetails.css";
 
@@ -13,6 +16,7 @@ import ProfileDetailsSkeleton from "../../components/user/ProfileDetailsSkeleton
 import api from "../../services/api";
 
 function ProfileDetails() {
+    const { loadUser } = useAuth();
 
     // ===========================================
     // Get Profile ID From URL
@@ -84,11 +88,15 @@ function ProfileDetails() {
 
             );
 
+            // Since loadUser() and fetchProfile() are independent API calls, you can run them in parallel for a slightly faster update:
             if (data.success) {
+                await Promise.all([
 
-                // Reload profile after unlock
-                fetchProfile();
+                    loadUser(),
 
+                    fetchProfile()
+
+                ]);
             }
 
         }

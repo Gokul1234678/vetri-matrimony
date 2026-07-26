@@ -398,7 +398,8 @@
     z-index:1100;
 
     box-shadow:-6px 0 30px rgba(0,0,0,.18);
-
+  overflow-y: auto;          /* ✅ Allow vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
 }
 
 .user-mobile-menu.show{
@@ -616,5 +617,66 @@
         height:42px;
 
     }
+
+}
+
+
+
+
+
+.mobile-menu-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+    padding-bottom:15px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.mobile-menu-header h4{
+
+    margin:0;
+
+    color:#2b160d;
+
+    font-weight:600;
+
+}
+
+.mobile-close-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    background:#b71c1c;
+    color: #ffffff;
+
+    border-radius:10%;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.3s;
+
+}
+
+.mobile-close-btn:hover{
+
+    background:#ff1f1f;
 
 }

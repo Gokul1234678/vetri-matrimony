@@ -817,3 +817,48 @@
     }
 
 }
+
+
+
+
+
+
+.contact-admin-btn1{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    width:30%;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#f5a000;
+
+    color:#363535;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.contact-admin-btn:hover{
+
+    background:#08662f;
+
+    color:#fff;
+
+}

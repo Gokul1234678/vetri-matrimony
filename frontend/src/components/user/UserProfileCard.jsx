@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../../context/AuthContext";
 import "../../assets/css/user/UserProfileCard.css";
 
 // Default Image
 import defaultProfile from "../../assets/images/default-profile.png";
 
 function UserProfileCard({ profile }) {
-
+const { loadUser } = useAuth();
     return (
 
         <div className="user-profile-card">
@@ -52,7 +52,7 @@ function UserProfileCard({ profile }) {
             <Link
 
                 to={`/profiles/${profile?._id}`}
-
+                state={{ from: "/browse-profiles" }}
                 className="view-profile-btn"
 
             >

@@ -12,7 +12,7 @@ import UserDashboard from "../pages/user/UserDashboard";
 import BrowseProfiles from "../pages/user/BrowseProfiles";
 import ProfileDetails from "../pages/user/ProfileDetails";
 import MyProfile from "../pages/user/MyProfile";
-// import UnlockedProfiles from "../pages/user/UnlockedProfiles";
+import UnlockedProfiles from "../pages/user/UnlockedProfiles";
 
 // // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
@@ -32,7 +32,7 @@ function AppRoutes() {
             <Route path="/" element={<Home />} />
 
             <Route path="/login" element={<Login />} />
-            
+
             <Route path="/contact-us" element={<ContactUs />} />
 
 
@@ -64,6 +64,7 @@ function AppRoutes() {
                         <ProfileDetails />
                     </ProtectedRoute>
                 } />
+
             {/* my profile */}
             <Route
                 path="/my-profile"
@@ -74,8 +75,15 @@ function AppRoutes() {
                 }
             />
 
-            {/*  <Route path="/unlocked-profiles" element={<UnlockedProfiles />} />   */}
-
+            {/* unlocked profiles */}
+            <Route
+                path="/unlocked-profiles"
+                element={
+                    <ProtectedRoute>
+                        <UnlockedProfiles />
+                    </ProtectedRoute>
+                }
+            />
             {/* Admin */}
 
             <Route

@@ -21,12 +21,16 @@ const USER_NAV_LINKS = [
 
     {
         name: "Unlocked Profiles",
-        path: "/user/unlocked-profiles"
+        path: "/unlocked-profiles"
     },
 
     {
         name: "My Profile",
         path: "/my-profile"
+    },
+    {
+        name: "contact us",
+        path: "/contact-us"
     }
 
 ];
@@ -110,7 +114,7 @@ function UserNavbar() {
                 ? "user-mobile-link"
 
                 : "user-nav-link";
-
+// console.log(user);
     return (
 
         <header className={
@@ -230,7 +234,7 @@ function UserNavbar() {
 
                                 <NavLink
 
-                                    to="/user/profile"
+                                    to="/my-profile"
 
                                     onClick={closeMenu}
 
@@ -309,6 +313,25 @@ function UserNavbar() {
                 }
 
             >
+
+                <div className="mobile-menu-header">
+
+        <h4>
+
+            Menu
+
+        </h4>
+
+        <button
+            className="mobile-close-btn"
+            onClick={closeMenu}
+        >
+
+            <i className="bi bi-x-lg"></i>
+
+        </button>
+
+    </div>
 
                 {
 
