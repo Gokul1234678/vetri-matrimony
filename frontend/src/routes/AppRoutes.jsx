@@ -3,9 +3,15 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
 // Public Pages
-import Home from "../pages/public/Home";
+// import Home from "../pages/public/Home";
+import HomeRedirect from "../components/common/HomeRedirect";
 import Login from "../pages/public/Login";
 import ContactUs from "../pages/public/ContactUs";
+import NotFound from "../pages/public/NotFound";
+
+// it is a guest route, meaning only unauthenticated users can access it
+import GuestRoute from "../components/common/GuestRoute";
+
 
 // User Pages
 import UserDashboard from "../pages/user/UserDashboard";
@@ -29,9 +35,19 @@ function AppRoutes() {
 
             {/* Public */}
 
-            <Route path="/" element={<Home />} />
+            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<HomeRedirect />} />
 
-            <Route path="/login" element={<Login />} />
+            {/* <Route path="/login" element={<Login />} /> */}
+            <Route
+                path="/login"
+                element={
+                    // GuestRoute is a wrapper component that checks if the user is authenticated. If the user is authenticated, it redirects them to their respective dashboard based on their role. If the user is not authenticated, it renders the child component (in this case, the Login component).
+                    <GuestRoute>
+                        <Login />
+                    </GuestRoute>
+                }
+            />
 
             <Route path="/contact-us" element={<ContactUs />} />
 
@@ -102,6 +118,11 @@ function AppRoutes() {
 
             <Route path="/admin/reports" element={<Reports />} /> */}
 
+
+
+
+{/* this is a catch-all route for 404 errors */}
+<Route path="*" element={<NotFound />} />
         </Routes>
 
     );

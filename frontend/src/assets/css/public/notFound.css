@@ -1,0 +1,159 @@
+/* =====================================
+   PAGE
+===================================== */
+
+.not-found-page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fdfcfa;
+    padding:60px 20px;
+}
+
+/* =====================================
+   CARD
+===================================== */
+
+.not-found-card{
+    text-align:center;
+    max-width:460px;
+    animation:notFoundIn .5s ease;
+}
+
+@keyframes notFoundIn{
+    0%{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =====================================
+   IMAGE
+===================================== */
+
+.not-found-image{
+    width:100%;
+    max-width:280px;
+    margin:0 auto 20px;
+    display:block;
+}
+
+/* =====================================
+   ERROR BADGE
+===================================== */
+
+.error-badge{
+    display:inline-block;
+    background:#fdecec;
+    color:#d9483d;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.5px;
+    padding:6px 16px;
+    border-radius:20px;
+    margin-bottom:18px;
+}
+
+/* =====================================
+   TEXT
+===================================== */
+
+.not-found-card h1{
+    font-size:26px;
+    font-weight:800;
+    color:#1c1c1c;
+    line-height:1.35;
+    margin-bottom:14px;
+}
+
+.not-found-card p{
+    font-size:14.5px;
+    color:#777;
+    line-height:1.7;
+    margin-bottom:32px;
+}
+
+/* =====================================
+   BUTTONS
+===================================== */
+
+.not-found-buttons{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.home-btn,
+.browse-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    text-decoration:none;
+    font-size:14.5px;
+    font-weight:600;
+    padding:13px 26px;
+    border-radius:10px;
+    transition:.25s;
+}
+
+.home-btn{
+    background:#0e7a34;
+    color:#fff;
+}
+
+.home-btn:hover{
+    background:#0a5e28;
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(14,122,52,.28);
+    color:#fff;
+}
+
+.browse-btn{
+    background:#fff8ea;
+    color:#c68f22;
+    border:1px solid #f5e2b8;
+}
+
+.browse-btn:hover{
+    background:#fdf0d4;
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(224,165,46,.2);
+    color:#a97a1c;
+}
+
+.home-btn i,
+.browse-btn i{
+    font-size:15px;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media(max-width:480px){
+
+    .not-found-image{
+        max-width:220px;
+    }
+
+    .not-found-card h1{
+        font-size:21px;
+    }
+
+    .not-found-buttons{
+        flex-direction:column;
+    }
+
+    .home-btn,
+    .browse-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+}
