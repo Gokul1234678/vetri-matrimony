@@ -23,7 +23,7 @@ import UnlockedProfiles from "../pages/user/UnlockedProfiles";
 // // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
 // import ManageProfiles from "../pages/admin/ManageProfiles";
-// import CreateProfile from "../pages/admin/CreateProfile";
+import CreateProfile from "../pages/admin/CreateProfile";
 // import EditProfile from "../pages/admin/EditProfile";
 // import Reports from "../pages/admin/Reports";
 
@@ -110,9 +110,11 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
-            {/* <Route path="/admin/profiles" element={<ManageProfiles />} />
 
             <Route path="/admin/profiles/create" element={<CreateProfile />} />
+
+            {/* <Route path="/admin/profiles" element={<ManageProfiles />} />
+
 
             <Route path="/admin/profiles/edit/:id" element={<EditProfile />} />
 

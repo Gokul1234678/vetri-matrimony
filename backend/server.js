@@ -4,6 +4,12 @@ const cors = require("cors");
 // Import mongoose for MongoDB connection
 const mongoose = require("mongoose");
 
+// Import multer for handling file uploads
+const multer = require("multer");
+
+// this is for image upload
+const cloudinary = require("cloudinary").v2;
+
 // Load environment variables from .env file
 require("dotenv").config();
 
@@ -16,7 +22,24 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 
+// Configure Cloudinary(for image upload) using environment variables
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
+// for testing
+// console.log(
+//     "Cloudinary:",
+//     process.env.CLOUDINARY_CLOUD_NAME ? "Configured" : "Not configured"
+// );
+
+
+// Configure multer for file uploads. Here, we are using memory storage, which means the uploaded files will be stored in memory as Buffer objects. This is useful when you want to process the files (e.g., upload to Cloudinary) without saving them to disk.
+const upload = multer({
+    storage: multer.memoryStorage(),
+});
 
 
 
@@ -256,18 +279,18 @@ const profileSchema = new mongoose.Schema(
         // Lifestyle Information
         eatingHabit: {
             type: String,
-            enum: ["Vegetarian", "Non-Vegetarian", "Eggetarian"],
+            // enum: ["Vegetarian", "Non-Vegetarian", "Eggetarian"],
         },
 
         smokingHabit: {
             type: String,
-            enum: ["No", "Occasionally", "Regularly"],
+            // enum: ["No", "Occasionally", "Regularly"],
             default: "No",
         },
 
         drinkingHabit: {
             type: String,
-            enum: ["No", "Occasionally", "Regularly"],
+            // enum: ["No", "Occasionally", "Regularly"],
             default: "No",
         },
 
@@ -512,6 +535,201 @@ const isAdmin = (
 
 
 
+
+
+// ✅ UPLOAD PROFILE IMAGES TO CLOUDINARY(🛡️ADMIN Only)
+app.post("/admin/upload-images",
+    isAuthenticatedUser,isAdmin,upload.fields([
+        {
+            name: "profilePhoto",
+            maxCount: 1,
+        },
+        {
+            name: "additionalPhotos",
+            maxCount: 5,
+        },
+        {
+            name: "horoscopeImage",
+            maxCount: 1,
+        },
+    ]),
+
+    async (req, res) => {
+
+        try {
+
+            const files = req.files || {};
+
+            // ==========================================
+            // CLOUDINARY UPLOAD FUNCTION
+            // ==========================================
+
+            const uploadToCloudinary = (
+                fileBuffer,
+                folder
+            ) => {
+
+                return new Promise((resolve, reject) => {
+
+                    const stream =
+                        cloudinary.uploader.upload_stream(
+
+                            {
+                                folder,
+                                resource_type: "image",
+                            },
+
+                            (error, result) => {
+
+                                if (error) {
+
+                                    reject(error);
+
+                                } else {
+
+                                    resolve(
+                                        result.secure_url
+                                    );
+
+                                }
+
+                            }
+
+                        );
+
+                    stream.end(fileBuffer);
+
+                });
+
+            };
+
+
+            // ==========================================
+            // PROFILE PHOTO
+            // ==========================================
+
+            let profilePhoto = null;
+
+            if (
+                files.profilePhoto &&
+                files.profilePhoto.length > 0
+            ) {
+
+                profilePhoto =
+                    await uploadToCloudinary(
+
+                        files.profilePhoto[0].buffer,
+
+                        "vetri-matrimony/profiles"
+
+                    );
+
+            }
+
+
+            // ==========================================
+            // ADDITIONAL PHOTOS
+            // Maximum: 5
+            // ==========================================
+
+            let additionalPhotos = [];
+
+            if (
+                files.additionalPhotos &&
+                files.additionalPhotos.length > 0
+            ) {
+
+                additionalPhotos =
+                    await Promise.all(
+
+                        files.additionalPhotos.map(
+                            (file) =>
+                                uploadToCloudinary(
+
+                                    file.buffer,
+
+                                    "vetri-matrimony/profiles"
+
+                                )
+                        )
+
+                    );
+
+            }
+
+
+            // ==========================================
+            // HOROSCOPE IMAGE
+            // ==========================================
+
+            let horoscopeImage = null;
+
+            if (
+                files.horoscopeImage &&
+                files.horoscopeImage.length > 0
+            ) {
+
+                horoscopeImage =
+                    await uploadToCloudinary(
+
+                        files.horoscopeImage[0].buffer,
+
+                        "vetri-matrimony/horoscopes"
+
+                    );
+
+            }
+
+
+            // ==========================================
+            // SUCCESS RESPONSE
+            // ==========================================
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Images uploaded successfully",
+
+                images: {
+
+                    profilePhoto,
+
+                    additionalPhotos,
+
+                    horoscopeImage,
+
+                },
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Cloudinary Upload Error:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Image upload failed",
+
+            });
+
+        }
+
+    }
+);
+
+
+
+
 // app.get("/", (req, res) => {
 //     res.send("Vetri Matrimony API Running...");
 // });
@@ -662,15 +880,6 @@ app.post("/logout", (req, res) => {
 });
 
 
-
-// //  CURRENT LOGGED IN USER 
-// // this will return like admin or user based on the logged in user. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it returns the user's information (excluding the password) in the response.
-// app.get("/me", isAuthenticatedUser, async (req, res) => {
-//     res.status(200).json({
-//         success: true, user: req.user,
-//     });
-// });
-
 // ===========================================
 // ✅ CURRENT LOGGED IN USER
 // ===========================================
@@ -717,6 +926,64 @@ app.get("/me", isAuthenticatedUser, async (req, res) => {
     }
 
 });
+
+
+// ✅ GET ADMIN DASHBOARD API (🛡️ADMIN Only)
+app.get("/admin/dashboard",isAuthenticatedUser,isAdmin,
+    async (req, res) => {
+// this API is to get the admin dashboard statistics. It uses the isAuthenticatedUser and isAdmin middleware to ensure that only authenticated admin users can access this endpoint. The API retrieves various statistics from the Profile collection, including the total number of profiles, the number of male and
+
+
+        const totalProfiles = await Profile.countDocuments();
+
+        const maleProfiles = await Profile.countDocuments({
+            gender: "male"
+        });
+
+        const femaleProfiles = await Profile.countDocuments({
+            gender: "female"
+        });
+
+        const credits = await Profile.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    total: {
+                        $sum: "$totalCredits"
+                    }
+                }
+            }
+        ]);
+
+        const totalCreditsSold = credits[0]?.total || 0;
+
+        const recentProfiles = await Profile.find()
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .select("profileId fullName gender createdAt");
+
+        res.status(200).json({
+
+            success: true,
+
+            stats: {
+
+                totalProfiles,
+
+                maleProfiles,
+
+                femaleProfiles,
+
+                totalCreditsSold
+
+            },
+
+            recentProfiles
+
+        });
+
+    }
+);
 
 
 // ✅ CREATE PROFILE API (🛡️ADMIN Only)
