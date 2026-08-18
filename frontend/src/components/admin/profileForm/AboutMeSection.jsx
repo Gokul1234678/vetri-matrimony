@@ -7,7 +7,11 @@ function AboutMeSection({
     handleChange,
 }) {
     return (
-        <SectionCard title="About Me">
+        <SectionCard
+    number="8"
+    title="About Me"
+    icon="bi-person-lines-fill"
+>
             <TextAreaField
                 label="About Me"
                 name="aboutMe"

@@ -7,7 +7,11 @@ function HoroscopeSection({
     removeImage,
 }) {
     return (
-        <SectionCard title="Horoscope">
+        <SectionCard
+    number="6"
+    title="Horoscope Information"
+    icon="bi-stars"
+>
             <div className="horoscope-section">
                 <label className="photo-label">
                     Horoscope Image

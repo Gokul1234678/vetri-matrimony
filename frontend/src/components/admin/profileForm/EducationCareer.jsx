@@ -7,7 +7,11 @@ function EducationCareer({
     handleChange,
 }) {
     return (
-        <SectionCard title="Education & Career">
+        <SectionCard
+    number="4"
+    title="Education & Career"
+    icon="bi-mortarboard"
+>
             <div className="form-grid">
                 <InputField
                     label="Highest Education"

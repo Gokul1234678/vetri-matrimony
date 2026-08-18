@@ -1,89 +1,57 @@
 function InputField({
-
     label,
-
     name,
-
     type = "text",
-
-    value,
-
+    value = "",
     onChange,
-
     placeholder = "",
-
     required = false,
-
     error = "",
-
     disabled = false,
-
     readOnly = false,
-
     ...rest
-
 }) {
-
     return (
-
         <div className="form-group">
 
-            <label htmlFor={name} className="form-label">
-
+            <label
+                htmlFor={name}
+                className="form-label"
+            >
                 {label}
 
-                {
-
-                    required &&
-
-                    <span className="required-star">*</span>
-
-                }
-
+                {required && (
+                    <span className="required-star">
+                        *
+                    </span>
+                )}
             </label>
 
             <input
-
                 id={name}
-
                 name={name}
-
                 type={type}
-
                 value={value}
-
                 onChange={onChange}
-
                 placeholder={placeholder}
-
                 disabled={disabled}
-
                 readOnly={readOnly}
-
-                className={`form-control ${error ? "is-invalid" : ""}`}
-
+                className={`custom-input ${
+                    error ? "input-error" : ""
+                } ${
+                    readOnly ? "input-readonly" : ""
+                }`}
                 {...rest}
-
             />
 
-            {
-
-                error && (
-
-                    <div className="invalid-feedback">
-
-                        {error}
-
-                    </div>
-
-                )
-
-            }
+            {error && (
+                <div className="field-error">
+                    {error}
+                </div>
+            )}
 
         </div>
-
     );
-
 }
 
 export default InputField;

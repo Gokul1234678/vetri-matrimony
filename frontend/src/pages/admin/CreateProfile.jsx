@@ -302,9 +302,8 @@ function CreateProfile() {
 
 
 
-
+// Handle form submission
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
         // Validate form data
@@ -389,10 +388,14 @@ function CreateProfile() {
 
     return (
         <AdminLayout>
+
+            {/* Loading Overlay */}
             <LoadingOverlay
                 show={isSubmitting}
                 message={loadingMessage}
             />
+
+
             <div className="page-header">
                 <div>
                     <h1>Create Profile</h1>
@@ -400,106 +403,144 @@ function CreateProfile() {
                 </div>
             </div>
 
-            <form
-                ref={formRef}
-                className="create-profile-form"
-                onSubmit={handleSubmit}
+           <form
+    className="create-profile-form"
+    onSubmit={handleSubmit}
+>
+    <div className="create-profile-columns">
+
+        {/* ============================
+            LEFT COLUMN
+        ============================ */}
+
+        <div className="create-profile-left">
+
+            <BasicInformation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <PersonalInformation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <LocationInformation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <EducationCareer
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <FamilyInformation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <HoroscopeSection
+                formData={formData}
+                errors={errors}
+                handleImageChange={handleImageChange}
+                removeImage={removeImage}
+            />
+
+            <LifestyleInformation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+        </div>
+
+
+        {/* ============================
+            RIGHT COLUMN
+        ============================ */}
+
+        <div className="create-profile-right">
+
+            <AboutMeSection
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <PartnerExpectation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <PhotoSection
+                formData={formData}
+                errors={errors}
+                handleImageChange={handleImageChange}
+                removeImage={removeImage}
+            />
+
+            <AccountSection
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+            <CreditInformation
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+            />
+
+        </div>
+
+    </div>
+
+       {/* FORM ACTIONS */}
+
+    <div className="form-actions">
+
+        <button
+            type="button"
+            className="reset-btn"
+            onClick={handleReset}
+        >
+            <i className="bi bi-arrow-counterclockwise"></i>
+            Reset Form
+        </button>
+
+        <div className="form-actions-right">
+
+            <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => navigate("/admin/profiles")}
             >
-                <AccountSection
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
+                Cancel
+            </button>
 
-                <BasicInformation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
+            <button
+                type="submit"
+                className="create-profile-btn"
+                disabled={isSubmitting}
+            >
+                <i className="bi bi-person-plus-fill"></i>
 
-                <PersonalInformation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
+                {isSubmitting
+                    ? "Creating..."
+                    : "Create Profile"}
+            </button>
 
+        </div>
 
-
-                <LocationInformation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-                <EducationCareer
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-                <FamilyInformation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-                <LifestyleInformation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-                <AboutMeSection
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-                <PartnerExpectation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-                <PhotoSection
-                    formData={formData}
-                    errors={errors}
-                    handleImageChange={handleImageChange}
-                    removeImage={removeImage}
-                />
-
-                <HoroscopeSection
-                    formData={formData}
-                    errors={errors}
-                    handleImageChange={handleImageChange}
-                    removeImage={removeImage}
-                />
-
-                <CreditInformation
-                    formData={formData}
-                    errors={errors}
-                    handleChange={handleChange}
-                />
-
-
-                <div className="form-buttons">
-                    <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={handleReset}
-                    >
-                        Reset
-                    </button>
-
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        disabled={loading}
-                    >
-                        {loading ? "Creating..." : "Create Profile"}
-                    </button>
-                </div>
-            </form>
+    </div>
+</form>
         </AdminLayout>
     );
 }

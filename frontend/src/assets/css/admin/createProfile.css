@@ -63,6 +63,7 @@
     display:grid;
     grid-template-columns:repeat(5,110px);
     gap:15px;
+    overflow: auto;
 }
 
 .photo-slot{
@@ -123,4 +124,1130 @@
 
     }
 
+}
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   FORM SECTION CARD
+========================================== */
+
+.form-section {
+    background: #ffffff;
+
+    border: 1px solid #e8ece9;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   SECTION HEADER
+========================================== */
+
+.form-section-header {
+    padding: 18px 20px 14px;
+
+    background: #ffffff;
+}
+
+
+.form-section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* ==========================================
+   SECTION ICON
+========================================== */
+
+.form-section-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: #e8f5ec;
+
+    color: #258a43;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.form-section-icon i {
+    font-size: 15px;
+}
+
+
+/* ==========================================
+   SECTION TITLE
+========================================== */
+
+.form-section-title h2 {
+    margin: 0;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #1f2521;
+}
+
+
+.section-number {
+    margin-right: 5px;
+}
+
+
+/* ==========================================
+   SECTION BODY
+========================================== */
+
+.form-section-body {
+    padding: 0 20px 20px;
+}
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   FORM GROUP
+========================================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+/* ==========================================
+   FORM LABEL
+========================================== */
+
+.form-label {
+    margin: 0;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    color: #202520;
+}
+
+
+/* Required *
+========================================== */
+
+.required-star {
+    color: #dc2626;
+
+    margin-left: 3px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   INPUT
+========================================== */
+
+.custom-input {
+    width: 100%;
+
+    height: 38px;
+
+    padding: 8px 11px;
+
+    border: 1px solid #d9dfdb;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #202520;
+
+    font-size: 13px;
+
+    font-family: inherit;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.custom-input::placeholder {
+    color: #9ca3af;
+
+    opacity: 1;
+}
+
+
+/* Focus */
+
+.custom-input:focus {
+    border-color: #2e8b57;
+
+    box-shadow: 0 0 0 2px rgba(46, 139, 87, 0.10);
+}
+
+
+/* Disabled */
+
+.custom-input:disabled {
+    background: #f3f5f4;
+
+    color: #9ca3af;
+
+    cursor: not-allowed;
+}
+
+
+/* Read Only */
+
+.custom-input.input-readonly {
+    background: #f5f6f5;
+
+    color: #6b7280;
+
+    cursor: default;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.custom-input.input-error {
+    border-color: #dc2626;
+}
+
+
+.custom-input.input-error:focus {
+    border-color: #dc2626;
+
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.10);
+}
+
+
+.field-error {
+    margin-top: 1px;
+
+    color: #dc2626;
+
+    font-size: 12px;
+}
+
+
+
+
+
+
+
+
+/* ==========================================
+   CUSTOM SELECT
+========================================== */
+
+.custom-select {
+    width: 100%;
+
+    height: 38px;
+
+    padding: 8px 34px 8px 11px;
+
+    border: 1px solid #d9dfdb;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    color: #202520;
+
+    font-size: 13px;
+
+    font-family: inherit;
+
+    outline: none;
+
+    cursor: pointer;
+
+    appearance: auto;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.custom-select:invalid {
+    color: #9ca3af;
+}
+
+
+/* Focus */
+
+.custom-select:focus {
+    border-color: #2e8b57;
+
+    box-shadow:
+        0 0 0 2px rgba(46, 139, 87, 0.10);
+}
+
+
+/* Error */
+
+.custom-select.select-error {
+    border-color: #dc2626;
+}
+
+
+.custom-select.select-error:focus {
+    border-color: #dc2626;
+
+    box-shadow:
+        0 0 0 2px rgba(220, 38, 38, 0.10);
+}
+
+
+/* Disabled */
+
+.custom-select:disabled {
+    background-color: #f3f5f4;
+
+    color: #9ca3af;
+
+    cursor: not-allowed;
+}
+
+
+
+
+
+/* ==========================================
+   CUSTOM TEXTAREA
+========================================== */
+
+.custom-textarea {
+    width: 100%;
+
+    min-height: 100px;
+
+    padding: 10px 11px;
+
+    border: 1px solid #d9dfdb;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #202520;
+
+    font-size: 13px;
+
+    font-family: inherit;
+
+    line-height: 1.5;
+
+    outline: none;
+
+    resize: vertical;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.custom-textarea::placeholder {
+    color: #9ca3af;
+
+    opacity: 1;
+}
+
+
+/* Focus */
+
+.custom-textarea:focus {
+    border-color: #2e8b57;
+
+    box-shadow:
+        0 0 0 2px rgba(46, 139, 87, 0.10);
+}
+
+
+/* Error */
+
+.custom-textarea.textarea-error {
+    border-color: #dc2626;
+}
+
+
+.custom-textarea.textarea-error:focus {
+    border-color: #dc2626;
+
+    box-shadow:
+        0 0 0 2px rgba(220, 38, 38, 0.10);
+}
+
+
+/* Disabled */
+
+.custom-textarea:disabled {
+    background: #f3f5f4;
+
+    color: #9ca3af;
+
+    cursor: not-allowed;
+}
+
+
+/* Read Only */
+
+.custom-textarea.textarea-readonly {
+    background: #f5f6f5;
+
+    color: #6b7280;
+
+    cursor: default;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   CREATE PROFILE TWO COLUMN LAYOUT
+========================================== */
+
+.create-profile-columns {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(320px, 0.85fr);
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+
+/* Left column */
+
+.create-profile-left {
+    min-width: 0;
+}
+
+
+/* Right column */
+
+.create-profile-right {
+    min-width: 0;
+}
+
+
+/* ==========================================
+   FORM GRID
+========================================== */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* ==========================================
+   FULL WIDTH FIELD
+========================================== */
+
+.form-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+
+
+/* ==========================================
+   CREATE PROFILE RESPONSIVE LAYOUT
+========================================== */
+
+/* Desktop */
+.create-profile-columns {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(320px, 0.85fr);
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+.create-profile-left,
+.create-profile-right {
+    min-width: 0;
+    width: 100%;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 1000px) {
+
+    .create-profile-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .create-profile-left,
+    .create-profile-right {
+        width: 100%;
+        min-width: 0;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .create-profile-form {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    .create-profile-columns {
+        display: flex;
+
+        flex-direction: column;
+
+        width: 100%;
+        max-width: 100%;
+
+        gap: 16px;
+    }
+
+
+    .create-profile-left,
+    .create-profile-right {
+        display: flex;
+
+        flex-direction: column;
+
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        gap: 16px;
+    }
+
+
+    /* ------------------------------------------
+       Form Grid
+    ------------------------------------------ */
+
+    .form-grid {
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        width: 100%;
+
+        gap: 14px;
+    }
+
+
+    .form-grid .full-width {
+        grid-column: auto;
+    }
+
+
+    /* ------------------------------------------
+       Section Card
+    ------------------------------------------ */
+
+    .form-section {
+        width: 100%;
+        max-width: 100%;
+
+        margin-bottom: 0;
+    }
+
+
+    .form-section-body {
+        width: 100%;
+
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 16px;
+    }
+
+
+    .form-section-header {
+        padding: 16px;
+    }
+
+
+    /* ------------------------------------------
+       Inputs
+    ------------------------------------------ */
+
+    .custom-input,
+    .custom-select,
+    .custom-textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    /* ------------------------------------------
+       Page Header
+    ------------------------------------------ */
+
+    .page-header {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .create-profile-columns {
+        gap: 14px;
+    }
+
+
+    .create-profile-left,
+    .create-profile-right {
+        gap: 14px;
+    }
+
+
+    .form-section-header {
+        padding: 14px;
+    }
+
+
+    .form-section-body {
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-bottom: 14px;
+    }
+
+
+    .form-section-title h2 {
+        font-size: 14px;
+    }
+
+
+    .form-section-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+
+    .form-label {
+        font-size: 12px;
+    }
+
+
+    .custom-input,
+    .custom-select {
+        height: 38px;
+
+        font-size: 13px;
+    }
+
+
+    .custom-textarea {
+        font-size: 13px;
+    }
+
+}
+
+
+
+
+
+
+
+
+/* ==========================================
+   FORM ACTIONS
+========================================== */
+
+.form-actions {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-top: 20px;
+
+    padding: 16px 0 30px;
+}
+
+
+.form-actions-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* ==========================================
+   RESET BUTTON
+========================================== */
+
+.reset-btn {
+    height: 40px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    border: 1px solid #d9dfdb;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #37413a;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.reset-btn:hover {
+    background: #f5f7f6;
+
+    border-color: #bfc8c2;
+}
+
+
+/* ==========================================
+   CANCEL BUTTON
+========================================== */
+
+.cancel-btn {
+    height: 40px;
+
+    padding: 0 20px;
+
+    border: 1px solid #d9dfdb;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #37413a;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.cancel-btn:hover {
+    background: #f5f7f6;
+}
+
+
+/* ==========================================
+   CREATE PROFILE BUTTON
+========================================== */
+
+.create-profile-btn {
+    height: 40px;
+
+    padding: 0 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #238b45;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+.create-profile-btn:hover {
+    background: #1c7339;
+}
+
+
+.create-profile-btn:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+
+    .form-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding-bottom: 40px;
+    }
+
+
+    .form-actions-right {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+
+    .reset-btn,
+    .cancel-btn,
+    .create-profile-btn {
+        width: 100%;
+    }
+
+
+    .create-profile-btn {
+        grid-column: span 1;
+    }
+
+}
+
+
+/* ==========================================
+   FORM ACTIONS
+========================================== */
+
+.form-actions {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-top: 20px;
+    padding: 16px 0 90px;
+}
+
+.form-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ==========================================
+   RESET BUTTON
+========================================== */
+
+.reset-btn {
+    height: 40px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border: 1px solid #d8ddd9;
+    border-radius: 7px;
+
+    background-color: #ffffff;
+    color: #37413a;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+    background-color: #f1f4f2;
+    border-color: #c5ccc7;
+}
+
+
+/* ==========================================
+   CANCEL BUTTON
+========================================== */
+
+.cancel-btn {
+    height: 40px;
+
+    padding: 0 20px;
+
+    border: 1px solid #d8ddd9;
+    border-radius: 7px;
+
+    background-color: #ffffff;
+    color: #37413a;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #f1f4f2;
+    border-color: #c5ccc7;
+}
+
+
+/* ==========================================
+   CREATE PROFILE BUTTON
+========================================== */
+
+.create-profile-btn {
+    height: 40px;
+
+    padding: 0 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid #238b45;
+    border-radius: 7px;
+
+    background-color: #238b45;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.create-profile-btn:hover {
+    background-color: #1c7339;
+    border-color: #1c7339;
+}
+
+.create-profile-btn:disabled {
+    background-color: #8fbea0;
+    border-color: #8fbea0;
+
+    color: #ffffff;
+
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding-bottom: 100px;
+    }
+
+    .form-actions-right {
+        width: 100%;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .reset-btn,
+    .cancel-btn,
+    .create-profile-btn {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+/* ==========================================
+   PASSWORD INPUT
+========================================== */
+
+.password-input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.password-input-wrapper .custom-input {
+    padding-right: 42px;
+}
+
+
+/* ==========================================
+   PASSWORD SHOW / HIDE BUTTON
+========================================== */
+
+.password-toggle-btn {
+    position: absolute;
+
+    top: 50%;
+    right: 10px;
+
+    transform: translateY(-50%);
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #6b756e;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    border-radius: 5px;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.password-toggle-btn:hover {
+    color: #238b45;
+
+    background-color: #f1f5f2;
+}
+
+
+.password-toggle-btn i {
+    font-size: 15px;
 }

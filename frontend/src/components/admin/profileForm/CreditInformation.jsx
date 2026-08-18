@@ -7,7 +7,11 @@ function CreditInformation({
     handleChange,
 }) {
     return (
-        <SectionCard title="Credit Information">
+        <SectionCard
+    number="12"
+    title="Credits"
+    icon="bi-credit-card"
+>
             <div className="form-grid">
                 <InputField
                     label="Initial Credits"
@@ -17,7 +21,7 @@ function CreditInformation({
                     onChange={handleChange}
                     required
                     error={errors.credits}
-                    placeholder="0"
+                    placeholder="0"  min="0"
                 />
             </div>
         </SectionCard>

@@ -7,7 +7,11 @@ function LifestyleInformation({
     handleChange,
 }) {
     return (
-        <SectionCard title="Lifestyle Information">
+       <SectionCard
+    number="7"
+    title="Lifestyle Information"
+    icon="bi-heart"
+>
             <div className="form-grid">
                 <SelectField
                     label="Eating Habit"
