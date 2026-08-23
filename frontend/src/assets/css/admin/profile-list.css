@@ -1,0 +1,819 @@
+/* =========================================================
+   PROFILES SECTION
+========================================================= */
+
+.profiles-section-admin {
+    width: 100%;
+    margin-top: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.profiles-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+.profiles-section-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.profiles-section-header p {
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* =========================================================
+   HEADER RIGHT
+========================================================= */
+
+.profiles-header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.total-profiles {
+    color: #374151;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.total-profiles strong {
+    color: #198754;
+    font-weight: 700;
+}
+
+/* =========================================================
+   CREATE PROFILE BUTTON
+========================================================= */
+
+.create-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 9px 16px;
+    border: 1px solid #198754;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #198754;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.create-profile-btn i {
+    font-size: 15px;
+}
+
+.create-profile-btn:hover {
+    background: #198754;
+    color: #ffffff;
+}
+
+.create-profile-btn:active {
+    transform: translateY(1px);
+}
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.profiles-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.profiles-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.profiles-table thead {
+    background: #f8f9fa;
+}
+
+.profiles-table th {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.profiles-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #eef0f2;
+    color: #374151;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.profiles-table tbody tr {
+    background: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+.profiles-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.profiles-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================================
+   PROFILE IMAGE
+========================================================= */
+
+.profile-image-admin {
+    display: block;
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border: 1px solid #e5e7eb;
+    border-radius: 50%;
+    background: #f3f4f6;
+}
+
+/* =========================================================
+   PROFILE ID
+========================================================= */
+
+.profile-i {
+    display: inline-block;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   PROFILE NAME
+========================================================= */
+
+.profile-name {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   GENDER
+========================================================= */
+
+.profile-gender {
+    color: #6b7280;
+    font-size: 14px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   CREDITS BUTTON
+========================================================= */
+
+.credits-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 58px;
+    padding: 6px 10px;
+    border: 1px solid #f0c36d;
+    border-radius: 6px;
+    background: #fffaf0;
+    color: #a15c00;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.credits-btn i {
+    font-size: 13px;
+}
+
+.credits-btn:hover {
+    background: #f0a500;
+    border-color: #f0a500;
+    color: #ffffff;
+}
+
+.credits-btn:active {
+    transform: translateY(1px);
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.status-badge.active {
+    background: #e8f7ee;
+    color: #198754;
+}
+
+.status-badge.inactive {
+    background: #fdeaea;
+    color: #dc3545;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.view-btn-admin,
+.edit-btn,
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 68px;
+    min-height: 34px;
+    padding: 7px 11px;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-btn-admin i,
+.edit-btn i,
+.delete-btn i {
+    font-size: 12px;
+}
+
+/* View */
+
+.view-btn-admin {
+    border: 1px solid #9ec5fe;
+    color: #0d6efd;
+}
+
+.view-btn-admin:hover {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
+}
+
+/* Edit */
+
+.edit-btn {
+    border: 1px solid #9ac8ad;
+    color: #198754;
+}
+
+.edit-btn:hover {
+    background: #198754;
+    border-color: #198754;
+    color: #ffffff;
+}
+
+/* Delete */
+
+.delete-btn {
+    border: 1px solid #f1aeb5;
+    color: #dc3545;
+}
+
+.delete-btn:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+}
+
+.view-btn-admin:active,
+.edit-btn:active,
+.delete-btn:active {
+    transform: translateY(1px);
+}
+
+/* =========================================================
+   NO PROFILES
+========================================================= */
+
+.no-profiles {
+    padding: 50px 20px !important;
+    color: #6b7280 !important;
+    text-align: center;
+}
+
+.no-profiles i {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+.no-profiles p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.profiles-pagination {
+    padding: 18px 24px;
+    border-top: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+    .profiles-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .profiles-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .profiles-table th,
+    .profiles-table td {
+        padding: 12px 14px;
+    }
+
+    .profiles-pagination {
+        padding: 16px 18px;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+    .profiles-section-admin {
+        margin-top: 18px;
+        border-radius: 10px;
+    }
+
+    .profiles-section-header {
+        padding: 16px;
+    }
+
+    .profiles-section-header h2 {
+        font-size: 18px;
+    }
+
+    .profiles-header-right {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .total-profiles {
+        font-size: 13px;
+    }
+
+    .create-profile-btn {
+        width: 100%;
+    }
+
+    /*
+       Only the table scrolls horizontally.
+       The complete page does not scroll horizontally.
+    */
+
+    .profiles-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .profiles-table {
+        min-width: 900px;
+    }
+
+    .profiles-pagination {
+        padding: 16px;
+    }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+    .profiles-section-header h2 {
+        font-size: 17px;
+    }
+
+    .create-profile-btn {
+        min-height: 38px;
+        font-size: 13px;
+    }
+
+    .profiles-table {
+        min-width: 850px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   ADD CREDIT MODAL
+========================================================= */
+
+.credit-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.credit-modal {
+    width: 100%;
+    max-width: 460px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+    overflow: hidden;
+
+    animation: credit-modal-show 0.2s ease;
+}
+
+@keyframes credit-modal-show {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header */
+
+.credit-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.credit-modal-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #222222;
+}
+
+.credit-modal-header h2 i {
+    color: #198754;
+}
+
+.credit-modal-header p {
+    margin: 5px 0 0;
+
+    font-size: 13px;
+
+    color: #777777;
+}
+
+.credit-modal-close {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #777777;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.credit-modal-close:hover {
+    background: #f1f1f1;
+    color: #222222;
+}
+
+/* Profile */
+
+.credit-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin: 20px 24px;
+
+    padding: 15px;
+
+    background: #f8f9fa;
+
+    border-radius: 12px;
+}
+
+.credit-profile-image-wrapper {
+    flex-shrink: 0;
+}
+
+.credit-profile-image {
+    width: 58px;
+    height: 58px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid #ffffff;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.credit-profile-details {
+    min-width: 0;
+}
+
+.credit-profile-id {
+    display: inline-block;
+
+    margin-bottom: 3px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #198754;
+}
+
+.credit-profile-details h3 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    color: #222222;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.credit-profile-details p {
+    margin: 5px 0 0;
+
+    font-size: 13px;
+
+    color: #666666;
+}
+
+.credit-profile-details strong {
+    margin-left: 5px;
+
+    color: #198754;
+}
+
+/* Form */
+
+.credit-modal form {
+    padding: 0 24px 24px;
+}
+
+.credit-form-group {
+    margin-bottom: 22px;
+}
+
+.credit-form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #333333;
+}
+
+.credit-form-group input {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    border: 1px solid #d8d8d8;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.credit-form-group input:focus {
+    border-color: #198754;
+
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+}
+
+/* Actions */
+
+.credit-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+.credit-cancel-btn,
+.credit-submit-btn {
+    min-height: 42px;
+
+    padding: 0 17px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.credit-cancel-btn {
+    border: 1px solid #d6d6d6;
+
+    background: #ffffff;
+
+    color: #555555;
+}
+
+.credit-cancel-btn:hover {
+    background: #f5f5f5;
+}
+
+.credit-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border: none;
+
+    background: #198754;
+
+    color: #ffffff;
+}
+
+.credit-submit-btn:hover:not(:disabled) {
+    background: #157347;
+}
+
+.credit-cancel-btn:disabled,
+.credit-submit-btn:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+/* Loading */
+
+.credit-spinner {
+    width: 15px;
+    height: 15px;
+
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation: credit-spin 0.7s linear infinite;
+}
+
+@keyframes credit-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .credit-modal-overlay {
+        padding: 12px;
+    }
+
+    .credit-modal-header {
+        padding: 18px;
+    }
+
+    .credit-profile-info {
+        margin: 16px 18px;
+    }
+
+    .credit-modal form {
+        padding: 0 18px 18px;
+    }
+
+    .credit-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .credit-cancel-btn,
+    .credit-submit-btn {
+        width: 100%;
+    }
+
+}

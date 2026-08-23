@@ -1,0 +1,379 @@
+/* =========================================
+   Profile Search Section
+========================================= */
+
+.profile-search-section {
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e8e8;
+
+    border-radius: 14px;
+
+    padding: 24px;
+
+    margin-bottom: 24px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================
+   Header
+========================================= */
+
+.profile-search-header {
+    margin-bottom: 22px;
+}
+
+.profile-search-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.profile-search-title i {
+    font-size: 20px;
+
+    color: #198754;
+}
+
+.profile-search-title h2 {
+    margin: 0;
+
+    font-size: 19px;
+
+    font-weight: 600;
+
+    color: #222222;
+}
+
+
+/* =========================================
+   Search Grid
+========================================= */
+
+.profile-search-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+    gap: 18px;
+
+    align-items: end;
+}
+
+
+/* =========================================
+   Search Field
+========================================= */
+
+.profile-search-field {
+    width: 100%;
+
+    min-width: 0;
+}
+
+.profile-search-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: #333333;
+}
+
+
+/* =========================================
+   Search Input
+========================================= */
+
+.profile-search-input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+.profile-search-input-wrapper i {
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 15px;
+
+    color: #8a8a8a;
+
+    pointer-events: none;
+}
+
+.profile-search-input-wrapper input {
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 14px 0 40px;
+
+    border: 1px solid #dcdcdc;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #222222;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.profile-search-input-wrapper input::placeholder {
+    color: #a0a0a0;
+}
+
+.profile-search-input-wrapper input:focus {
+    border-color: #198754;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(25, 135, 84, 0.10);
+}
+
+
+/* =========================================
+   Search Actions
+========================================= */
+
+.profile-search-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    height: 44px;
+}
+
+
+/* =========================================
+   Search Button
+========================================= */
+
+.profile-search-btn {
+    height: 44px;
+
+    padding: 0 18px;
+
+    border: 1px solid #198754;
+
+    border-radius: 8px;
+
+    background: #198754;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.profile-search-btn:hover {
+    background: #157347;
+
+    border-color: #157347;
+}
+
+.profile-search-btn:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   Clear Button
+========================================= */
+
+.profile-clear-btn {
+    height: 44px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d6d6d6;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.profile-clear-btn:hover {
+    background: #f5f5f5;
+
+    border-color: #c8c8c8;
+}
+
+.profile-clear-btn:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   Tablet
+========================================= */
+
+@media (max-width: 900px) {
+
+    .profile-search-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-search-actions {
+        width: 100%;
+
+        justify-content: flex-start;
+    }
+
+}
+
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 600px) {
+
+    .profile-search-section {
+        padding: 18px;
+
+        border-radius: 12px;
+    }
+
+    .profile-search-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .profile-search-actions {
+        width: 100%;
+
+        height: 44px;
+    }
+
+    .profile-search-btn,
+    .profile-clear-btn {
+        flex: 1;
+    }
+
+}
+
+
+/* =========================================
+   Small Mobile
+========================================= */
+
+@media (max-width: 400px) {
+
+    .profile-search-section {
+        padding: 15px;
+    }
+
+    .profile-search-actions {
+        flex-direction: column;
+
+        height: auto;
+    }
+
+    .profile-search-btn,
+    .profile-clear-btn {
+        width: 100%;
+        flex: none;
+    }
+
+}
+
+
+/* =========================================================
+   PROFILES LOADING
+========================================================= */
+
+.profiles-loading {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+.profiles-loading-spinner {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #198754;
+    border-radius: 50%;
+    animation: profiles-loading-spin 0.8s linear infinite;
+}
+.profiles-loading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+@keyframes profiles-loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -22,8 +22,8 @@ import UnlockedProfiles from "../pages/user/UnlockedProfiles";
 
 // // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
-// import ManageProfiles from "../pages/admin/ManageProfiles";
 import CreateProfile from "../pages/admin/CreateProfile";
+import ManageProfiles from "../pages/admin/ManageProfiles";
 // import EditProfile from "../pages/admin/EditProfile";
 // import Reports from "../pages/admin/Reports";
 
@@ -53,7 +53,7 @@ function AppRoutes() {
 
 
 
-            {/* User */}
+            {/* User Routes */}
 
             <Route
                 path="/user/dashboard"
@@ -100,7 +100,11 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
-            {/* Admin */}
+
+
+
+
+            {/* Admin Routes */}
 
             <Route
                 path="/admin/dashboard"
@@ -113,9 +117,9 @@ function AppRoutes() {
 
             <Route path="/admin/profiles/create" element={<CreateProfile />} />
 
-            {/* <Route path="/admin/profiles" element={<ManageProfiles />} />
+            <Route path="/admin/profiles" element={<ManageProfiles />} />
 
-
+ {/*
             <Route path="/admin/profiles/edit/:id" element={<EditProfile />} />
 
             <Route path="/admin/reports" element={<Reports />} /> */}
