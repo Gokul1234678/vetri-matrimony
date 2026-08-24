@@ -6,12 +6,28 @@ function HoroscopeSection({
     handleImageChange,
     removeImage,
 }) {
+    const getImageSrc = (image) => {
+        if (!image) {
+            return "";
+        }
+
+        if (typeof image === "string") {
+            return image;
+        }
+
+        if (image instanceof File) {
+            return URL.createObjectURL(image);
+        }
+
+        return "";
+    };
+
     return (
         <SectionCard
-    number="6"
-    title="Horoscope Information"
-    icon="bi-stars"
->
+            number="6"
+            title="Horoscope Information"
+            icon="bi-stars"
+        >
             <div className="horoscope-section">
                 <label className="photo-label">
                     Horoscope Image
@@ -28,7 +44,9 @@ function HoroscopeSection({
 
                     {formData.horoscopeImage ? (
                         <img
-                            src={URL.createObjectURL(formData.horoscopeImage)}
+                            src={getImageSrc(
+                                formData.horoscopeImage
+                            )}
                             alt="Horoscope"
                         />
                     ) : (
@@ -52,7 +70,9 @@ function HoroscopeSection({
                     <button
                         type="button"
                         className="remove-photo-btn"
-                        onClick={() => removeImage("horoscopeImage")}
+                        onClick={() =>
+                            removeImage("horoscopeImage")
+                        }
                     >
                         Remove Image
                     </button>

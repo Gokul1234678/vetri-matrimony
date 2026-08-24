@@ -1413,7 +1413,16 @@ app.get("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
 
 // ✅ UPDATE PROFILE API (🛡️ADMIN Only)
 app.put("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) => {
-
+// this API is to update a profile by its ID. It uses the isAuthenticatedUser and isAdmin
+//  middleware to ensure that only authenticated admin users can access this endpoint.
+//  The profile ID is obtained from the URL parameters, and 
+// the updated data is obtained from the request body. 
+// The API validates the profile ID, checks if the profile 
+// and associated user exist, and updates the profile and 
+// user information accordingly. If successful, it returns 
+// a success response with the updated profile information;
+//  otherwise, it returns appropriate error messages for 
+// invalid input or internal server errors.
     try {
 
         // ===========================================

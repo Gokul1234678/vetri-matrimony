@@ -201,9 +201,10 @@ function ProfileList({
                                             <button
                                                 type="button"
                                                 className="edit-btn"
-                                                onClick={() => {
-                                                    // Edit logic later
-                                                }}
+                                               onClick={() =>
+    window.location.href =
+        `/admin/profiles/edit/${profile._id}`
+}
                                             >
                                                 <i className="bi bi-pencil"></i>
                                                 Edit
