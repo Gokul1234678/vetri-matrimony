@@ -160,11 +160,10 @@ function ProfileList({
                                     <td>
 
                                         <span
-                                            className={`status-badge ${
-                                                profile.status === "active"
+                                            className={`status-badge ${profile.status === "active"
                                                     ? "active"
                                                     : "inactive"
-                                            }`}
+                                                }`}
                                         >
 
                                             <span className="status-dot"></span>
@@ -189,7 +188,8 @@ function ProfileList({
                                                 type="button"
                                                 className="view-btn-admin"
                                                 onClick={() => {
-                                                    // View logic later
+                                                    window.location.href =
+                                                        `/admin/profiles/view/${profile._id}`;
                                                 }}
                                             >
                                                 <i className="bi bi-eye"></i>
