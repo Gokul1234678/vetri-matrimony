@@ -4,6 +4,7 @@ function ProfileList({
     profiles,
     pagination,
     onAddCredit,
+    onDelete,
 }) {
     return (
         <section className="profiles-section-admin">
@@ -161,8 +162,8 @@ function ProfileList({
 
                                         <span
                                             className={`status-badge ${profile.status === "active"
-                                                    ? "active"
-                                                    : "inactive"
+                                                ? "active"
+                                                : "inactive"
                                                 }`}
                                         >
 
@@ -201,10 +202,10 @@ function ProfileList({
                                             <button
                                                 type="button"
                                                 className="edit-btn"
-                                               onClick={() =>
-    window.location.href =
-        `/admin/profiles/edit/${profile._id}`
-}
+                                                onClick={() =>
+                                                    window.location.href =
+                                                    `/admin/profiles/edit/${profile._id}`
+                                                }
                                             >
                                                 <i className="bi bi-pencil"></i>
                                                 Edit
@@ -215,9 +216,7 @@ function ProfileList({
                                             <button
                                                 type="button"
                                                 className="delete-btn"
-                                                onClick={() => {
-                                                    // Delete API later
-                                                }}
+                                               onClick={() => onDelete(profile)}
                                             >
                                                 <i className="bi bi-trash"></i>
                                                 Delete

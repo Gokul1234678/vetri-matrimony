@@ -2814,7 +2814,6 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
 
 
 
-
 // Every profile unlock costs 1 credit
 const UNLOCK_CREDIT_COST = 1;
 
@@ -3063,8 +3062,6 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
 );
 
 
-
-
 // ===========================================
 // ✅ GET SINGLE PROFILE (FULL DETAILS) after unlock profile using credits (LOGGED-IN USER)
 // ===========================================
@@ -3262,104 +3259,6 @@ app.get("/user/profile", isAuthenticatedUser, async (req, res) => {
 }
 );
 
-
-
-// // ===========================================
-// //  GET  UNLOCKED PROFILES 
-// // ===========================================
-// app.get("/user/unlocked-profiles", isAuthenticatedUser, async (req, res) => {
-//     // this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
-//     try {
-
-//         // ===========================================
-//         // Get Page & Limit
-//         // ===========================================
-//         const page = Number(req.query.page) || 1;
-
-//         const limit = Number(req.query.limit) || 10;
-
-//         const skip = (page - 1) * limit;
-
-//         // ===========================================
-//         // Count Total Unlocked Profiles
-//         // ===========================================
-//         const totalProfiles = await ProfileView.countDocuments({
-
-//             viewerId: req.user._id
-
-//         });
-
-//         // ===========================================
-//         // Get Unlocked Profile Records
-//         // ===========================================
-//         const unlockedProfiles = await ProfileView.find({
-
-//             viewerId: req.user._id
-
-//         })
-//             // why use populate? Your ProfileView collection stores only IDs: MongoDB automatically fetches the corresponding profile details, so you don't need to manually query the Profile collection again.
-//             .populate({
-
-//                 path: "viewedProfileId",
-
-//                 select: "fullName age district profilePhoto profileId status"
-
-//             })
-
-//             .sort({
-
-//                 createdAt: -1
-
-//             })
-
-//             .skip(skip)
-
-//             .limit(limit);
-
-//         // ===========================================
-//         // Remove Deleted/Inactive Profiles
-//         // ===========================================
-//         const profiles = unlockedProfiles
-//             .map(item => item.viewedProfileId)
-//             .filter(profile => profile && profile.status === "active");
-
-//         // ===========================================
-//         // Success Response
-//         // ===========================================
-//         return res.status(200).json({
-
-//             success: true,
-
-//             currentPage: page,
-
-//             totalPages: Math.ceil(totalProfiles / limit),
-
-//             totalProfiles,
-
-//             profiles
-
-//         });
-
-//     }
-
-//     catch (error) {
-
-//         console.error(error);
-
-//         return res.status(500).json({
-
-//             success: false,
-
-//             message: "Failed to fetch unlocked profiles",
-
-//             error: error.message
-
-//         });
-
-//     }
-
-// }
-// );
 
 // ===========================================
 // ✅ GET MY UNLOCKED PROFILES API
@@ -3630,6 +3529,294 @@ app.get("/user/dashboard-stats", isAuthenticatedUser, async (req, res) => {
 
 });
 
+
+// ===========================================
+// GET PROFILE UNLOCK REPORT (ADMIN ONLY)
+// ===========================================
+
+app.get(
+    "/admin/reports/profile-views",
+    isAuthenticatedUser,
+    isAdmin,
+    async (req, res) => {
+
+        try {
+
+            const {
+                page = 1,
+                limit = 10,
+                search = "",
+                fromDate = "",
+                toDate = "",
+            } = req.query;
+
+            const currentPage = Math.max(
+                parseInt(page) || 1,
+                1
+            );
+
+            const pageLimit = Math.max(
+                parseInt(limit) || 10,
+                1
+            );
+
+            // ===========================================
+            // Date Filter
+            // ===========================================
+
+            const filter = {};
+
+            if (fromDate || toDate) {
+
+                filter.viewedAt = {};
+
+                if (fromDate) {
+
+                    filter.viewedAt.$gte =
+                        new Date(fromDate);
+
+                }
+
+                if (toDate) {
+
+                    const endDate =
+                        new Date(toDate);
+
+                    endDate.setHours(
+                        23,
+                        59,
+                        59,
+                        999
+                    );
+
+                    filter.viewedAt.$lte =
+                        endDate;
+
+                }
+
+            }
+
+            // ===========================================
+            // Get Unlock Records
+            // ===========================================
+
+            const reports = await ProfileView
+                .find(filter)
+                .populate(
+                    "viewerId",
+                    "username"
+                )
+                .populate(
+                    "viewedProfileId",
+                    `
+                    profileId
+                    fullName
+                    profilePhoto
+                    `
+                )
+                .sort({
+                    viewedAt: -1
+                });
+
+            // ===========================================
+            // Get Viewer Profiles
+            // ===========================================
+
+            const viewerIds = reports
+                .map(
+                    report =>
+                        report.viewerId?._id
+                )
+                .filter(Boolean);
+
+            const viewerProfiles =
+                await Profile.find({
+                    userId: {
+                        $in: viewerIds
+                    }
+                }).select(
+                    `
+                    userId
+                    profileId
+                    fullName
+                    profilePhoto
+                    `
+                );
+
+            // ===========================================
+            // Create Profile Map
+            // ===========================================
+
+            const viewerProfileMap = {};
+
+            viewerProfiles.forEach(profile => {
+
+                viewerProfileMap[
+                    profile.userId.toString()
+                ] = profile;
+
+            });
+
+            // ===========================================
+            // Format Data
+            // ===========================================
+
+            let formattedReports =
+                reports.map(report => {
+
+                    const viewerProfile =
+                        viewerProfileMap[
+                            report.viewerId?._id?.toString()
+                        ];
+
+                    return {
+
+                        _id: report._id,
+
+                        viewer: {
+
+                            profileId:
+                                viewerProfile?.profileId ||
+                                "N/A",
+
+                            fullName:
+                                viewerProfile?.fullName ||
+                                report.viewerId?.username ||
+                                "Unknown",
+
+                            profilePhoto:
+                                viewerProfile?.profilePhoto ||
+                                "",
+
+                        },
+
+                        viewedUser: {
+
+                            profileId:
+                                report.viewedProfileId?.profileId ||
+                                "N/A",
+
+                            fullName:
+                                report.viewedProfileId?.fullName ||
+                                "Unknown",
+
+                            profilePhoto:
+                                report.viewedProfileId?.profilePhoto ||
+                                "",
+
+                        },
+
+                        viewedAt:
+                            report.viewedAt,
+
+                    };
+
+                });
+
+
+            // ===========================================
+            // Search
+            // ===========================================
+
+            if (search.trim()) {
+
+                const searchTerm =
+                    search.toLowerCase();
+
+                formattedReports =
+                    formattedReports.filter(report =>
+
+                        report.viewer.fullName
+                            ?.toLowerCase()
+                            .includes(searchTerm)
+
+                        ||
+
+                        report.viewer.profileId
+                            ?.toLowerCase()
+                            .includes(searchTerm)
+
+                        ||
+
+                        report.viewedUser.fullName
+                            ?.toLowerCase()
+                            .includes(searchTerm)
+
+                        ||
+
+                        report.viewedUser.profileId
+                            ?.toLowerCase()
+                            .includes(searchTerm)
+
+                    );
+
+            }
+
+
+            // ===========================================
+            // Pagination
+            // ===========================================
+
+            const totalReports =
+                formattedReports.length;
+
+            const totalPages =
+                Math.max(
+                    Math.ceil(
+                        totalReports / pageLimit
+                    ),
+                    1
+                );
+
+            const skip =
+                (currentPage - 1) * pageLimit;
+
+            const paginatedReports =
+                formattedReports.slice(
+                    skip,
+                    skip + pageLimit
+                );
+
+
+            // ===========================================
+            // Success Response
+            // ===========================================
+
+            return res.status(200).json({
+
+                success: true,
+
+                reports:
+                    paginatedReports,
+
+                pagination: {
+                    currentPage,
+                    totalPages,
+                    totalReports,
+                    limit: pageLimit,
+                },
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Profile Unlock Report Error:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "Failed to fetch profile unlock report",
+                error:
+                    error.message,
+            });
+
+        }
+
+    }
+);
 
 
 // --- Server Start ---

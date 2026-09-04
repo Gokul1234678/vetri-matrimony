@@ -26,7 +26,7 @@ import CreateProfile from "../pages/admin/CreateProfile";
 import ManageProfiles from "../pages/admin/ManageProfiles";
 import ViewProfile from "../pages/admin/ViewProfile";
 import EditProfile from "../pages/admin/EditProfile";
-// import Reports from "../pages/admin/Reports";
+import Reports from "../pages/admin/Reports";
 
 function AppRoutes() {
 
@@ -124,7 +124,7 @@ function AppRoutes() {
 
             <Route path="/admin/profiles/edit/:id" element={<EditProfile />} />
 
-     {/*        <Route path="/admin/reports" element={<Reports />} /> */}
+            <Route path="/admin/reports" element={<Reports />} />
 
 
 

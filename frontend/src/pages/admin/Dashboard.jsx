@@ -6,7 +6,7 @@ import api from "../../services/api";
 
 import "../../assets/css/admin/dashboard.css";
 
-// import LoadingOverlay from "../../components/common/LoadingOverlay";
+import LoadingOverlay from "../../components/common/LoadingOverlay";
 
 
 import AdminLayout from "../../layouts/AdminLayout";
@@ -58,23 +58,14 @@ function Dashboard() {
     };
 
 
-    if (loading) {
-
-        return (
-
-            <AdminLayout>
-
-                <h3 className="text-center">Loading dashboard...</h3>
-
-            </AdminLayout>
-
-        );
-
-    }
     return (
 
         <AdminLayout>
 
+ <LoadingOverlay
+                show={loading}
+                message="Loading Dashboard..."
+            />
             {/* ==========================
                 Statistics Cards
             ========================== */}

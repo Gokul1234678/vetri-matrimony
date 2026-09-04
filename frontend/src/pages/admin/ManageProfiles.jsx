@@ -13,6 +13,8 @@ import ProfileList from "../../components/admin/ProfileList";
 // to used for adding credits to a profile
 import AddCreditModal from "../../components/admin/AddCreditModal";
 
+import DeleteProfileModal from "../../components/admin/DeleteProfileModal";
+
 function ManageProfiles() {
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -28,6 +30,8 @@ function ManageProfiles() {
     const [credits, setCredits] = useState("");
     const [creditLoading, setCreditLoading] = useState(false);
 
+    const [profileToDelete, setProfileToDelete] = useState(null);
+    const [deleting, setDeleting] = useState(false);
     // ============================
     // Get Profiles
     // ============================
@@ -183,6 +187,60 @@ function ManageProfiles() {
 
 
 
+    const handleDeleteClick = (profile) => {
+        setProfileToDelete(profile);
+    };
+
+
+    const handleDeleteConfirm = async () => {
+        if (!profileToDelete) return;
+
+        try {
+            setDeleting(true);
+
+            const response = await api.delete(
+                `/admin/profiles/${profileToDelete._id}`
+            );
+
+            if (!response.data.success) {
+                throw new Error(
+                    response.data.message ||
+                    "Failed to delete profile"
+                );
+            }
+
+            toast.success(
+                response.data.message ||
+                "Profile deleted successfully"
+            );
+
+            setProfileToDelete(null);
+
+            fetchProfiles(
+                search,
+                pagination.currentPage
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Delete Profile Error:",
+                error
+            );
+
+            toast.error(
+                error.response?.data?.message ||
+                error.message ||
+                "Failed to delete profile"
+            );
+
+        } finally {
+
+            setDeleting(false);
+
+        }
+    };
+
     // ============================
     // Load Profiles
     // ============================
@@ -239,6 +297,7 @@ function ManageProfiles() {
                             profiles={profiles}
                             pagination={pagination}
                             onAddCredit={handleCreditsClick}
+                            onDelete={handleDeleteClick}
                         />
 
                         <Pagination
@@ -246,7 +305,12 @@ function ManageProfiles() {
                             totalPages={pagination.totalPages}
                             onPageChange={handlePageChange}
                         />
-
+                        <DeleteProfileModal
+                            profile={profileToDelete}
+                            onClose={() => setProfileToDelete(null)}
+                            onConfirm={handleDeleteConfirm}
+                            deleting={deleting}
+                        />
 
                         {selectedProfile && (
                             <AddCreditModal
