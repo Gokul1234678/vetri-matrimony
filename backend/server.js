@@ -36,6 +36,7 @@ cloudinary.config({
 // );
 
 
+
 // Configure multer for file uploads. Here, we are using memory storage, which means the uploaded files will be stored in memory as Buffer objects. This is useful when you want to process the files (e.g., upload to Cloudinary) without saving them to disk.
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -57,10 +58,22 @@ const app = express();
 app.use(express.json());// Middleware to parse JSON request bodies
 
 // CORS configuration
+// app.use(
+//     cors({
+//         // origin: "http://localhost:5173", // your frontend URL
+//         origin: process.env.FRONTEND_URL, // your frontend URL
+//         credentials: true,
+//     })
+// );
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(
     cors({
-        // origin: "http://localhost:5173", // your frontend URL
-        origin: process.env.FRONTEND_URL, // your frontend URL
+        origin: allowedOrigins,
         credentials: true,
     })
 );
@@ -151,13 +164,13 @@ const profileSchema = new mongoose.Schema(
             type: String,
             required: true,
             // match: [/^[6-9]\d{9}$/, "Please enter a valid mobile number"],
-             match: [/^\d{10}$/, "Please enter a valid 10-digit mobile number"],
+            match: [/^\d{10}$/, "Please enter a valid 10-digit mobile number"],
         },
 
         whatsappNumber: {
             type: String,
             // match: [/^[6-9]\d{9}$/, "Please enter a valid WhatsApp number"],
-             match: [/^\d{10}$/, "Please enter a valid WhatsApp number"],
+            match: [/^\d{10}$/, "Please enter a valid WhatsApp number"],
         },
 
         // Personal Information
@@ -539,7 +552,7 @@ const isAdmin = (
 
 // ✅ UPLOAD PROFILE IMAGES TO CLOUDINARY(🛡️ADMIN Only)
 app.post("/admin/upload-images",
-    isAuthenticatedUser,isAdmin,upload.fields([
+    isAuthenticatedUser, isAdmin, upload.fields([
         {
             name: "profilePhoto",
             maxCount: 1,
@@ -837,16 +850,23 @@ app.post("/login", async (req, res) => {
             { expiresIn: process.env.JWT_EXPIRE } // expiry time
         );
 
-        // Store token in HTTP-only cookie
-        res.cookie("token", token, {
-            httpOnly: true,// Cookie cannot be accessed via JavaScript (XSS protection)
-            // secure: true,// Only send cookie over HTTPS only for production, in development you can set it to false or use environment variable to control it
-            secure: false,// it is only for development, in production you should set it to true to ensure cookies are only sent over secure HTTPS connections. You can use an environment variable to control this setting based on the environment (development or production).
-            // sameSite: "none",// Allow cross-site cookie (needed for frontend-backend on different domains)
-            sameSite: "lax",// it provides a balance between security and usability. It allows cookies to be sent with top-level navigations and will block them in third-party contexts, which helps protect against CSRF attacks while still allowing for common use cases.
-            maxAge: 7 * 24 * 60 * 60 * 1000//After 7 days → cookie automatically expires → user logged out.
-        });
+        // Store token in HTTP-only cookie (for development)
+        // res.cookie("token", token, {
+        //     httpOnly: true,// Cookie cannot be accessed via JavaScript (XSS protection)
+        //     // secure: true,// Only send cookie over HTTPS only for production, in development you can set it to false or use environment variable to control it
+        //     secure: false,// it is only for development, in production you should set it to true to ensure cookies are only sent over secure HTTPS connections. You can use an environment variable to control this setting based on the environment (development or production).
+        //     // sameSite: "none",// Allow cross-site cookie (needed for frontend-backend on different domains)
+        //     sameSite: "lax",// it provides a balance between security and usability. It allows cookies to be sent with top-level navigations and will block them in third-party contexts, which helps protect against CSRF attacks while still allowing for common use cases.
+        //     maxAge: 7 * 24 * 60 * 60 * 1000//After 7 days → cookie automatically expires → user logged out.
+        // });
 
+        // Store token in HTTP-only cookie (for production)
+       res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
         // Send response
         res.status(200).json({
             success: true,
@@ -884,7 +904,7 @@ app.post("/logout", (req, res) => {
 // ✅ CURRENT LOGGED IN USER
 // ===========================================
 app.get("/me", isAuthenticatedUser, async (req, res) => {
-// this API is to get the currently logged-in user's information along with their profile credits. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it retrieves the user's information from the database and also fetches their profile credits from the Profile collection. The response includes the user's details along with their credits and totalCredits. If any error occurs during this process, it returns a 500 Internal Server Error response.
+    // this API is to get the currently logged-in user's information along with their profile credits. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it retrieves the user's information from the database and also fetches their profile credits from the Profile collection. The response includes the user's details along with their credits and totalCredits. If any error occurs during this process, it returns a 500 Internal Server Error response.
     try {
 
         const profile = await Profile.findOne({
@@ -929,9 +949,9 @@ app.get("/me", isAuthenticatedUser, async (req, res) => {
 
 
 // ✅ GET ADMIN DASHBOARD API (🛡️ADMIN Only)
-app.get("/admin/dashboard",isAuthenticatedUser,isAdmin,
+app.get("/admin/dashboard", isAuthenticatedUser, isAdmin,
     async (req, res) => {
-// this API is to get the admin dashboard statistics. It uses the isAuthenticatedUser and isAdmin middleware to ensure that only authenticated admin users can access this endpoint. The API retrieves various statistics from the Profile collection, including the total number of profiles, the number of male and
+        // this API is to get the admin dashboard statistics. It uses the isAuthenticatedUser and isAdmin middleware to ensure that only authenticated admin users can access this endpoint. The API retrieves various statistics from the Profile collection, including the total number of profiles, the number of male and
 
 
         const totalProfiles = await Profile.countDocuments();
@@ -1215,7 +1235,7 @@ app.post("/admin/profiles", isAuthenticatedUser,
             });
 
         }
-        
+
         catch (error) {
             // Rollback user creation
             if (user) {
@@ -1413,16 +1433,16 @@ app.get("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
 
 // ✅ UPDATE PROFILE API (🛡️ADMIN Only)
 app.put("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) => {
-// this API is to update a profile by its ID. It uses the isAuthenticatedUser and isAdmin
-//  middleware to ensure that only authenticated admin users can access this endpoint.
-//  The profile ID is obtained from the URL parameters, and 
-// the updated data is obtained from the request body. 
-// The API validates the profile ID, checks if the profile 
-// and associated user exist, and updates the profile and 
-// user information accordingly. If successful, it returns 
-// a success response with the updated profile information;
-//  otherwise, it returns appropriate error messages for 
-// invalid input or internal server errors.
+    // this API is to update a profile by its ID. It uses the isAuthenticatedUser and isAdmin
+    //  middleware to ensure that only authenticated admin users can access this endpoint.
+    //  The profile ID is obtained from the URL parameters, and 
+    // the updated data is obtained from the request body. 
+    // The API validates the profile ID, checks if the profile 
+    // and associated user exist, and updates the profile and 
+    // user information accordingly. If successful, it returns 
+    // a success response with the updated profile information;
+    //  otherwise, it returns appropriate error messages for 
+    // invalid input or internal server errors.
     try {
 
         // ===========================================
@@ -2227,8 +2247,6 @@ app.delete("/admin/profiles/:id", isAuthenticatedUser, isAdmin,
 
     }
 );
-
-
 
 
 // ✅ GET PUBLIC PROFILES API 
@@ -3063,127 +3081,128 @@ app.post("/profiles/:id/unlock", isAuthenticatedUser, async (req, res) => {
 
 
 // ===========================================
-// ✅ GET SINGLE PROFILE (FULL DETAILS) after unlock profile using credits (LOGGED-IN USER)
+//  GET SINGLE PROFILE (FULL DETAILS) after unlock profile using credits (LOGGED-IN USER)
 // ===========================================
-app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
-    // this API is to get the full details of a single profile for a logged-in user. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. 
-    // The API retrieves the profile using the provided ID, checks if the logged-in user is viewing their own profile or if they have unlocked the profile, and returns the full profile details accordingly. If successful, it returns a success response with the profile information; otherwise, it returns appropriate error messages for invalid input or unauthorized access.
-    try {
+// it is duplicate of the above API, so we can remove it.
+// app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
+//     // this API is to get the full details of a single profile for a logged-in user. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. 
+//     // The API retrieves the profile using the provided ID, checks if the logged-in user is viewing their own profile or if they have unlocked the profile, and returns the full profile details accordingly. If successful, it returns a success response with the profile information; otherwise, it returns appropriate error messages for invalid input or unauthorized access.
+//     try {
 
-        // ===========================================
-        // Get Profile ID
-        // ===========================================
-        const { id } = req.params;
+//         // ===========================================
+//         // Get Profile ID
+//         // ===========================================
+//         const { id } = req.params;
 
-        // ===========================================
-        // Validate MongoDB ObjectId
-        // ===========================================
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+//         // ===========================================
+//         // Validate MongoDB ObjectId
+//         // ===========================================
+//         if (!mongoose.Types.ObjectId.isValid(id)) {
 
-            return res.status(400).json({
+//             return res.status(400).json({
 
-                success: false,
+//                 success: false,
 
-                message: "Invalid profile id"
+//                 message: "Invalid profile id"
 
-            });
+//             });
 
-        }
+//         }
 
-        // Find Profile
-        // why select("-__v")? because we don't want to return the __v field in the response. The __v field is a version key that is automatically added by Mongoose to track document revisions. It is not needed in the API response, so we exclude it using select("-__v").
-        const profile = await Profile.findById(id).select("-__v");
+//         // Find Profile
+//         // why select("-__v")? because we don't want to return the __v field in the response. The __v field is a version key that is automatically added by Mongoose to track document revisions. It is not needed in the API response, so we exclude it using select("-__v").
+//         const profile = await Profile.findById(id).select("-__v");
 
-        if (!profile) {
+//         if (!profile) {
 
-            return res.status(404).json({
+//             return res.status(404).json({
 
-                success: false,
+//                 success: false,
 
-                message: "Profile not found"
+//                 message: "Profile not found"
 
-            });
+//             });
 
-        }
+//         }
 
-        // ===========================================
-        // If User Is Viewing Own Profile
-        // Allow Direct Access
-        // ===========================================
-        if (
+//         // ===========================================
+//         // If User Is Viewing Own Profile
+//         // Allow Direct Access
+//         // ===========================================
+//         if (
 
-            profile.userId.toString() ===
-            req.user._id.toString()
+//             profile.userId.toString() ===
+//             req.user._id.toString()
 
-        ) {
+//         ) {
 
-            return res.status(200).json({
+//             return res.status(200).json({
 
-                success: true,
+//                 success: true,
 
-                profile
+//                 profile
 
-            });
+//             });
 
-        }
+//         }
 
-        // ===========================================
-        // Check Whether Profile Is Unlocked
-        // ===========================================
-        const unlocked = await ProfileView.findOne({
+//         // ===========================================
+//         // Check Whether Profile Is Unlocked
+//         // ===========================================
+//         const unlocked = await ProfileView.findOne({
 
-            viewerId: req.user._id,
+//             viewerId: req.user._id,
 
-            viewedProfileId: profile._id
+//             viewedProfileId: profile._id
 
-        });
+//         });
 
-        // ===========================================
-        // Not Unlocked
-        // ===========================================
-        if (!unlocked) {
+//         // ===========================================
+//         // Not Unlocked
+//         // ===========================================
+//         if (!unlocked) {
 
-            return res.status(403).json({
+//             return res.status(403).json({
 
-                success: false,
+//                 success: false,
 
-                message: "Please unlock this profile first."
+//                 message: "Please unlock this profile first."
 
-            });
+//             });
 
-        }
+//         }
 
-        // ===========================================
-        // Return Full Profile
-        // ===========================================
-        return res.status(200).json({
+//         // ===========================================
+//         // Return Full Profile
+//         // ===========================================
+//         return res.status(200).json({
 
-            success: true,
+//             success: true,
 
-            profile
+//             profile
 
-        });
+//         });
 
-    }
+//     }
 
-    catch (error) {
+//     catch (error) {
 
-        console.error(error);
+//         console.error(error);
 
-        return res.status(500).json({
+//         return res.status(500).json({
 
-            success: false,
+//             success: false,
 
-            message: "Failed to fetch profile",
+//             message: "Failed to fetch profile",
 
-            error: error.message
+//             error: error.message
 
-        });
+//         });
 
-    }
+//     }
 
-}
-);
+// }
+// );
 
 
 // ===========================================
@@ -3263,8 +3282,8 @@ app.get("/user/profile", isAuthenticatedUser, async (req, res) => {
 // ===========================================
 // ✅ GET MY UNLOCKED PROFILES API
 // ===========================================
-app.get("/api/user/unlocked-profiles",isAuthenticatedUser, async (req, res) => {
-// this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
+app.get("/api/user/unlocked-profiles", isAuthenticatedUser, async (req, res) => {
+    // this API is to get all profiles that a logged-in user has unlocked. It uses the isAuthenticatedUser middleware to ensure that only authenticated users can access this endpoint. The API retrieves the unlocked profiles from the ProfileView collection, filters out any deleted or inactive profiles, and returns them in a paginated format along with pagination metadata such as current page, total pages, total profiles, and limit. The API accepts query parameters for pagination (page and limit) and returns the full details of each unlocked profile.
     try {
 
         const userId = req.user.id;
@@ -3666,7 +3685,7 @@ app.get(
 
                     const viewerProfile =
                         viewerProfileMap[
-                            report.viewerId?._id?.toString()
+                        report.viewerId?._id?.toString()
                         ];
 
                     return {
@@ -3821,8 +3840,9 @@ app.get(
 
 // --- Server Start ---
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT} `)
+
+const server = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
 
 
