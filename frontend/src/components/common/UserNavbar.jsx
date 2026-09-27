@@ -38,11 +38,7 @@ const USER_NAV_LINKS = [
 function UserNavbar() {
 
     const {
-
-        user,
-
-        logout
-
+     user,logout
     } = useAuth();
 
     const [menuOpen, setMenuOpen] = useState(false);

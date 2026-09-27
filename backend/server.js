@@ -887,10 +887,31 @@ app.post("/login", async (req, res) => {
 // ===========================================
 // ✅ LOGOUT API
 // ===========================================
+// app.post("/logout", (req, res) => {
+
+//     // Clear authentication cookie
+//     res.clearCookie("token");
+
+//     res.status(200).json({
+//         success: true,
+//         message: "Logged out successfully",
+//     });
+
+// });
+
+// ===========================================
+// ✅ LOGOUT API
+// ===========================================
 app.post("/logout", (req, res) => {
 
-    // Clear authentication cookie
-    res.clearCookie("token");
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production"
+            ? "none"
+            : "lax",
+        path: "/"
+    });
 
     res.status(200).json({
         success: true,
