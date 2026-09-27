@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import PageLoader from "../../components/common/PageLoader";
 
-import "../../assets/css/user/MyProfile.css";
+import "../../assets/css/user/myProfile.css";
 
 
 import UserNavbar from "../../components/common/UserNavbar";
