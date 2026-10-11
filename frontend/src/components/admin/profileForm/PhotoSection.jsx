@@ -6,7 +6,6 @@ function PhotoSection({
     handleImageChange,
     removeImage,
 }) {
-    // Get image source for existing URL or newly selected File
     const getImageSrc = (image) => {
         if (!image) {
             return "";
@@ -24,21 +23,15 @@ function PhotoSection({
     };
 
     return (
-        <SectionCard
-            title="Profile Photos"
-        >
+        <SectionCard title="Profile Photos">
             <div className="photo-section">
-
-                {/* Main Profile Photo */}
                 <div className="main-photo">
-
                     <label className="photo-label">
                         Profile Photo{" "}
                         <span className="required-star">*</span>
                     </label>
 
                     <label className="upload-card">
-
                         <input
                             type="file"
                             name="profilePhoto"
@@ -49,25 +42,16 @@ function PhotoSection({
 
                         {formData.profilePhoto ? (
                             <img
-                                src={getImageSrc(
-                                    formData.profilePhoto
-                                )}
+                                src={getImageSrc(formData.profilePhoto)}
                                 alt="Profile"
                             />
                         ) : (
                             <>
                                 <i className="bi bi-cloud-arrow-up-fill"></i>
-
-                                <h5>
-                                    Click to Upload
-                                </h5>
-
-                                <p>
-                                    JPG, PNG (Max 2MB)
-                                </p>
+                                <h5>Click to Upload</h5>
+                                <p>JPG, PNG (Max 2MB)</p>
                             </>
                         )}
-
                     </label>
 
                     {errors.profilePhoto && (
@@ -80,39 +64,23 @@ function PhotoSection({
                         <button
                             type="button"
                             className="remove-photo-btn"
-                            onClick={() =>
-                                removeImage("profilePhoto")
-                            }
+                            onClick={() => removeImage("profilePhoto")}
                         >
                             Remove
                         </button>
                     )}
-
                 </div>
 
-
-                {/* Additional Photos */}
                 <div className="additional-photo-section">
-
                     <div className="photo-header">
-
-                        <label>
-                            Additional Photos
-                        </label>
-
+                        <label>Additional Photos</label>
                         <span>
-                            {formData.additionalPhotos.length}/5
+                            {formData.additionalPhotos.length}/4
                         </span>
-
                     </div>
 
-
                     <div className="additional-grid">
-
-                        {Array.from({
-                            length: 5
-                        }).map((_, index) => {
-
+                        {Array.from({ length: 4 }).map((_, index) => {
                             const image =
                                 formData.additionalPhotos[index];
 
@@ -121,10 +89,8 @@ function PhotoSection({
                                     className="photo-slot"
                                     key={index}
                                 >
-
                                     {image ? (
                                         <>
-
                                             <img
                                                 src={getImageSrc(image)}
                                                 alt={`Additional ${index + 1}`}
@@ -142,11 +108,9 @@ function PhotoSection({
                                             >
                                                 <i className="bi bi-x-lg"></i>
                                             </button>
-
                                         </>
                                     ) : (
                                         <label className="slot-upload">
-
                                             <input
                                                 hidden
                                                 type="file"
@@ -158,28 +122,20 @@ function PhotoSection({
 
                                             <i className="bi bi-plus-lg"></i>
 
-                                            <span>
-                                                Add
-                                            </span>
-
+                                            <span>Add</span>
                                         </label>
                                     )}
-
                                 </div>
                             );
                         })}
-
                     </div>
-
 
                     {errors.additionalPhotos && (
                         <small className="text-danger">
                             {errors.additionalPhotos}
                         </small>
                     )}
-
                 </div>
-
             </div>
         </SectionCard>
     );

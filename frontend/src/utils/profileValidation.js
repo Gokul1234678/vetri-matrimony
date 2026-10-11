@@ -1,12 +1,8 @@
-
 // Validation function for creating a profile
 export const validateProfileForm = (formData) => {
     const errors = {};
 
-    // =========================
     // Login Account
-    // =========================
-
     if (!formData.username?.trim()) {
         errors.username = "Username is required";
     }
@@ -17,10 +13,7 @@ export const validateProfileForm = (formData) => {
         errors.password = "Password must be at least 6 characters";
     }
 
-    // =========================
     // Basic Information
-    // =========================
-
     if (!formData.fullName?.trim()) {
         errors.fullName = "Full name is required";
     }
@@ -56,10 +49,7 @@ export const validateProfileForm = (formData) => {
         errors.status = "Profile status is required";
     }
 
-    // =========================
     // Personal Information
-    // =========================
-
     if (!formData.maritalStatus) {
         errors.maritalStatus = "Marital status is required";
     }
@@ -82,10 +72,7 @@ export const validateProfileForm = (formData) => {
         }
     }
 
-    // =========================
     // Location Information
-    // =========================
-
     if (!formData.address?.trim()) {
         errors.address = "Address is required";
     }
@@ -98,79 +85,92 @@ export const validateProfileForm = (formData) => {
         errors.state = "State is required";
     }
 
-    // Country has a default value, but still check it.
     if (!formData.country?.trim()) {
         errors.country = "Country is required";
     }
 
-    // =========================
     // Education & Career
-    // =========================
-
-    // These are optional in the schema.
-    // Validate only when the admin provides them.
-
     if (formData.annualIncome?.trim()) {
-        if (Number(formData.annualIncome.replace(/,/g, "").replace(/[₹$]/g, "")) < 0) {
+        const income = Number(
+            formData.annualIncome
+                .replace(/,/g, "")
+                .replace(/[₹$]/g, "")
+        );
+
+        if (income < 0) {
             errors.annualIncome = "Annual income cannot be negative";
         }
     }
 
-    // =========================
     // Family Information
-    // =========================
+    const siblings = formData.siblings || {};
 
-    if (formData.brothers !== "" && Number(formData.brothers) < 0) {
-        errors.brothers = "Brothers cannot be negative";
-    }
+    const siblingTypes = ["eb", "yb", "es", "ys"];
 
-    if (formData.sisters !== "" && Number(formData.sisters) < 0) {
-        errors.sisters = "Sisters cannot be negative";
-    }
+    siblingTypes.forEach((type) => {
+        const total = siblings[type]?.total;
+        const married = siblings[type]?.married;
 
-    // =========================
+        if (total !== "" && total !== undefined && Number(total) < 0) {
+            errors.siblings = {
+                ...errors.siblings,
+                [type]: {
+                    ...errors.siblings?.[type],
+                    total: "Total cannot be negative"
+                }
+            };
+        }
+
+        if (married !== "" && married !== undefined && Number(married) < 0) {
+            errors.siblings = {
+                ...errors.siblings,
+                [type]: {
+                    ...errors.siblings?.[type],
+                    married: "Married count cannot be negative"
+                }
+            };
+        }
+
+        if (
+            total !== "" &&
+            total !== undefined &&
+            married !== "" &&
+            married !== undefined &&
+            Number(married) > Number(total)
+        ) {
+            errors.siblings = {
+                ...errors.siblings,
+                [type]: {
+                    ...errors.siblings?.[type],
+                    married: "Married count cannot exceed total"
+                }
+            };
+        }
+    });
+
     // About Me
-    // =========================
-
     if (formData.aboutMe?.length > 1000) {
-        errors.aboutMe =
-            "About Me cannot exceed 1000 characters";
+        errors.aboutMe = "About Me cannot exceed 1000 characters";
     }
 
-    // =========================
     // Partner Expectations
-    // =========================
-
     const partner = formData.partnerExpectations || {};
 
     if (partner.preferredAge?.trim()) {
         // No strict format because schema stores this as String.
-        // Examples: "21 - 28", "25+", etc.
     }
 
-    // preferredEducation
-    // preferredLocation
-    // preferredReligion
-    // preferredCaste
-    // are optional strings according to the schema.
-
-    // =========================
     // Profile Photos
-    // =========================
-
     if (!formData.profilePhoto) {
         errors.profilePhoto = "Profile photo is required";
     }
 
-    if (formData.additionalPhotos.length > 5) {
+    if (formData.additionalPhotos?.length > 4) {
         errors.additionalPhotos =
-            "You can upload a maximum of 5 additional photos";
+            "You can upload a maximum of 4 additional photos";
     }
 
-    // =========================
     // Credits
-    // =========================
-
     if (
         formData.credits === "" ||
         formData.credits === null ||
@@ -184,39 +184,23 @@ export const validateProfileForm = (formData) => {
     return errors;
 };
 
-
-
-
-
-
-
-
 // Validation function for editing a profile
-
 export const validateEditProfileForm = (formData) => {
     const errors = {};
 
-    // =========================
     // Login Account
-    // =========================
-
     if (!formData.username?.trim()) {
         errors.username = "Username is required";
     }
 
-    // Password is OPTIONAL during edit.
-    // Only validate if a new password is entered.
+    // Password is optional during edit.
     if (formData.password?.trim()) {
         if (formData.password.trim().length < 6) {
-            errors.password =
-                "Password must be at least 6 characters";
+            errors.password = "Password must be at least 6 characters";
         }
     }
 
-    // =========================
     // Basic Information
-    // =========================
-
     if (!formData.fullName?.trim()) {
         errors.fullName = "Full name is required";
     }
@@ -253,13 +237,9 @@ export const validateEditProfileForm = (formData) => {
         errors.status = "Profile status is required";
     }
 
-    // =========================
     // Personal Information
-    // =========================
-
     if (!formData.maritalStatus) {
-        errors.maritalStatus =
-            "Marital status is required";
+        errors.maritalStatus = "Marital status is required";
     }
 
     if (!formData.religion?.trim()) {
@@ -271,21 +251,16 @@ export const validateEditProfileForm = (formData) => {
     }
 
     if (!formData.motherTongue?.trim()) {
-        errors.motherTongue =
-            "Mother tongue is required";
+        errors.motherTongue = "Mother tongue is required";
     }
 
     if (formData.weight !== "") {
         if (Number(formData.weight) <= 0) {
-            errors.weight =
-                "Weight must be greater than 0";
+            errors.weight = "Weight must be greater than 0";
         }
     }
 
-    // =========================
     // Location Information
-    // =========================
-
     if (!formData.address?.trim()) {
         errors.address = "Address is required";
     }
@@ -302,70 +277,81 @@ export const validateEditProfileForm = (formData) => {
         errors.country = "Country is required";
     }
 
-    // =========================
     // Education & Career
-    // =========================
-
     if (formData.annualIncome?.trim()) {
-        if (
-            Number(
-                formData.annualIncome
-                    .replace(/,/g, "")
-                    .replace(/[₹$]/g, "")
-            ) < 0
-        ) {
-            errors.annualIncome =
-                "Annual income cannot be negative";
+        const income = Number(
+            formData.annualIncome
+                .replace(/,/g, "")
+                .replace(/[₹$]/g, "")
+        );
+
+        if (income < 0) {
+            errors.annualIncome = "Annual income cannot be negative";
         }
     }
 
-    // =========================
     // Family Information
-    // =========================
+    const siblings = formData.siblings || {};
 
-    if (
-        formData.brothers !== "" &&
-        Number(formData.brothers) < 0
-    ) {
-        errors.brothers =
-            "Brothers cannot be negative";
-    }
+    const siblingTypes = ["eb", "yb", "es", "ys"];
 
-    if (
-        formData.sisters !== "" &&
-        Number(formData.sisters) < 0
-    ) {
-        errors.sisters =
-            "Sisters cannot be negative";
-    }
+    siblingTypes.forEach((type) => {
+        const total = siblings[type]?.total;
+        const married = siblings[type]?.married;
 
-    // =========================
+        if (total !== "" && total !== undefined && Number(total) < 0) {
+            errors.siblings = {
+                ...errors.siblings,
+                [type]: {
+                    ...errors.siblings?.[type],
+                    total: "Total cannot be negative"
+                }
+            };
+        }
+
+        if (married !== "" && married !== undefined && Number(married) < 0) {
+            errors.siblings = {
+                ...errors.siblings,
+                [type]: {
+                    ...errors.siblings?.[type],
+                    married: "Married count cannot be negative"
+                }
+            };
+        }
+
+        if (
+            total !== "" &&
+            total !== undefined &&
+            married !== "" &&
+            married !== undefined &&
+            Number(married) > Number(total)
+        ) {
+            errors.siblings = {
+                ...errors.siblings,
+                [type]: {
+                    ...errors.siblings?.[type],
+                    married: "Married count cannot exceed total"
+                }
+            };
+        }
+    });
+
     // About Me
-    // =========================
-
     if (formData.aboutMe?.length > 1000) {
-        errors.aboutMe =
-            "About Me cannot exceed 1000 characters";
+        errors.aboutMe = "About Me cannot exceed 1000 characters";
     }
 
-    // =========================
     // Profile Photos
-    // =========================
-
     if (!formData.profilePhoto) {
-        errors.profilePhoto =
-            "Profile photo is required";
+        errors.profilePhoto = "Profile photo is required";
     }
 
-    if (formData.additionalPhotos.length > 5) {
+    if (formData.additionalPhotos?.length > 4) {
         errors.additionalPhotos =
-            "You can upload a maximum of 5 additional photos";
+            "You can upload a maximum of 4 additional photos";
     }
 
-    // =========================
     // Credits
-    // =========================
-
     if (
         formData.credits === "" ||
         formData.credits === null ||
@@ -373,8 +359,7 @@ export const validateEditProfileForm = (formData) => {
     ) {
         errors.credits = "Credits are required";
     } else if (Number(formData.credits) < 0) {
-        errors.credits =
-            "Credits cannot be negative";
+        errors.credits = "Credits cannot be negative";
     }
 
     return errors;

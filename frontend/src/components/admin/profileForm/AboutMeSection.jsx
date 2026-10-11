@@ -19,7 +19,7 @@ function AboutMeSection({
                 onChange={handleChange}
                 rows={6}               
                 error={errors.aboutMe}
-                placeholder="Write a short description about the profile..."
+                placeholder="Write a brief description about yourself (up to 1,000 characters)"
             />
         </SectionCard>
     );

@@ -6,6 +6,12 @@ function FamilyInformation({
     errors,
     handleChange,
 }) {
+    const getUnmarried = (type) => {
+        const total = Number(formData.siblings?.[type]?.total || 0);
+        const married = Number(formData.siblings?.[type]?.married || 0);
+        return Math.max(0, total - married);
+    };
+
     return (
         <SectionCard
             number="5"
@@ -13,7 +19,6 @@ function FamilyInformation({
             icon="bi-people"
         >
             <div className="form-grid">
-
                 {/* Father's Name */}
                 <InputField
                     label="Father's Name"
@@ -23,7 +28,6 @@ function FamilyInformation({
                     error={errors.fatherName}
                     placeholder="Example: Selvan"
                 />
-
 
                 {/* Father's Occupation */}
                 <InputField
@@ -48,7 +52,6 @@ function FamilyInformation({
                     <option value="Not Working" />
                 </datalist>
 
-
                 {/* Mother's Name */}
                 <InputField
                     label="Mother's Name"
@@ -58,7 +61,6 @@ function FamilyInformation({
                     error={errors.motherName}
                     placeholder="Example: Lakshmi"
                 />
-
 
                 {/* Mother's Occupation */}
                 <InputField
@@ -83,32 +85,125 @@ function FamilyInformation({
                     <option value="Not Working" />
                 </datalist>
 
-
-                {/* Brothers */}
+                {/* Elder Brothers */}
                 <InputField
-                    label="Brothers"
+                    label="Elder Brothers - Total"
                     type="number"
-                    name="brothers"
-                    value={formData.brothers}
+                    name="siblings.eb.total"
+                    value={formData.siblings?.eb?.total || ""}
                     onChange={handleChange}
-                    error={errors.brothers}
-                    placeholder="Example: 1"
-                    min="0"
-                />
-
-
-                {/* Sisters */}
-                <InputField
-                    label="Sisters"
-                    type="number"
-                    name="sisters"
-                    value={formData.sisters}
-                    onChange={handleChange}
-                    error={errors.sisters}
+                    error={errors.siblings?.eb?.total}
                     placeholder="Example: 2"
                     min="0"
                 />
 
+                <InputField
+                    label="Elder Brothers - Married"
+                    type="number"
+                    name="siblings.eb.married"
+                    value={formData.siblings?.eb?.married || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.eb?.married}
+                    placeholder="Example: 1"
+                    min="0"
+                />
+
+                <InputField
+                    label="Elder Brothers - Unmarried"
+                    type="number"
+                    value={getUnmarried("eb")}
+                    readOnly
+                />
+
+                {/* Younger Brothers */}
+                <InputField
+                    label="Younger Brothers - Total"
+                    type="number"
+                    name="siblings.yb.total"
+                    value={formData.siblings?.yb?.total || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.yb?.total}
+                    placeholder="Example: 1"
+                    min="0"
+                />
+
+                <InputField
+                    label="Younger Brothers - Married"
+                    type="number"
+                    name="siblings.yb.married"
+                    value={formData.siblings?.yb?.married || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.yb?.married}
+                    placeholder="Example: 0"
+                    min="0"
+                />
+
+                <InputField
+                    label="Younger Brothers - Unmarried"
+                    type="number"
+                    value={getUnmarried("yb")}
+                    readOnly
+                />
+
+                {/* Elder Sisters */}
+                <InputField
+                    label="Elder Sisters - Total"
+                    type="number"
+                    name="siblings.es.total"
+                    value={formData.siblings?.es?.total || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.es?.total}
+                    placeholder="Example: 1"
+                    min="0"
+                />
+
+                <InputField
+                    label="Elder Sisters - Married"
+                    type="number"
+                    name="siblings.es.married"
+                    value={formData.siblings?.es?.married || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.es?.married}
+                    placeholder="Example: 1"
+                    min="0"
+                />
+
+                <InputField
+                    label="Elder Sisters - Unmarried"
+                    type="number"
+                    value={getUnmarried("es")}
+                    readOnly
+                />
+
+                {/* Younger Sisters */}
+                <InputField
+                    label="Younger Sisters - Total"
+                    type="number"
+                    name="siblings.ys.total"
+                    value={formData.siblings?.ys?.total || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.ys?.total}
+                    placeholder="Example: 2"
+                    min="0"
+                />
+
+                <InputField
+                    label="Younger Sisters - Married"
+                    type="number"
+                    name="siblings.ys.married"
+                    value={formData.siblings?.ys?.married || ""}
+                    onChange={handleChange}
+                    error={errors.siblings?.ys?.married}
+                    placeholder="Example: 1"
+                    min="0"
+                />
+
+                <InputField
+                    label="Younger Sisters - Unmarried"
+                    type="number"
+                    value={getUnmarried("ys")}
+                    readOnly
+                />
             </div>
         </SectionCard>
     );

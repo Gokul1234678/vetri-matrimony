@@ -61,8 +61,8 @@ function PersonalInformation({
                     error={errors.maritalStatus}
                     options={[
                         {
-                            value: "Never Married",
-                            label: "Never Married",
+                            value: "Single",
+                            label: "Single",
                         },
                         {
                             value: "Divorced",

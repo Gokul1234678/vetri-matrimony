@@ -14,7 +14,6 @@ function BasicInformation({
             icon="bi-person"
         >
             <div className="form-grid">
-
                 {/* Profile ID */}
                 <InputField
                     label="Profile ID"
@@ -22,7 +21,6 @@ function BasicInformation({
                     readOnly
                     placeholder="Auto Generated"
                 />
-
 
                 {/* Gender */}
                 <SelectField
@@ -44,7 +42,6 @@ function BasicInformation({
                     ]}
                 />
 
-
                 {/* Full Name */}
                 <InputField
                     label="Full Name"
@@ -55,7 +52,6 @@ function BasicInformation({
                     error={errors.fullName}
                     placeholder="Example: Gokul Selvan"
                 />
-
 
                 {/* Date of Birth */}
                 <InputField
@@ -68,21 +64,16 @@ function BasicInformation({
                     error={errors.dateOfBirth}
                 />
 
-
-                {/* Age */}
+                {/* Age - Automatically Calculated */}
                 <InputField
                     label="Age"
                     type="number"
                     name="age"
                     value={formData.age}
-                    onChange={handleChange}
-                    required
+                    readOnly
                     error={errors.age}
-                    placeholder="Example: 25"
-                    min="18"
-                    max="100"
+                    placeholder="Automatically calculated"
                 />
-
 
                 {/* Mobile Number */}
                 <InputField
@@ -98,7 +89,6 @@ function BasicInformation({
                     inputMode="numeric"
                 />
 
-
                 {/* WhatsApp Number */}
                 <InputField
                     label="WhatsApp Number"
@@ -111,7 +101,6 @@ function BasicInformation({
                     maxLength="10"
                     inputMode="numeric"
                 />
-
 
                 {/* Profile Status */}
                 <SelectField
@@ -132,7 +121,6 @@ function BasicInformation({
                         },
                     ]}
                 />
-
             </div>
         </SectionCard>
     );

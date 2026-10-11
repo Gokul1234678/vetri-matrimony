@@ -128,64 +128,55 @@ const profileSchema = new mongoose.Schema(
             unique: true,
             trim: true,
         },
-
         // Link to login user account
         userId: {// what this means is that each profile is associated with a specific user in the User collection. The userId field stores the ObjectId of the corresponding user document, creating a reference between the two collections.
             type: mongoose.Schema.Types.ObjectId,// in simple terms, it is a unique identifier for a specific user in the User collection. It allows you to establish a relationship between the Profile and User collections, enabling you to retrieve user information associated with a particular profile.
             ref: "User",
             required: true,
         },
-
         // Basic Information
         fullName: {
             type: String,
             required: true,
             trim: true,
         },
-
         gender: {
             type: String,
             enum: ["male", "female", "Male", "Female"],
             required: true,
         },
-
         dateOfBirth: {
             type: Date,
             required: true,
         },
-
         age: {
             type: Number,
             required: true,
             min: 18,
         },
-
         mobileNumber: {
             type: String,
             required: true,
             // match: [/^[6-9]\d{9}$/, "Please enter a valid mobile number"],
             match: [/^\d{10}$/, "Please enter a valid 10-digit mobile number"],
         },
-
         whatsappNumber: {
             type: String,
             // match: [/^[6-9]\d{9}$/, "Please enter a valid WhatsApp number"],
             match: [/^\d{10}$/, "Please enter a valid WhatsApp number"],
         },
-
         // Personal Information
         height: {
             type: String,
             // required: true,
         },
-
         weight: {
             type: String,
         },
 
         maritalStatus: {
             type: String,
-            enum: ["Never Married", "Divorced", "Widowed"],
+            enum: ["Single", "Divorced", "Widowed"],
             required: true,
         },
 
@@ -277,18 +268,20 @@ const profileSchema = new mongoose.Schema(
             trim: true,
         },
 
-        brothers: {
-            type: Number,
-            default: 0,
-            min: 0,
+        siblings: {
+            eb: {//elder brother
+                total: { type: Number, default: 0, min: 0 },
+                married: { type: Number, default: 0, min: 0 }},
+            yb: {// younger brother
+                total: { type: Number, default: 0, min: 0 },
+                married: { type: Number, default: 0, min: 0 }},
+            es: { // elder sister
+                total: { type: Number, default: 0, min: 0 },
+                married: { type: Number, default: 0, min: 0 }},
+            ys: { // younger sister
+                total: { type: Number, default: 0, min: 0 },
+                married: { type: Number, default: 0, min: 0 }}
         },
-
-        sisters: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-
         // Lifestyle Information
         eatingHabit: {
             type: String,
@@ -377,9 +370,7 @@ const profileSchema = new mongoose.Schema(
             default: "active",
         },
     },
-    {
-        timestamps: true,
-    }
+    {timestamps: true,}
 );
 
 // Create Model
@@ -390,9 +381,7 @@ const Profile = mongoose.model("Profile", profileSchema);
 // PROFILE VIEW SCHEMA
 // ===========================================
 const profileViewSchema = new mongoose.Schema(
-
     {
-
         // Logged-in user who viewed the profile
         viewerId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -402,28 +391,18 @@ const profileViewSchema = new mongoose.Schema(
 
         // Profile that was viewed
         viewedProfileId: {
-
             type: mongoose.Schema.Types.ObjectId,
-
             ref: "Profile",
-
             required: true,
-
         },
-
         // Date & Time of unlock/view
         viewedAt: {
-
             type: Date,
-
             default: Date.now,
-
         },
 
     },
-    {
-        timestamps: true,
-    }
+    {timestamps: true,}
 );
 
 // ===========================================
@@ -447,11 +426,6 @@ const ProfileView = mongoose.model(
     "ProfileView",
     profileViewSchema
 );
-
-
-
-
-
 
 
 
@@ -545,7 +519,6 @@ const isAdmin = (
     next();
 
 };
-
 
 
 
@@ -740,13 +713,9 @@ app.post("/admin/upload-images",
     }
 );
 
-
-
-
 // app.get("/", (req, res) => {
 //     res.send("Vetri Matrimony API Running...");
 // });
-
 
 // ✅CREATE DEFAULT ADMIN (RUN ONLY ONCE)
 //  Do not delete
@@ -798,8 +767,6 @@ app.post("/admin/upload-images",
 //         });
 //     }
 // });
-
-
 
 // ✅ LOGIN API (Admin + User)
 app.post("/login", async (req, res) => {
@@ -861,7 +828,7 @@ app.post("/login", async (req, res) => {
         // });
 
         // Store token in HTTP-only cookie (for production)
-       res.cookie("token", token, {
+        res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
@@ -884,26 +851,8 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// ===========================================
 // ✅ LOGOUT API
-// ===========================================
-// app.post("/logout", (req, res) => {
-
-//     // Clear authentication cookie
-//     res.clearCookie("token");
-
-//     res.status(200).json({
-//         success: true,
-//         message: "Logged out successfully",
-//     });
-
-// });
-
-// ===========================================
-// ✅ LOGOUT API
-// ===========================================
 app.post("/logout", (req, res) => {
-
     res.clearCookie("token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -921,9 +870,7 @@ app.post("/logout", (req, res) => {
 });
 
 
-// ===========================================
 // ✅ CURRENT LOGGED IN USER
-// ===========================================
 app.get("/me", isAuthenticatedUser, async (req, res) => {
     // this API is to get the currently logged-in user's information along with their profile credits. It uses the isAuthenticatedUser middleware to ensure that the user is logged in and has a valid JWT token. If the user is authenticated, it retrieves the user's information from the database and also fetches their profile credits from the Profile collection. The response includes the user's details along with their credits and totalCredits. If any error occurs during this process, it returns a 500 Internal Server Error response.
     try {
@@ -1027,256 +974,465 @@ app.get("/admin/dashboard", isAuthenticatedUser, isAdmin,
 );
 
 
-// ✅ CREATE PROFILE API (🛡️ADMIN Only)
-app.post("/admin/profiles", isAuthenticatedUser,
-    isAdmin, async (req, res) => {
 
-        let user;
-        try {
+// CREATE PROFILE API (🛡️ADMIN Only)
+// app.post("/admin/profiles", isAuthenticatedUser,
+//     isAdmin, async (req, res) => {
+//         let user;
+//         try {
+//             // Get all data from request body
+//             const {
+//                 username,
+//                 password,
 
-            // Get all data from request body
-            const {
-                username,
-                password,
+//                 fullName,
+//                 gender,
+//                 dateOfBirth,
+//                 age,
 
-                fullName,
-                gender,
-                dateOfBirth,
-                age,
+//                 mobileNumber,
+//                 whatsappNumber,
 
-                mobileNumber,
-                whatsappNumber,
+//                 height,
+//                 weight,
 
-                height,
-                weight,
+//                 maritalStatus,
+//                 religion,
+//                 caste,
+//                 subCaste,
+//                 motherTongue,
 
-                maritalStatus,
-                religion,
-                caste,
-                subCaste,
-                motherTongue,
+//                 address,
+//                 district,
+//                 state,
+//                 country,
 
-                address,
-                district,
-                state,
-                country,
+//                 qualification,
+//                 occupation,
+//                 companyName,
+//                 annualIncome,
 
-                qualification,
-                occupation,
-                companyName,
-                annualIncome,
+//                 fatherName,
+//                 fatherOccupation,
 
-                fatherName,
-                fatherOccupation,
+//                 motherName,
+//                 motherOccupation,
 
-                motherName,
-                motherOccupation,
+//                 brothers,
+//                 sisters,
+                
+//                 eatingHabit,
+//                 smokingHabit,
+//                 drinkingHabit,
 
-                brothers,
-                sisters,
+//                 aboutMe,
 
-                eatingHabit,
-                smokingHabit,
-                drinkingHabit,
+//                 partnerExpectations,
 
-                aboutMe,
+//                 profilePhoto,
+//                 additionalPhotos,
 
-                partnerExpectations,
+//                 horoscopeImage,
 
-                profilePhoto,
-                additionalPhotos,
+//                 credits = 0,
 
-                horoscopeImage,
+//             } = req.body;
 
-                credits = 0,
+//             // ============================
+//             // Validate required fields
+//             // ============================
+//             if (
+//                 !username ||
+//                 !password ||
+//                 !fullName ||
+//                 !gender ||
+//                 !dateOfBirth ||
+//                 !age ||
+//                 !mobileNumber ||
+//                 !district ||
+//                 !profilePhoto
+//             ) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Please fill all required fields",
+//                 });
+//             }
 
-            } = req.body;
+//             // ============================
+//             // Check username exists
+//             // ============================
+//             const existingUser = await User.findOne({
+//                 username,
+//             });
 
-            // ============================
-            // Validate required fields
-            // ============================
-            if (
-                !username ||
-                !password ||
-                !fullName ||
-                !gender ||
-                !dateOfBirth ||
-                !age ||
-                !mobileNumber ||
-                !district ||
-                !profilePhoto
-            ) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Please fill all required fields",
-                });
-            }
+//             if (existingUser) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Username already exists",
+//                 });
+//             }
 
-            // ============================
-            // Check username exists
-            // ============================
-            const existingUser = await User.findOne({
-                username,
+//             // ============================
+//             // Check duplicate profile if same full name, DOB and mobile number exists that means same person is trying to create multiple profiles
+//             // ============================
+//             const duplicateProfile =
+//                 await Profile.findOne({
+//                     fullName,
+//                     dateOfBirth,
+//                     mobileNumber,
+//                 });
+
+//             if (duplicateProfile) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Profile already exists",
+//                 });
+//             }
+
+//             // ============================
+//             // Hash password
+//             // ============================
+//             const hashedPassword =
+//                 await bcrypt.hash(password, 10);
+
+//             // ============================
+//             // Create User
+//             // ============================
+//             user = await User.create({
+//                 username,
+//                 password: hashedPassword,
+//                 role: "user",
+//             });
+
+//             // ============================
+//             // Generate Profile ID
+//             // ============================
+//             const latestProfile =
+//                 await Profile.findOne()
+//                     .sort({ createdAt: -1 });
+
+//             let profileId = "VTM0001";
+
+//             if (latestProfile) {
+
+//                 const lastNumber =
+//                     parseInt(
+//                         latestProfile.profileId
+//                             .replace("VTM", "")
+//                     );
+
+//                 profileId =
+//                     "VTM" +
+//                     String(lastNumber + 1)
+//                         .padStart(4, "0");
+//             }
+
+//             // ============================
+//             // Create Profile
+//             // ============================
+//             const profile =
+//                 await Profile.create({
+
+//                     profileId,
+
+//                     userId: user._id,
+
+//                     fullName,
+//                     gender,
+//                     dateOfBirth,
+//                     age,
+
+//                     mobileNumber,
+//                     whatsappNumber,
+
+//                     height,
+//                     weight,
+
+//                     maritalStatus,
+//                     religion,
+//                     caste,
+//                     subCaste,
+//                     motherTongue,
+
+//                     address,
+//                     district,
+//                     state,
+//                     country,
+
+//                     qualification,
+//                     occupation,
+
+//                     companyName,
+//                     annualIncome,
+
+//                     fatherName,
+//                     fatherOccupation,
+
+//                     motherName,
+//                     motherOccupation,
+
+//                     brothers,
+//                     sisters,
+
+//                     eatingHabit, smokingHabit, drinkingHabit,
+
+//                     aboutMe,
+
+//                     partnerExpectations,
+
+//                     profilePhoto,
+//                     additionalPhotos,
+
+//                     horoscopeImage,
+
+//                     credits,
+//                     totalCredits: credits,
+
+//                 });
+
+//             // ============================
+//             // Success Response
+//             // ============================
+//             res.status(201).json({
+//                 success: true,
+//                 message:
+//                     "Profile created successfully",
+//                 profileId:
+//                     profile.profileId,
+//             });
+
+//         }
+
+//         catch (error) {
+//             // Rollback user creation
+//             if (user) {
+//                 await User.findByIdAndDelete(user._id);
+//             }
+
+//             if (error.name === "ValidationError") {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: error.message
+//                 });
+//             }
+
+//             console.log(error);
+//             res.status(500).json({
+//                 success: false,
+//                 message: error.message
+//             });
+//         }
+//     });
+
+
+
+const calculateAge = (dateOfBirth) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+};
+
+// ✅ CHECK USERNAME API
+app.get("/check-username/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+
+        if (!username?.trim()) {
+            return res.status(400).json({
+                success: false,
+                exists: false,
+                message: "Username is required"
             });
-
-            if (existingUser) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Username already exists",
-                });
-            }
-
-            // ============================
-            // Check duplicate profile if same full name, DOB and mobile number exists that means same person is trying to create multiple profiles
-            // ============================
-            const duplicateProfile =
-                await Profile.findOne({
-                    fullName,
-                    dateOfBirth,
-                    mobileNumber,
-                });
-
-            if (duplicateProfile) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Profile already exists",
-                });
-            }
-
-            // ============================
-            // Hash password
-            // ============================
-            const hashedPassword =
-                await bcrypt.hash(password, 10);
-
-            // ============================
-            // Create User
-            // ============================
-            user = await User.create({
-                username,
-                password: hashedPassword,
-                role: "user",
-            });
-
-            // ============================
-            // Generate Profile ID
-            // ============================
-            const latestProfile =
-                await Profile.findOne()
-                    .sort({ createdAt: -1 });
-
-            let profileId = "VTM0001";
-
-            if (latestProfile) {
-
-                const lastNumber =
-                    parseInt(
-                        latestProfile.profileId
-                            .replace("VTM", "")
-                    );
-
-                profileId =
-                    "VTM" +
-                    String(lastNumber + 1)
-                        .padStart(4, "0");
-            }
-
-            // ============================
-            // Create Profile
-            // ============================
-            const profile =
-                await Profile.create({
-
-                    profileId,
-
-                    userId: user._id,
-
-                    fullName,
-                    gender,
-                    dateOfBirth,
-                    age,
-
-                    mobileNumber,
-                    whatsappNumber,
-
-                    height,
-                    weight,
-
-                    maritalStatus,
-                    religion,
-                    caste,
-                    subCaste,
-                    motherTongue,
-
-                    address,
-                    district,
-                    state,
-                    country,
-
-                    qualification,
-                    occupation,
-
-                    companyName,
-                    annualIncome,
-
-                    fatherName,
-                    fatherOccupation,
-
-                    motherName,
-                    motherOccupation,
-
-                    brothers,
-                    sisters,
-
-                    eatingHabit, smokingHabit, drinkingHabit,
-
-                    aboutMe,
-
-                    partnerExpectations,
-
-                    profilePhoto,
-                    additionalPhotos,
-
-                    horoscopeImage,
-
-                    credits,
-                    totalCredits: credits,
-
-                });
-
-            // ============================
-            // Success Response
-            // ============================
-            res.status(201).json({
-                success: true,
-                message:
-                    "Profile created successfully",
-                profileId:
-                    profile.profileId,
-            });
-
         }
 
-        catch (error) {
-            // Rollback user creation
-            if (user) {
-                await User.findByIdAndDelete(user._id);
-            }
+        const existingUser = await User.findOne({
+            username: username.trim()
+        });
 
-            if (error.name === "ValidationError") {
-                return res.status(400).json({
-                    success: false,
-                    message: error.message
-                });
-            }
+        if (existingUser) {
+            return res.status(200).json({
+                success: true,
+                exists: true,
+                message: "Username already exists"
+            });
+        }
 
-            console.log(error);
-            res.status(500).json({
+        res.status(200).json({
+            success: true,
+            exists: false,
+            message: "Username is available"
+        });
+    } catch (error) {
+        console.error("Check Username Error:", error);
+
+        res.status(500).json({
+            success: false,
+            exists: false,
+            message: "Failed to check username"
+        });
+    }
+});
+
+
+// ✅ CREATE PROFILE API (🛡️ADMIN Only)
+app.post("/admin/profiles", isAuthenticatedUser, isAdmin, async (req, res) => {
+    let user;
+    try {
+        const {
+            username,
+            password,
+            fullName,
+            gender,
+            dateOfBirth,
+            mobileNumber,
+            whatsappNumber,
+            height,
+            weight,
+            maritalStatus,
+            religion,
+            caste,
+            subCaste,
+            motherTongue,
+            address,
+            district,
+            state,
+            country,
+            qualification,
+            occupation,
+            companyName,
+            annualIncome,
+            fatherName,
+            fatherOccupation,
+            motherName,
+            motherOccupation,
+            siblings,
+            eatingHabit,
+            smokingHabit,
+            drinkingHabit,
+            aboutMe,
+            partnerExpectations,
+            profilePhoto,
+            additionalPhotos,
+            horoscopeImage,
+            credits = 0
+        } = req.body;
+        if (
+            !username || !password || !fullName ||
+            !gender ||
+            !dateOfBirth ||
+            !mobileNumber ||
+            !district ||
+            !profilePhoto
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all required fields"
+            });
+        }
+        const calculatedAge = calculateAge(dateOfBirth);
+        if (calculatedAge < 18) {
+            return res.status(400).json({
+                success: false,
+                message: "Profile age must be 18 or above"
+            });
+        }
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Username already exists"
+            });
+        }
+        const duplicateProfile = await Profile.findOne({
+            fullName,
+            dateOfBirth,
+            mobileNumber
+        });
+        if (duplicateProfile) {
+            return res.status(400).json({
+                success: false,
+                message: "Profile already exists"
+            });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user = await User.create({
+            username,
+            password: hashedPassword,
+            role: "user"
+        });
+        const latestProfile = await Profile.findOne().sort({ createdAt: -1 });
+        let profileId = "VTM0001";
+        if (latestProfile) {
+            const lastNumber = parseInt(latestProfile.profileId.replace("VTM", ""));
+            profileId = "VTM" + String(lastNumber + 1).padStart(4, "0");
+        }
+        const profile = await Profile.create({
+            profileId,
+            userId: user._id,
+            fullName,
+            gender,
+            dateOfBirth,
+            age: calculatedAge,
+            mobileNumber,
+            whatsappNumber,
+            height,
+            weight,
+            maritalStatus,
+            religion,
+            caste,
+            subCaste,
+            motherTongue,
+            address,
+            district,
+            state,
+            country,
+            qualification,
+            occupation,
+            companyName,
+            annualIncome,
+            fatherName,
+            fatherOccupation,
+            motherName,
+            motherOccupation,
+            siblings,
+            eatingHabit,
+            smokingHabit,
+            drinkingHabit,
+            aboutMe,
+            partnerExpectations,
+            profilePhoto,
+            additionalPhotos,
+            horoscopeImage,
+            credits,
+            totalCredits: credits
+        });
+        res.status(201).json({
+            success: true,
+            message: "Profile created successfully",
+            profileId: profile.profileId
+        });
+    } catch (error) {
+        if (user) {
+            await User.findByIdAndDelete(user._id);
+        }
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
                 success: false,
                 message: error.message
             });
         }
-    });
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
 
 
 // ✅ GET ALL PROFILES (🛡️ADMIN Only)
@@ -1426,7 +1582,6 @@ app.get("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
                 "userId",
                 "username role createdAt"
             );
-
         // Check profile exists
         if (!profile) {
             return res.status(404).json({
@@ -1434,7 +1589,6 @@ app.get("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
                 message: "Profile not found"
             });
         }
-
         // Success response
         res.status(200).json({
             success: true,
@@ -1452,448 +1606,699 @@ app.get("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
 );
 
 
+// //  UPDATE PROFILE API (🛡️ADMIN Only)
+// app.put("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) => {
+//     // this API is to update a profile by its ID. It uses the isAuthenticatedUser and isAdmin
+//     //  middleware to ensure that only authenticated admin users can access this endpoint.
+//     //  The profile ID is obtained from the URL parameters, and 
+//     // the updated data is obtained from the request body. 
+//     // The API validates the profile ID, checks if the profile 
+//     // and associated user exist, and updates the profile and 
+//     // user information accordingly. If successful, it returns 
+//     // a success response with the updated profile information;
+//     //  otherwise, it returns appropriate error messages for 
+//     // invalid input or internal server errors.
+//     try {
+
+//         // ===========================================
+//         // Get Profile ID From URL
+//         // ===========================================
+//         const { id } = req.params;
+//         // ===========================================
+//         // Validate MongoDB ObjectId
+//         // ===========================================
+//         if (!mongoose.Types.ObjectId.isValid(id)) {
+
+//             return res.status(400).json({
+
+//                 success: false,
+
+//                 message: "Invalid profile id",
+
+//             });
+
+//         }
+//         // ===========================================
+//         // Get Data From Request Body
+//         // ===========================================
+//         const {
+
+//             username,
+//             password,
+
+//             fullName,
+//             gender,
+//             dateOfBirth,
+//             age,
+
+//             mobileNumber,
+//             whatsappNumber,
+
+//             height,
+//             weight,
+
+//             maritalStatus,
+
+//             religion,
+//             caste,
+//             subCaste,
+
+//             motherTongue,
+
+//             address,
+//             district,
+//             state,
+//             country,
+
+//             qualification,
+//             occupation,
+//             companyName,
+//             annualIncome,
+
+//             fatherName,
+//             fatherOccupation,
+
+//             motherName,
+//             motherOccupation,
+
+//             brothers,
+//             sisters,
+
+//             eatingHabit,
+//             smokingHabit,
+//             drinkingHabit,
+
+//             aboutMe,
+
+//             partnerExpectations,
+
+//             profilePhoto,
+//             additionalPhotos,
+//             horoscopeImage,
+
+//             credits,
+
+//             status,
+
+//         } = req.body;
+
+//         // ===========================================
+//         // Find Profile
+//         // ===========================================
+//         const profile =
+//             await Profile.findById(id);
+
+//         if (!profile) {
+
+//             return res.status(404).json({
+
+//                 success: false,
+
+//                 message: "Profile not found",
+
+//             });
+
+//         }
+
+//         // ===========================================
+//         // Find User Using userId
+//         // ===========================================
+//         const user =
+//             await User.findById(
+//                 profile.userId
+//             );
+
+//         if (!user) {
+
+//             return res.status(404).json({
+
+//                 success: false,
+
+//                 message: "User not found",
+
+//             });
+
+//         }
+
+//         // ===========================================
+//         // Check Duplicate Username
+//         // Only If Username Changed
+//         // CORRECTED: Added _id exclusion so the
+//         // check never matches the current user's
+//         // own document (defensive safety, in case
+//         // this block is ever reused without the
+//         // prior !== guard).
+//         // ===========================================
+//         if (
+//             username &&
+//             username !== user.username
+//         ) {
+
+//             const usernameExists =
+//                 await User.findOne({
+//                     username,
+//                     _id: { $ne: user._id },
+//                 });
+
+//             if (usernameExists) {
+
+//                 return res.status(400).json({
+
+//                     success: false,
+
+//                     message:
+//                         "Username already exists",
+
+//                 });
+
+//             }
+
+//         }
+
+//         // ===========================================
+//         // PART - 2 STARTS HERE
+//         // ===========================================
+
+//         // ===========================================
+//         // SAVE OLD USER DATA (For Rollback)
+//         // CORRECTED (Bug 1): This must happen BEFORE
+//         // user.username / user.password are mutated.
+//         // Previously these were captured AFTER the
+//         // update, so oldUsername/oldPassword held the
+//         // NEW values, not the originals — rollback was
+//         // a no-op.
+//         // ===========================================
+//         const oldUsername = user.username;
+//         const oldPassword = user.password;
+
+//         // ===========================================
+//         // UPDATE USER COLLECTION
+//         // CORRECTED: Removed the redundant
+//         // hashedPassword/user.password reassignment
+//         // that ran even when no new password was
+//         // submitted. Password is now only touched
+//         // inside the if-block below.
+//         // ===========================================
+
+//         // Update username
+//         // CORRECTED (Bug 2): Reject whitespace-only
+//         // usernames (e.g. "   ") by trimming before
+//         // the check, and store the trimmed value.
+//         if (
+//             username &&
+//             username.trim() !== ""
+//         ) {
+
+//             user.username = username.trim();
+
+//         }
+
+//         // Hash and update password only if admin entered a new password
+//         if (
+//             password &&
+//             password.trim() !== ""
+//         ) {
+
+//             user.password =
+//                 await bcrypt.hash(
+//                     password,
+//                     10
+//                 );
+
+//         }
+
+//         // ===========================================
+//         // UPDATE PROFILE COLLECTION
+//         // ===========================================
+
+//         profile.fullName = fullName ?? profile.fullName;
+
+//         profile.gender = gender ?? profile.gender;
+
+//         profile.dateOfBirth = dateOfBirth ?? profile.dateOfBirth;
+
+//         profile.age = age ?? profile.age;
+
+//         profile.mobileNumber = mobileNumber ?? profile.mobileNumber;
+
+//         profile.whatsappNumber = whatsappNumber ?? profile.whatsappNumber;
+
+//         profile.height = height ?? profile.height;
+
+//         profile.weight = weight ?? profile.weight;
+
+//         profile.maritalStatus = maritalStatus ?? profile.maritalStatus;
+
+//         profile.religion = religion ?? profile.religion;
+
+//         profile.caste = caste ?? profile.caste;
+
+//         profile.subCaste = subCaste ?? profile.subCaste;
+
+//         profile.motherTongue = motherTongue ?? profile.motherTongue;
+
+//         profile.address = address ?? profile.address;
+
+//         profile.district = district ?? profile.district;
+
+//         profile.state = state ?? profile.state;
+
+//         profile.country = country ?? profile.country;
+
+//         profile.qualification = qualification ?? profile.qualification;
+
+//         profile.occupation = occupation ?? profile.occupation;
+
+//         profile.companyName = companyName ?? profile.companyName;
+
+//         profile.annualIncome = annualIncome ?? profile.annualIncome;
+
+//         profile.fatherName = fatherName ?? profile.fatherName;
+
+//         profile.fatherOccupation =
+//             fatherOccupation ?? profile.fatherOccupation;
+
+//         profile.motherName = motherName ?? profile.motherName;
+
+//         profile.motherOccupation =
+//             motherOccupation ?? profile.motherOccupation;
+
+//         profile.brothers = brothers ?? profile.brothers;
+
+//         profile.sisters = sisters ?? profile.sisters;
+
+//         profile.eatingHabit =
+//             eatingHabit ?? profile.eatingHabit;
+
+//         profile.smokingHabit =
+//             smokingHabit ?? profile.smokingHabit;
+
+//         profile.drinkingHabit =
+//             drinkingHabit ?? profile.drinkingHabit;
+
+//         profile.aboutMe =
+//             aboutMe ?? profile.aboutMe;
+
+//         // ===========================================
+//         // UPDATE PARTNER EXPECTATIONS
+//         // IMPROVEMENT: Only merge if partnerExpectations
+//         // is actually an object, so a bad request like
+//         // { "partnerExpectations": "hello" } can't slip
+//         // through and corrupt the field.
+//         // ===========================================
+
+//         if (
+//             partnerExpectations &&
+//             typeof partnerExpectations === "object"
+//         ) {
+
+//             profile.partnerExpectations = {
+
+//                 ...profile.partnerExpectations,
+
+//                 ...partnerExpectations,
+
+//             };
+
+//         }
+
+//         // ===========================================
+//         // UPDATE PROFILE IMAGES
+//         // ===========================================
+
+//         profile.profilePhoto =
+//             profilePhoto ?? profile.profilePhoto;
+
+//         profile.additionalPhotos =
+//             additionalPhotos ?? profile.additionalPhotos;
+
+//         profile.horoscopeImage =
+//             horoscopeImage ?? profile.horoscopeImage;
+
+//         // ===========================================
+//         // UPDATE CREDITS
+//         // CORRECTED: Switched to the same ??
+//         // pattern used everywhere else, so behavior
+//         // is consistent across all fields.
+//         // ===========================================
+
+//         profile.credits = credits ?? profile.credits;
+
+//         // ===========================================
+//         // UPDATE STATUS
+//         // IMPROVEMENT: Check against undefined instead
+//         // of truthy, so an intentional empty string or
+//         // a future falsy-but-valid enum value still
+//         // gets applied.
+//         // ===========================================
+
+//         if (status !== undefined) {
+//             profile.status = status;
+//         }
+
+//         // ===========================================
+//         // PART - 3 STARTS HERE
+//         // ===========================================
+
+//         try {
+
+//             // ===========================================
+//             // SAVE USER COLLECTION
+//             // ===========================================
+//             await user.save();
+
+//             // ===========================================
+//             // SAVE PROFILE COLLECTION
+//             // ===========================================
+//             await profile.save();
+
+//             // ===========================================
+//             // GET UPDATED PROFILE
+//             // ===========================================
+//             const updatedProfile = await Profile.findById(profile._id)
+//                 .populate(
+//                     "userId",
+//                     "username role createdAt"
+//                 );
+
+//             // ===========================================
+//             // SUCCESS RESPONSE
+//             // ===========================================
+//             return res.status(200).json({
+
+//                 success: true,
+
+//                 message: "Profile updated successfully",
+
+//                 profile: updatedProfile,
+
+//             });
+
+//         } catch (error) {
+
+//             // ===========================================
+//             // ROLLBACK USER UPDATE
+//             // ===========================================
+//             try {
+
+//                 user.username = oldUsername;
+//                 user.password = oldPassword;
+
+//                 await user.save();
+
+//             } catch (rollbackError) {
+
+//                 console.error(
+//                     "Rollback Failed:",
+//                     rollbackError
+//                 );
+
+//             }
+
+//             console.error(error);
+
+//             return res.status(500).json({
+
+//                 success: false,
+
+//                 message: "Failed to update profile",
+
+//                 error: error.message,
+
+//             });
+
+//         }
+
+//     } catch (outerError) {
+
+//         console.error(outerError);
+
+//         return res.status(500).json({
+
+//             success: false,
+
+//             message: "Something went wrong",
+//             error: outerError.message
+
+//         });
+
+//     }
+
+// }
+
+// );
+
 // ✅ UPDATE PROFILE API (🛡️ADMIN Only)
 app.put("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) => {
     // this API is to update a profile by its ID. It uses the isAuthenticatedUser and isAdmin
-    //  middleware to ensure that only authenticated admin users can access this endpoint.
-    //  The profile ID is obtained from the URL parameters, and 
-    // the updated data is obtained from the request body. 
-    // The API validates the profile ID, checks if the profile 
-    // and associated user exist, and updates the profile and 
-    // user information accordingly. If successful, it returns 
+    // middleware to ensure that only authenticated admin users can access this endpoint.
+    // The profile ID is obtained from the URL parameters, and
+    // the updated data is obtained from the request body.
+    // The API validates the profile ID, checks if the profile
+    // and associated user exist, and updates the profile and
+    // user information accordingly. If successful, it returns
     // a success response with the updated profile information;
-    //  otherwise, it returns appropriate error messages for 
+    // otherwise, it returns appropriate error messages for
     // invalid input or internal server errors.
     try {
-
-        // ===========================================
         // Get Profile ID From URL
-        // ===========================================
         const { id } = req.params;
-        // ===========================================
+
         // Validate MongoDB ObjectId
-        // ===========================================
         if (!mongoose.Types.ObjectId.isValid(id)) {
-
             return res.status(400).json({
-
                 success: false,
-
-                message: "Invalid profile id",
-
+                message: "Invalid profile id"
             });
-
         }
-        // ===========================================
-        // Get Data From Request Body
-        // ===========================================
-        const {
 
+        // Get Data From Request Body
+        const {
             username,
             password,
-
             fullName,
             gender,
             dateOfBirth,
-            age,
-
             mobileNumber,
             whatsappNumber,
-
             height,
             weight,
-
             maritalStatus,
-
             religion,
             caste,
             subCaste,
-
             motherTongue,
-
             address,
             district,
             state,
             country,
-
-            qualification,
-            occupation,
-            companyName,
-            annualIncome,
-
-            fatherName,
-            fatherOccupation,
-
-            motherName,
-            motherOccupation,
-
-            brothers,
-            sisters,
-
-            eatingHabit,
-            smokingHabit,
-            drinkingHabit,
-
+            qualification, occupation, companyName, annualIncome,
+            fatherName, fatherOccupation,
+            motherName, motherOccupation,
+            siblings,
+            eatingHabit, smokingHabit, drinkingHabit,
             aboutMe,
-
             partnerExpectations,
-
-            profilePhoto,
-            additionalPhotos,
+            profilePhoto, additionalPhotos,
             horoscopeImage,
-
             credits,
-
-            status,
-
+            status
         } = req.body;
 
-        // ===========================================
         // Find Profile
-        // ===========================================
-        const profile =
-            await Profile.findById(id);
+        const profile = await Profile.findById(id);
 
         if (!profile) {
-
             return res.status(404).json({
-
                 success: false,
-
-                message: "Profile not found",
-
+                message: "Profile not found"
             });
-
         }
 
-        // ===========================================
         // Find User Using userId
-        // ===========================================
-        const user =
-            await User.findById(
-                profile.userId
-            );
+        const user = await User.findById(profile.userId);
 
         if (!user) {
-
             return res.status(404).json({
-
                 success: false,
-
-                message: "User not found",
-
+                message: "User not found"
             });
-
         }
 
-        // ===========================================
         // Check Duplicate Username
         // Only If Username Changed
         // CORRECTED: Added _id exclusion so the
         // check never matches the current user's
-        // own document (defensive safety, in case
-        // this block is ever reused without the
-        // prior !== guard).
-        // ===========================================
-        if (
-            username &&
-            username !== user.username
-        ) {
-
-            const usernameExists =
-                await User.findOne({
-                    username,
-                    _id: { $ne: user._id },
-                });
+        // own document.
+        if (username && username.trim() !== "" && username.trim() !== user.username) {
+            const usernameExists = await User.findOne({
+                username: username.trim(),
+                _id: { $ne: user._id }
+            });
 
             if (usernameExists) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "Username already exists",
-
+                    message: "Username already exists"
                 });
-
             }
-
         }
 
-        // ===========================================
-        // PART - 2 STARTS HERE
-        // ===========================================
-
-        // ===========================================
         // SAVE OLD USER DATA (For Rollback)
-        // CORRECTED (Bug 1): This must happen BEFORE
-        // user.username / user.password are mutated.
-        // Previously these were captured AFTER the
-        // update, so oldUsername/oldPassword held the
-        // NEW values, not the originals — rollback was
-        // a no-op.
-        // ===========================================
+        // This must happen BEFORE user.username / user.password are mutated.
         const oldUsername = user.username;
         const oldPassword = user.password;
 
-        // ===========================================
         // UPDATE USER COLLECTION
-        // CORRECTED: Removed the redundant
-        // hashedPassword/user.password reassignment
-        // that ran even when no new password was
-        // submitted. Password is now only touched
-        // inside the if-block below.
-        // ===========================================
 
         // Update username
-        // CORRECTED (Bug 2): Reject whitespace-only
-        // usernames (e.g. "   ") by trimming before
-        // the check, and store the trimmed value.
-        if (
-            username &&
-            username.trim() !== ""
-        ) {
-
+        // Reject whitespace-only usernames and store trimmed value.
+        if (username && username.trim() !== "") {
             user.username = username.trim();
-
         }
 
         // Hash and update password only if admin entered a new password
-        if (
-            password &&
-            password.trim() !== ""
-        ) {
-
-            user.password =
-                await bcrypt.hash(
-                    password,
-                    10
-                );
-
+        if (password && password.trim() !== "") {
+            user.password = await bcrypt.hash(password, 10);
         }
 
-        // ===========================================
         // UPDATE PROFILE COLLECTION
-        // ===========================================
-
         profile.fullName = fullName ?? profile.fullName;
-
         profile.gender = gender ?? profile.gender;
-
         profile.dateOfBirth = dateOfBirth ?? profile.dateOfBirth;
 
-        profile.age = age ?? profile.age;
+        // Calculate age automatically from date of birth
+        if (dateOfBirth !== undefined) {
+            const calculatedAge = calculateAge(dateOfBirth);
 
-        profile.mobileNumber = mobileNumber ?? profile.mobileNumber;
+            if (calculatedAge < 18) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Profile age must be 18 or above"
+                });
+            }
 
-        profile.whatsappNumber = whatsappNumber ?? profile.whatsappNumber;
-
-        profile.height = height ?? profile.height;
-
-        profile.weight = weight ?? profile.weight;
-
-        profile.maritalStatus = maritalStatus ?? profile.maritalStatus;
-
-        profile.religion = religion ?? profile.religion;
-
-        profile.caste = caste ?? profile.caste;
-
-        profile.subCaste = subCaste ?? profile.subCaste;
-
-        profile.motherTongue = motherTongue ?? profile.motherTongue;
-
-        profile.address = address ?? profile.address;
-
-        profile.district = district ?? profile.district;
-
-        profile.state = state ?? profile.state;
-
-        profile.country = country ?? profile.country;
-
-        profile.qualification = qualification ?? profile.qualification;
-
-        profile.occupation = occupation ?? profile.occupation;
-
-        profile.companyName = companyName ?? profile.companyName;
-
-        profile.annualIncome = annualIncome ?? profile.annualIncome;
-
-        profile.fatherName = fatherName ?? profile.fatherName;
-
-        profile.fatherOccupation =
-            fatherOccupation ?? profile.fatherOccupation;
-
-        profile.motherName = motherName ?? profile.motherName;
-
-        profile.motherOccupation =
-            motherOccupation ?? profile.motherOccupation;
-
-        profile.brothers = brothers ?? profile.brothers;
-
-        profile.sisters = sisters ?? profile.sisters;
-
-        profile.eatingHabit =
-            eatingHabit ?? profile.eatingHabit;
-
-        profile.smokingHabit =
-            smokingHabit ?? profile.smokingHabit;
-
-        profile.drinkingHabit =
-            drinkingHabit ?? profile.drinkingHabit;
-
-        profile.aboutMe =
-            aboutMe ?? profile.aboutMe;
-
-        // ===========================================
-        // UPDATE PARTNER EXPECTATIONS
-        // IMPROVEMENT: Only merge if partnerExpectations
-        // is actually an object, so a bad request like
-        // { "partnerExpectations": "hello" } can't slip
-        // through and corrupt the field.
-        // ===========================================
-
-        if (
-            partnerExpectations &&
-            typeof partnerExpectations === "object"
-        ) {
-
-            profile.partnerExpectations = {
-
-                ...profile.partnerExpectations,
-
-                ...partnerExpectations,
-
-            };
-
+            profile.age = calculatedAge;
         }
 
-        // ===========================================
+        profile.mobileNumber = mobileNumber ?? profile.mobileNumber;
+        profile.whatsappNumber = whatsappNumber ?? profile.whatsappNumber;
+        profile.height = height ?? profile.height;
+        profile.weight = weight ?? profile.weight;
+        profile.maritalStatus = maritalStatus ?? profile.maritalStatus;
+        profile.religion = religion ?? profile.religion;
+        profile.caste = caste ?? profile.caste;
+        profile.subCaste = subCaste ?? profile.subCaste;
+        profile.motherTongue = motherTongue ?? profile.motherTongue;
+        profile.address = address ?? profile.address;
+        profile.district = district ?? profile.district;
+        profile.state = state ?? profile.state;
+        profile.country = country ?? profile.country;
+        profile.qualification = qualification ?? profile.qualification;
+        profile.occupation = occupation ?? profile.occupation;
+        profile.companyName = companyName ?? profile.companyName;
+        profile.annualIncome = annualIncome ?? profile.annualIncome;
+        profile.fatherName = fatherName ?? profile.fatherName;
+        profile.fatherOccupation = fatherOccupation ?? profile.fatherOccupation;
+        profile.motherName = motherName ?? profile.motherName;
+        profile.motherOccupation = motherOccupation ?? profile.motherOccupation;
+
+        // Update siblings
+        if (siblings && typeof siblings === "object") {
+            profile.siblings = {
+                ...profile.siblings,
+                ...siblings,
+                eb: {
+                    ...profile.siblings?.eb,
+                    ...siblings.eb
+                },
+                yb: {
+                    ...profile.siblings?.yb,
+                    ...siblings.yb
+                },
+                es: {
+                    ...profile.siblings?.es,
+                    ...siblings.es
+                },
+                ys: {
+                    ...profile.siblings?.ys,
+                    ...siblings.ys
+                }
+            };
+        }
+
+        profile.eatingHabit = eatingHabit ?? profile.eatingHabit;
+        profile.smokingHabit = smokingHabit ?? profile.smokingHabit;
+        profile.drinkingHabit = drinkingHabit ?? profile.drinkingHabit;
+        profile.aboutMe = aboutMe ?? profile.aboutMe;
+
+        // UPDATE PARTNER EXPECTATIONS
+        // Only merge if partnerExpectations is actually an object.
+        if (partnerExpectations && typeof partnerExpectations === "object") {
+            profile.partnerExpectations = {
+                ...profile.partnerExpectations,
+                ...partnerExpectations
+            };
+        }
+
         // UPDATE PROFILE IMAGES
-        // ===========================================
+        profile.profilePhoto = profilePhoto ?? profile.profilePhoto;
+        profile.additionalPhotos = additionalPhotos ?? profile.additionalPhotos;
+        profile.horoscopeImage = horoscopeImage ?? profile.horoscopeImage;
 
-        profile.profilePhoto =
-            profilePhoto ?? profile.profilePhoto;
-
-        profile.additionalPhotos =
-            additionalPhotos ?? profile.additionalPhotos;
-
-        profile.horoscopeImage =
-            horoscopeImage ?? profile.horoscopeImage;
-
-        // ===========================================
         // UPDATE CREDITS
-        // CORRECTED: Switched to the same ??
-        // pattern used everywhere else, so behavior
-        // is consistent across all fields.
-        // ===========================================
-
         profile.credits = credits ?? profile.credits;
 
-        // ===========================================
         // UPDATE STATUS
-        // IMPROVEMENT: Check against undefined instead
-        // of truthy, so an intentional empty string or
-        // a future falsy-but-valid enum value still
-        // gets applied.
-        // ===========================================
-
         if (status !== undefined) {
             profile.status = status;
         }
 
-        // ===========================================
-        // PART - 3 STARTS HERE
-        // ===========================================
-
         try {
-
-            // ===========================================
             // SAVE USER COLLECTION
-            // ===========================================
             await user.save();
 
-            // ===========================================
             // SAVE PROFILE COLLECTION
-            // ===========================================
             await profile.save();
 
-            // ===========================================
             // GET UPDATED PROFILE
-            // ===========================================
             const updatedProfile = await Profile.findById(profile._id)
-                .populate(
-                    "userId",
-                    "username role createdAt"
-                );
+                .populate("userId", "username role createdAt");
 
-            // ===========================================
             // SUCCESS RESPONSE
-            // ===========================================
             return res.status(200).json({
-
                 success: true,
-
                 message: "Profile updated successfully",
-
-                profile: updatedProfile,
-
+                profile: updatedProfile
             });
-
         } catch (error) {
-
-            // ===========================================
             // ROLLBACK USER UPDATE
-            // ===========================================
             try {
-
                 user.username = oldUsername;
                 user.password = oldPassword;
-
                 await user.save();
-
             } catch (rollbackError) {
-
-                console.error(
-                    "Rollback Failed:",
-                    rollbackError
-                );
-
+                console.error("Rollback Failed:", rollbackError);
             }
 
             console.error(error);
 
             return res.status(500).json({
-
                 success: false,
-
                 message: "Failed to update profile",
-
-                error: error.message,
-
+                error: error.message
             });
-
         }
-
     } catch (outerError) {
-
         console.error(outerError);
 
         return res.status(500).json({
-
             success: false,
-
             message: "Something went wrong",
             error: outerError.message
-
         });
-
     }
-
-}
-
-);
-
+});
 
 
 // ✅UPDATE PROFILE STATUS API (🛡️ADMIN Only)

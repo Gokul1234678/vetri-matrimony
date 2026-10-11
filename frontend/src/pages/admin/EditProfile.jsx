@@ -65,8 +65,24 @@ const initialFormData = {
     fatherOccupation: "",
     motherName: "",
     motherOccupation: "",
-    brothers: "",
-    sisters: "",
+    siblings: {
+        eb: {
+            total: "",
+            married: ""
+        },
+        yb: {
+            total: "",
+            married: ""
+        },
+        es: {
+            total: "",
+            married: ""
+        },
+        ys: {
+            total: "",
+            married: ""
+        }
+    },
 
     // Lifestyle
     eatingHabit: "",
@@ -106,16 +122,40 @@ function EditProfile() {
 
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState({});
-
+    const [originalUsername, setOriginalUsername] = useState("");
     const [loading, setLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [loadingMessage, setLoadingMessage] = useState("");
 
-    // ============================
-    // Handle Input Change
-    // ============================
+    const calculateAge = (dateOfBirth) => {
+        if (!dateOfBirth) {
+            return "";
+        }
+        const birthDate = new Date(dateOfBirth);
+        const today = new Date();
+        let age =
+            today.getFullYear() -
+            birthDate.getFullYear();
 
+        const monthDiff =
+            today.getMonth() -
+            birthDate.getMonth();
+
+        if (
+            monthDiff < 0 ||
+            (
+                monthDiff === 0 &&
+                today.getDate() < birthDate.getDate()
+            )
+        ) {
+            age--;
+        }
+
+        return age;
+    };
+
+    // Handle Input Change
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -135,7 +175,38 @@ function EditProfile() {
                     [name]: value,
                 },
             }));
-        } else {
+        } else if (name.startsWith("siblings.")) {
+            const [, siblingType, field] = name.split(".");
+
+            setFormData((prev) => ({
+                ...prev,
+                siblings: {
+                    ...prev.siblings,
+                    [siblingType]: {
+                        ...prev.siblings[siblingType],
+                        [field]: value,
+                    },
+                },
+            }));
+        }
+        else if (name === "dateOfBirth") {
+            const calculatedAge = calculateAge(value);
+
+            setFormData((prev) => ({
+                ...prev,
+                dateOfBirth: value,
+                age: calculatedAge,
+            }));
+
+            setErrors((prev) => ({
+                ...prev,
+                dateOfBirth: "",
+                age: "",
+            }));
+
+            return;
+        }
+        else {
             setFormData((prev) => ({
                 ...prev,
                 [name]: value,
@@ -150,10 +221,7 @@ function EditProfile() {
         }
     };
 
-    // ============================
     // Handle Image Change
-    // ============================
-
     const handleImageChange = (e) => {
         const { name, files } = e.target;
 
@@ -182,7 +250,7 @@ function EditProfile() {
                     additionalPhotos: [
                         ...prev.additionalPhotos,
                         ...Array.from(files),
-                    ].slice(0, 5),
+                    ].slice(0, 4),
                 }));
                 break;
 
@@ -191,10 +259,7 @@ function EditProfile() {
         }
     };
 
-    // ============================
     // Remove Image
-    // ============================
-
     const removeImage = (name, index = null) => {
         if (name === "profilePhoto") {
             setFormData((prev) => ({
@@ -221,10 +286,7 @@ function EditProfile() {
         }
     };
 
-    // ============================
     // Format Date For Input
-    // ============================
-
     const formatDateForInput = (date) => {
         if (!date) {
             return "";
@@ -238,10 +300,7 @@ function EditProfile() {
         return formattedDate;
     };
 
-    // ============================
     // Load Profile
-    // ============================
-
     const fetchProfile = async () => {
         try {
             setLoading(true);
@@ -258,13 +317,12 @@ function EditProfile() {
                     "Failed to fetch profile"
                 );
             }
-
             const profile = data.profile;
+            setOriginalUsername(profile.userId?.username || "");
 
             setFormData({
                 username:
                     profile.userId?.username || "",
-
                 password: "",
 
                 fullName:
@@ -278,8 +336,8 @@ function EditProfile() {
                         profile.dateOfBirth
                     ),
 
-                age:
-                    profile.age ?? "",
+                age: calculateAge(profile.dateOfBirth),
+
 
                 mobileNumber:
                     profile.mobileNumber || "",
@@ -347,11 +405,24 @@ function EditProfile() {
                 motherOccupation:
                     profile.motherOccupation || "",
 
-                brothers:
-                    profile.brothers ?? "",
-
-                sisters:
-                    profile.sisters ?? "",
+                siblings: {
+                    eb: {
+                        total: profile.siblings?.eb?.total ?? "",
+                        married: profile.siblings?.eb?.married ?? ""
+                    },
+                    yb: {
+                        total: profile.siblings?.yb?.total ?? "",
+                        married: profile.siblings?.yb?.married ?? ""
+                    },
+                    es: {
+                        total: profile.siblings?.es?.total ?? "",
+                        married: profile.siblings?.es?.married ?? ""
+                    },
+                    ys: {
+                        total: profile.siblings?.ys?.total ?? "",
+                        married: profile.siblings?.ys?.married ?? ""
+                    }
+                },
 
                 eatingHabit:
                     profile.eatingHabit || "",
@@ -428,17 +499,14 @@ function EditProfile() {
     // ============================
     // Load Profile On Page Load
     // ============================
-
     useEffect(() => {
         if (id) {
             fetchProfile();
         }
     }, [id]);
 
-    // ============================
-    // Upload New Images
-    // ============================
 
+    // Upload New Images
     const uploadImages = async () => {
         const imageFormData = new FormData();
 
@@ -546,10 +614,8 @@ function EditProfile() {
         };
     };
 
-    // ============================
-    // Update Profile
-    // ============================
 
+    // Update Profile
     const updateProfile = async (images) => {
         const profilePayload = {
             ...formData,
@@ -581,35 +647,60 @@ function EditProfile() {
         return data;
     };
 
-    // ============================
-    // Submit
-    // ============================
+    // check Username Availability
+    const checkUsername = async () => {
+        const username = formData.username?.trim();
 
+        if (!username) {
+            return false;
+        }
+
+        if (username === originalUsername) {
+            return true;
+        }
+
+        const response = await api.get(
+            `/check-username/${encodeURIComponent(username)}`
+        );
+
+        const data = response.data;
+
+        if (data.exists) {
+            setErrors((prev) => ({
+                ...prev,
+                username: "Username already exists"
+            }));
+
+            toast.error("Username already exists");
+            return false;
+        }
+
+        return true;
+    };
+
+    // Submit
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const validationErrors =
-            validateEditProfileForm(formData);
+        const validationErrors = validateEditProfileForm(formData);
 
-        if (
-            Object.keys(validationErrors).length > 0
-        ) {
+        if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-
-            toast.error(
-                "Please correct the highlighted fields."
-            );
-
+            toast.error("Please correct the highlighted fields.");
             return;
         }
 
         try {
             setIsSubmitting(true);
+            setLoadingMessage("Checking username...");
+            const usernameAvailable = await checkUsername();
 
+            if (!usernameAvailable) {
+                return;
+            }
             // ============================
             // Upload Images
             // ============================
-
             setLoadingMessage(
                 "Uploading images..."
             );
@@ -662,19 +753,14 @@ function EditProfile() {
         }
     };
 
-    // ============================
     // Page Loading
-    // ============================
-
     if (loading) {
         return (
             <AdminLayout>
-
                 <LoadingOverlay
                     show={true}
                     message="Loading profile..."
                 />
-
                 <div className="page-header">
                     <div>
                         <h1>Edit Profile</h1>
@@ -683,15 +769,11 @@ function EditProfile() {
                         </p>
                     </div>
                 </div>
-
             </AdminLayout>
         );
     }
 
-    // ============================
     // Page
-    // ============================
-
     return (
         <AdminLayout>
 

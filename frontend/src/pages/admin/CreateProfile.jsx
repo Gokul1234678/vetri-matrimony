@@ -67,8 +67,12 @@ const initialFormData = {
     fatherOccupation: "",
     motherName: "",
     motherOccupation: "",
-    brothers: "",
-    sisters: "",
+siblings: {
+    eb: { total: "", married: "" },
+    yb: { total: "", married: "" },
+    es: { total: "", married: "" },
+    ys: { total: "", married: "" }
+},
 
     // Lifestyle
     eatingHabit: "",
@@ -99,9 +103,7 @@ const initialFormData = {
 function CreateProfile() {
 
     const navigate = useNavigate();
-
     const formRef = useRef(null);
-
 
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState({});
@@ -109,39 +111,88 @@ function CreateProfile() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState("");
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+const calculateAge = (dateOfBirth) => {
+    if (!dateOfBirth) return "";
 
-        const partnerFields = [
-            "preferredAge",
-            "preferredEducation",
-            "preferredLocation",
-            "preferredReligion",
-            "preferredCaste",
-        ];
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
 
-        if (partnerFields.includes(name)) {
-            setFormData((prev) => ({
-                ...prev,
-                partnerExpectations: {
-                    ...prev.partnerExpectations,
-                    [name]: value,
-                },
-            }));
-        } else {
-            setFormData((prev) => ({
-                ...prev,
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+        age--;
+    }
+
+    return age;
+};
+
+const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    const partnerFields = [
+        "preferredAge",
+        "preferredEducation",
+        "preferredLocation",
+        "preferredReligion",
+        "preferredCaste",
+    ];
+
+    if (partnerFields.includes(name)) {
+        setFormData((prev) => ({
+            ...prev,
+            partnerExpectations: {
+                ...prev.partnerExpectations,
                 [name]: value,
-            }));
-        }
+            },
+        }));
+    } else if (name.startsWith("siblings.")) {
+        const [, siblingType, field] = name.split(".");
 
-        if (errors[name]) {
-            setErrors((prev) => ({
-                ...prev,
-                [name]: "",
-            }));
-        }
-    };
+        setFormData((prev) => ({
+            ...prev,
+            siblings: {
+                ...prev.siblings,
+                [siblingType]: {
+                    ...prev.siblings[siblingType],
+                    [field]: value,
+                },
+            },
+        }));
+    } else if (name === "dateOfBirth") {
+        const calculatedAge = calculateAge(value);
+
+        setFormData((prev) => ({
+            ...prev,
+            dateOfBirth: value,
+            age: calculatedAge,
+        }));
+
+        setErrors((prev) => ({
+            ...prev,
+            dateOfBirth: "",
+            age: "",
+        }));
+
+        return;
+    } else {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
+
+    if (errors[name]) {
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
+    }
+};
 
     const handleImageChange = (e) => {
         const { name, files } = e.target;
@@ -272,118 +323,100 @@ function CreateProfile() {
     };
 
     // Create profile function  
-    const createProfile = async (images) => {
+const createProfile = async (images) => {
+    const { age, ...profileData } = formData;
 
-        const profilePayload = {
-            ...formData,
-
-            profilePhoto: images.profilePhoto,
-
-            additionalPhotos: images.additionalPhotos,
-
-            horoscopeImage: images.horoscopeImage,
-        };
-
-        const response = await api.post(
-            "/admin/profiles",
-            profilePayload
-        );
-
-        const data = response.data;
-
-        if (!data.success) {
-            throw new Error(
-                data.message || "Failed to create profile"
-            );
-        }
-
-        return data;
+    const profilePayload = {
+        ...profileData,
+        profilePhoto: images.profilePhoto,
+        additionalPhotos: images.additionalPhotos,
+        horoscopeImage: images.horoscopeImage,
     };
+    const response = await api.post(
+        "/admin/profiles",
+        profilePayload
+    );
+    const data = response.data;
 
+    if (!data.success) {
+        throw new Error(
+            data.message || "Failed to create profile"
+        );
+    }
+    return data;
+};
 
+const checkUsername = async () => {
+    const username = formData.username?.trim();
+
+    if (!username) {
+        return false;
+    }
+
+    const response = await api.get(
+        `/check-username/${encodeURIComponent(username)}`
+    );
+
+    const data = response.data;
+
+    if (data.exists) {
+        setErrors((prev) => ({
+            ...prev,
+            username: "Username already exists"
+        }));
+
+        toast.error("Username already exists");
+        return false;
+    }
+
+    return true;
+};
 
 // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Validate form data
-        const validationErrors =
-            validateProfileForm(formData);
+    const validationErrors = validateProfileForm(formData);
 
-            // If there are validation errors, set them in state and show a toast notification
-        if (Object.keys(validationErrors).length > 0) {
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        toast.error("Please correct the highlighted fields.");
+        return;
+    }
 
-            setErrors(validationErrors);
+    try {
+        setIsSubmitting(true);
 
-            toast.error(
-                "Please correct the highlighted fields."
-            );
+        setLoadingMessage("Checking username...");
+        const usernameAvailable = await checkUsername();
 
+        if (!usernameAvailable) {
             return;
         }
 
-        try {
+        setLoadingMessage("Uploading images...");
+        const images = await uploadImages();
 
-            setIsSubmitting(true);
+        setLoadingMessage("Creating profile...");
+        const result = await createProfile(images);
 
-            // ============================
-            // 1. Upload Images
-            // ============================
+        toast.success(`${result.profileId} - ${result.message}`);
 
-            setLoadingMessage(
-                "Uploading images..."
-            );
+        navigate("/admin/profiles");
+    } catch (error) {
+        console.error("Create Profile Error:", error);
 
-            const images =
-                await uploadImages();
+        const message =
+            error.response?.data?.message ||
+            error.message ||
+            "Failed to create profile";
 
-            // ============================
-            // 2. Create Profile
-            // ============================
-
-            setLoadingMessage(
-                "Creating profile..."
-            );
-
-            const result =
-                await createProfile(images);
-
-            // ============================
-            // 3. Success
-            // ============================
-
-            toast.success(
-                `${result.profileId} - ${result.message}`
-            );
-
-            // ============================
-            // 4. Redirect
-            // ============================
-
-            navigate("/admin/profiles");
-
-        } catch (error) {
-
-            console.error(
-                "Create Profile Error:",
-                error
-            );
-
-            const message =
-                error.response?.data?.message ||
-                error.message ||
-                "Failed to create profile";
-
-            toast.error(message);
-
-        } finally {
-
-            setIsSubmitting(false);
-
-            setLoadingMessage("");
-
-        }
-    };
+        toast.error(message);
+    } finally {
+        setIsSubmitting(false);
+        setLoadingMessage("");
+    }
+};
 
 
     return (
@@ -405,8 +438,7 @@ function CreateProfile() {
 
            <form
     className="create-profile-form"
-    onSubmit={handleSubmit}
->
+    onSubmit={handleSubmit} >
     <div className="create-profile-columns">
 
         {/* ============================
