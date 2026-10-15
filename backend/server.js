@@ -110,10 +110,9 @@ const userSchema = new mongoose.Schema({
     }
 
 },
-    {
-        // this is to automatically add createdAt and updatedAt fields to the schema in simple terms, it will automatically add the createdAt and updatedAt fields to the schema and update them whenever a document is created or modified.
-        timestamps: true
-    });
+    {// this is to automatically add createdAt and updatedAt fields to the schema in simple terms, it will automatically add the createdAt and updatedAt fields to the schema and update them whenever a document is created or modified.
+        timestamps: true });
+    
 
 // Create Model
 const User = mongoose.model("User", userSchema);
@@ -520,19 +519,27 @@ const isAdmin = (
 
 };
 
-
+const calculateAge = (dateOfBirth) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+};
 
 
 // ✅ UPLOAD PROFILE IMAGES TO CLOUDINARY(🛡️ADMIN Only)
-app.post("/admin/upload-images",
-    isAuthenticatedUser, isAdmin, upload.fields([
+app.post("/admin/upload-images", upload.fields([
         {
             name: "profilePhoto",
             maxCount: 1,
         },
         {
             name: "additionalPhotos",
-            maxCount: 5,
+            maxCount: 4,
         },
         {
             name: "horoscopeImage",
@@ -768,6 +775,190 @@ app.post("/admin/upload-images",
 //     }
 // });
 
+
+// ✅ USER REGISTRATION API
+app.post("/register", async (req, res) => {
+    let user;
+
+    try {
+        const {
+            username,
+            password,
+            fullName,
+            gender,
+            dateOfBirth,
+            mobileNumber,
+            whatsappNumber,
+            height,
+            weight,
+            maritalStatus,
+            religion,
+            caste,
+            subCaste,
+            motherTongue,
+            address,
+            district,
+            state,
+            country,
+            qualification,
+            occupation,
+            companyName,
+            annualIncome,
+            fatherName,
+            fatherOccupation,
+            motherName,
+            motherOccupation,
+            siblings,
+            eatingHabit,
+            smokingHabit,
+            drinkingHabit,
+            aboutMe,
+            partnerExpectations,
+            profilePhoto,
+            additionalPhotos,
+            horoscopeImage
+        } = req.body;
+
+        if (
+            !username ||
+            !password ||
+            !fullName ||
+            !gender ||
+            !dateOfBirth ||
+            !mobileNumber ||
+            !district ||
+            !profilePhoto
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all required fields"
+            });
+        }
+
+        const calculatedAge = calculateAge(dateOfBirth);
+
+        if (calculatedAge < 18) {
+            return res.status(400).json({
+                success: false,
+                message: "Profile age must be 18 or above"
+            });
+        }
+
+        const existingUser = await User.findOne({
+            username: username.trim()
+        });
+
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Username already exists"
+            });
+        }
+
+        const duplicateProfile = await Profile.findOne({
+            fullName,
+            dateOfBirth,
+            mobileNumber
+        });
+
+        if (duplicateProfile) {
+            return res.status(400).json({
+                success: false,
+                message: "Profile already exists"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        user = await User.create({
+            username: username.trim(),
+            password: hashedPassword,
+            role: "user"
+        });
+
+        const latestProfile = await Profile.findOne().sort({
+            createdAt: -1
+        });
+
+        let profileId = "VTM0001";
+
+        if (latestProfile) {
+            const lastNumber = parseInt(
+                latestProfile.profileId.replace("VTM", "")
+            );
+
+            profileId =
+                "VTM" +
+                String(lastNumber + 1).padStart(4, "0");
+        }
+
+        const profile = await Profile.create({
+            profileId,
+            userId: user._id,
+            fullName,
+            gender,
+            dateOfBirth,
+            age: calculatedAge,
+            mobileNumber,
+            whatsappNumber,
+            height,
+            weight,
+            maritalStatus,
+            religion,
+            caste,
+            subCaste,
+            motherTongue,
+            address,
+            district,
+            state,
+            country,
+            qualification,
+            occupation,
+            companyName,
+            annualIncome,
+            fatherName,
+            fatherOccupation,
+            motherName,
+            motherOccupation,
+            siblings,
+            eatingHabit,
+            smokingHabit,
+            drinkingHabit,
+            aboutMe,
+            partnerExpectations,
+            profilePhoto,
+            additionalPhotos,
+            horoscopeImage,
+            credits: 0,
+            totalCredits: 0
+        });
+
+        res.status(201).json({
+            success: true,
+            message: "Registration successful",
+            profileId: profile.profileId
+        });
+    } catch (error) {
+        if (user) {
+            await User.findByIdAndDelete(user._id);
+        }
+
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                success: false,
+                message: error.message
+            });
+        }
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
 // ✅ LOGIN API (Admin + User)
 app.post("/login", async (req, res) => {
     try {
@@ -973,269 +1164,6 @@ app.get("/admin/dashboard", isAuthenticatedUser, isAdmin,
     }
 );
 
-
-
-// CREATE PROFILE API (🛡️ADMIN Only)
-// app.post("/admin/profiles", isAuthenticatedUser,
-//     isAdmin, async (req, res) => {
-//         let user;
-//         try {
-//             // Get all data from request body
-//             const {
-//                 username,
-//                 password,
-
-//                 fullName,
-//                 gender,
-//                 dateOfBirth,
-//                 age,
-
-//                 mobileNumber,
-//                 whatsappNumber,
-
-//                 height,
-//                 weight,
-
-//                 maritalStatus,
-//                 religion,
-//                 caste,
-//                 subCaste,
-//                 motherTongue,
-
-//                 address,
-//                 district,
-//                 state,
-//                 country,
-
-//                 qualification,
-//                 occupation,
-//                 companyName,
-//                 annualIncome,
-
-//                 fatherName,
-//                 fatherOccupation,
-
-//                 motherName,
-//                 motherOccupation,
-
-//                 brothers,
-//                 sisters,
-                
-//                 eatingHabit,
-//                 smokingHabit,
-//                 drinkingHabit,
-
-//                 aboutMe,
-
-//                 partnerExpectations,
-
-//                 profilePhoto,
-//                 additionalPhotos,
-
-//                 horoscopeImage,
-
-//                 credits = 0,
-
-//             } = req.body;
-
-//             // ============================
-//             // Validate required fields
-//             // ============================
-//             if (
-//                 !username ||
-//                 !password ||
-//                 !fullName ||
-//                 !gender ||
-//                 !dateOfBirth ||
-//                 !age ||
-//                 !mobileNumber ||
-//                 !district ||
-//                 !profilePhoto
-//             ) {
-//                 return res.status(400).json({
-//                     success: false,
-//                     message: "Please fill all required fields",
-//                 });
-//             }
-
-//             // ============================
-//             // Check username exists
-//             // ============================
-//             const existingUser = await User.findOne({
-//                 username,
-//             });
-
-//             if (existingUser) {
-//                 return res.status(400).json({
-//                     success: false,
-//                     message: "Username already exists",
-//                 });
-//             }
-
-//             // ============================
-//             // Check duplicate profile if same full name, DOB and mobile number exists that means same person is trying to create multiple profiles
-//             // ============================
-//             const duplicateProfile =
-//                 await Profile.findOne({
-//                     fullName,
-//                     dateOfBirth,
-//                     mobileNumber,
-//                 });
-
-//             if (duplicateProfile) {
-//                 return res.status(400).json({
-//                     success: false,
-//                     message: "Profile already exists",
-//                 });
-//             }
-
-//             // ============================
-//             // Hash password
-//             // ============================
-//             const hashedPassword =
-//                 await bcrypt.hash(password, 10);
-
-//             // ============================
-//             // Create User
-//             // ============================
-//             user = await User.create({
-//                 username,
-//                 password: hashedPassword,
-//                 role: "user",
-//             });
-
-//             // ============================
-//             // Generate Profile ID
-//             // ============================
-//             const latestProfile =
-//                 await Profile.findOne()
-//                     .sort({ createdAt: -1 });
-
-//             let profileId = "VTM0001";
-
-//             if (latestProfile) {
-
-//                 const lastNumber =
-//                     parseInt(
-//                         latestProfile.profileId
-//                             .replace("VTM", "")
-//                     );
-
-//                 profileId =
-//                     "VTM" +
-//                     String(lastNumber + 1)
-//                         .padStart(4, "0");
-//             }
-
-//             // ============================
-//             // Create Profile
-//             // ============================
-//             const profile =
-//                 await Profile.create({
-
-//                     profileId,
-
-//                     userId: user._id,
-
-//                     fullName,
-//                     gender,
-//                     dateOfBirth,
-//                     age,
-
-//                     mobileNumber,
-//                     whatsappNumber,
-
-//                     height,
-//                     weight,
-
-//                     maritalStatus,
-//                     religion,
-//                     caste,
-//                     subCaste,
-//                     motherTongue,
-
-//                     address,
-//                     district,
-//                     state,
-//                     country,
-
-//                     qualification,
-//                     occupation,
-
-//                     companyName,
-//                     annualIncome,
-
-//                     fatherName,
-//                     fatherOccupation,
-
-//                     motherName,
-//                     motherOccupation,
-
-//                     brothers,
-//                     sisters,
-
-//                     eatingHabit, smokingHabit, drinkingHabit,
-
-//                     aboutMe,
-
-//                     partnerExpectations,
-
-//                     profilePhoto,
-//                     additionalPhotos,
-
-//                     horoscopeImage,
-
-//                     credits,
-//                     totalCredits: credits,
-
-//                 });
-
-//             // ============================
-//             // Success Response
-//             // ============================
-//             res.status(201).json({
-//                 success: true,
-//                 message:
-//                     "Profile created successfully",
-//                 profileId:
-//                     profile.profileId,
-//             });
-
-//         }
-
-//         catch (error) {
-//             // Rollback user creation
-//             if (user) {
-//                 await User.findByIdAndDelete(user._id);
-//             }
-
-//             if (error.name === "ValidationError") {
-//                 return res.status(400).json({
-//                     success: false,
-//                     message: error.message
-//                 });
-//             }
-
-//             console.log(error);
-//             res.status(500).json({
-//                 success: false,
-//                 message: error.message
-//             });
-//         }
-//     });
-
-
-
-const calculateAge = (dateOfBirth) => {
-    const birthDate = new Date(dateOfBirth);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-};
 
 // ✅ CHECK USERNAME API
 app.get("/check-username/:username", async (req, res) => {
@@ -2241,10 +2169,59 @@ app.put("/admin/profiles/:id", isAuthenticatedUser, isAdmin, async (req, res) =>
             };
         }
 
-        // UPDATE PROFILE IMAGES
-        profile.profilePhoto = profilePhoto ?? profile.profilePhoto;
-        profile.additionalPhotos = additionalPhotos ?? profile.additionalPhotos;
-        profile.horoscopeImage = horoscopeImage ?? profile.horoscopeImage;
+// UPDATE PROFILE IMAGES
+
+// Profile photo is required.
+// Only update it when a value is provided.
+if (profilePhoto !== undefined) {
+    if (
+        typeof profilePhoto !== "string" ||
+        !profilePhoto.trim()
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "Profile photo is required"
+        });
+    }
+
+    profile.profilePhoto = profilePhoto;
+}
+
+// Additional photos are optional.
+// Admin can add, replace, or remove them.
+if (additionalPhotos !== undefined) {
+    if (!Array.isArray(additionalPhotos)) {
+        return res.status(400).json({
+            success: false,
+            message: "Additional photos must be an array"
+        });
+    }
+
+    if (additionalPhotos.length > 4) {
+        return res.status(400).json({
+            success: false,
+            message: "You can upload a maximum of 4 additional photos"
+        });
+    }
+
+    profile.additionalPhotos = additionalPhotos;
+}
+
+// Horoscope image is optional.
+// Admin can add, replace, or remove it.
+if (horoscopeImage !== undefined) {
+    if (
+        horoscopeImage !== null &&
+        typeof horoscopeImage !== "string"
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid horoscope image"
+        });
+    }
+
+    profile.horoscopeImage = horoscopeImage;
+}
 
         // UPDATE CREDITS
         profile.credits = credits ?? profile.credits;
@@ -3705,6 +3682,540 @@ app.get("/user/profile", isAuthenticatedUser, async (req, res) => {
 );
 
 
+// app.put("/user/profile", isAuthenticatedUser, async (req, res) => {
+//     try {
+//         const {
+//             username,
+//             password,
+//             fullName,
+//             gender,
+//             dateOfBirth,
+//             mobileNumber,
+//             whatsappNumber,
+//             height,
+//             weight,
+//             maritalStatus,
+//             religion,
+//             caste,
+//             subCaste,
+//             motherTongue,
+//             address,
+//             district,
+//             state,
+//             country,
+//             qualification,
+//             occupation,
+//             companyName,
+//             annualIncome,
+//             fatherName,
+//             fatherOccupation,
+//             motherName,
+//             motherOccupation,
+//             siblings,
+//             eatingHabit,
+//             smokingHabit,
+//             drinkingHabit,
+//             aboutMe,
+//             partnerExpectations,
+//             profilePhoto,
+//             additionalPhotos,
+//             horoscopeImage
+//         } = req.body;
+
+//         const profile = await Profile.findOne({
+//             userId: req.user._id
+//         });
+
+//         if (!profile) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: "Profile not found"
+//             });
+//         }
+
+//         const user = await User.findById(req.user._id);
+
+//         if (!user) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: "User not found"
+//             });
+//         }
+
+//         if (username !== undefined) {
+//             const newUsername = username.trim();
+
+//             if (!newUsername) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Username cannot be empty"
+//                 });
+//             }
+
+//             if (newUsername !== user.username) {
+//                 const existingUser = await User.findOne({
+//                     username: newUsername,
+//                     _id: { $ne: req.user._id }
+//                 });
+
+//                 if (existingUser) {
+//                     return res.status(400).json({
+//                         success: false,
+//                         message: "Username already exists"
+//                     });
+//                 }
+
+//                 user.username = newUsername;
+//             }
+//         }
+
+//         if (password !== undefined) {
+//             if (!password.trim()) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Password cannot be empty"
+//                 });
+//             }
+
+//             user.password = await bcrypt.hash(password, 10);
+//         }
+
+//         if (dateOfBirth !== undefined) {
+//             const calculatedAge = calculateAge(dateOfBirth);
+
+//             if (calculatedAge < 18) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Profile age must be 18 or above"
+//                 });
+//             }
+
+//             profile.dateOfBirth = dateOfBirth;
+//             profile.age = calculatedAge;
+//         }
+
+//         if (fullName !== undefined) profile.fullName = fullName;
+//         if (gender !== undefined) profile.gender = gender;
+//         if (mobileNumber !== undefined) profile.mobileNumber = mobileNumber;
+//         if (whatsappNumber !== undefined) profile.whatsappNumber = whatsappNumber;
+//         if (height !== undefined) profile.height = height;
+//         if (weight !== undefined) profile.weight = weight;
+//         if (maritalStatus !== undefined) profile.maritalStatus = maritalStatus;
+//         if (religion !== undefined) profile.religion = religion;
+//         if (caste !== undefined) profile.caste = caste;
+//         if (subCaste !== undefined) profile.subCaste = subCaste;
+//         if (motherTongue !== undefined) profile.motherTongue = motherTongue;
+//         if (address !== undefined) profile.address = address;
+//         if (district !== undefined) profile.district = district;
+//         if (state !== undefined) profile.state = state;
+//         if (country !== undefined) profile.country = country;
+//         if (qualification !== undefined) profile.qualification = qualification;
+//         if (occupation !== undefined) profile.occupation = occupation;
+//         if (companyName !== undefined) profile.companyName = companyName;
+//         if (annualIncome !== undefined) profile.annualIncome = annualIncome;
+//         if (fatherName !== undefined) profile.fatherName = fatherName;
+//         if (fatherOccupation !== undefined) profile.fatherOccupation = fatherOccupation;
+//         if (motherName !== undefined) profile.motherName = motherName;
+//         if (motherOccupation !== undefined) profile.motherOccupation = motherOccupation;
+//         if (eatingHabit !== undefined) profile.eatingHabit = eatingHabit;
+//         if (smokingHabit !== undefined) profile.smokingHabit = smokingHabit;
+//         if (drinkingHabit !== undefined) profile.drinkingHabit = drinkingHabit;
+//         if (aboutMe !== undefined) profile.aboutMe = aboutMe;
+//         if (partnerExpectations !== undefined) {
+//             profile.partnerExpectations = partnerExpectations;
+//         }
+//         if (profilePhoto !== undefined) profile.profilePhoto = profilePhoto;
+//         if (additionalPhotos !== undefined) {
+//             if (additionalPhotos.length > 4) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "You can upload a maximum of 4 additional photos"
+//                 });
+//             }
+
+//             profile.additionalPhotos = additionalPhotos;
+//         }
+//         if (horoscopeImage !== undefined) {
+//             profile.horoscopeImage = horoscopeImage;
+//         }
+
+//         if (siblings !== undefined) {
+//             if (typeof siblings !== "object") {
+//                 return res.status(400).json({
+//                     success: false,
+//                     message: "Invalid siblings data"
+//                 });
+//             }
+
+//             profile.siblings = {
+//                 ...profile.siblings,
+//                 ...siblings,
+//                 eb: {
+//                     ...profile.siblings?.eb,
+//                     ...siblings.eb
+//                 },
+//                 yb: {
+//                     ...profile.siblings?.yb,
+//                     ...siblings.yb
+//                 },
+//                 es: {
+//                     ...profile.siblings?.es,
+//                     ...siblings.es
+//                 },
+//                 ys: {
+//                     ...profile.siblings?.ys,
+//                     ...siblings.ys
+//                 }
+//             };
+//         }
+
+//         await user.save();
+//         await profile.save();
+
+//         return res.status(200).json({
+//             success: true,
+//             message: "Profile updated successfully",
+//             profile
+//         });
+//     } catch (error) {
+//         console.error("User Update Profile Error:", error);
+
+//         if (error.name === "ValidationError") {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: error.message
+//             });
+//         }
+
+//         return res.status(500).json({
+//             success: false,
+//             message: "Failed to update profile",
+//             error: error.message
+//         });
+//     }
+// });
+// ✅ USER UPDATE PROFILE API
+app.put("/user/profile", isAuthenticatedUser, async (req, res) => {
+    try {
+        const {
+            username,
+            password,
+            fullName,
+            gender,
+            dateOfBirth,
+            mobileNumber,
+            whatsappNumber,
+            height,
+            weight,
+            maritalStatus,
+            religion,
+            caste,
+            subCaste,
+            motherTongue,
+            address,
+            district,
+            state,
+            country,
+            qualification,
+            occupation,
+            companyName,
+            annualIncome,
+            fatherName,
+            fatherOccupation,
+            motherName,
+            motherOccupation,
+            siblings,
+            eatingHabit,
+            smokingHabit,
+            drinkingHabit,
+            aboutMe,
+            partnerExpectations,
+            profilePhoto,
+            additionalPhotos,
+            horoscopeImage
+        } = req.body;
+
+        const profile = await Profile.findOne({
+            userId: req.user._id
+        });
+
+        if (!profile) {
+            return res.status(404).json({
+                success: false,
+                message: "Profile not found"
+            });
+        }
+
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        if (username !== undefined) {
+            if (typeof username !== "string") {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid username"
+                });
+            }
+
+            const newUsername = username.trim();
+
+            if (!newUsername) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Username cannot be empty"
+                });
+            }
+
+            if (newUsername !== user.username) {
+                const existingUser = await User.findOne({
+                    username: newUsername,
+                    _id: { $ne: req.user._id }
+                });
+
+                if (existingUser) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Username already exists"
+                    });
+                }
+
+                user.username = newUsername;
+            }
+        }
+
+        if (password !== undefined) {
+            if (typeof password !== "string" || !password.trim()) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Password cannot be empty"
+                });
+            }
+
+            if (password.length < 6) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Password must be at least 6 characters"
+                });
+            }
+
+            user.password = await bcrypt.hash(password, 10);
+        }
+
+        if (dateOfBirth !== undefined) {
+            const calculatedAge = calculateAge(dateOfBirth);
+
+            if (isNaN(calculatedAge) || calculatedAge < 18) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Profile age must be 18 or above"
+                });
+            }
+
+            profile.dateOfBirth = dateOfBirth;
+            profile.age = calculatedAge;
+        }
+
+        if (fullName !== undefined) profile.fullName = fullName;
+        if (gender !== undefined) profile.gender = gender;
+        if (mobileNumber !== undefined) profile.mobileNumber = mobileNumber;
+        if (whatsappNumber !== undefined) profile.whatsappNumber = whatsappNumber;
+        if (height !== undefined) profile.height = height;
+        if (weight !== undefined) profile.weight = weight;
+        if (maritalStatus !== undefined) profile.maritalStatus = maritalStatus;
+        if (religion !== undefined) profile.religion = religion;
+        if (caste !== undefined) profile.caste = caste;
+        if (subCaste !== undefined) profile.subCaste = subCaste;
+        if (motherTongue !== undefined) profile.motherTongue = motherTongue;
+        if (address !== undefined) profile.address = address;
+        if (district !== undefined) profile.district = district;
+        if (state !== undefined) profile.state = state;
+        if (country !== undefined) profile.country = country;
+        if (qualification !== undefined) profile.qualification = qualification;
+        if (occupation !== undefined) profile.occupation = occupation;
+        if (companyName !== undefined) profile.companyName = companyName;
+        if (annualIncome !== undefined) profile.annualIncome = annualIncome;
+        if (fatherName !== undefined) profile.fatherName = fatherName;
+        if (fatherOccupation !== undefined) profile.fatherOccupation = fatherOccupation;
+        if (motherName !== undefined) profile.motherName = motherName;
+        if (motherOccupation !== undefined) profile.motherOccupation = motherOccupation;
+        if (eatingHabit !== undefined) profile.eatingHabit = eatingHabit;
+        if (smokingHabit !== undefined) profile.smokingHabit = smokingHabit;
+        if (drinkingHabit !== undefined) profile.drinkingHabit = drinkingHabit;
+        if (aboutMe !== undefined) profile.aboutMe = aboutMe;
+
+        if (siblings !== undefined) {
+            if (
+                typeof siblings !== "object" ||
+                Array.isArray(siblings) ||
+                siblings === null
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid siblings data"
+                });
+            }
+
+            const siblingTypes = ["eb", "yb", "es", "ys"];
+
+            for (const type of siblingTypes) {
+                if (siblings[type] !== undefined) {
+                    if (
+                        typeof siblings[type] !== "object" ||
+                        Array.isArray(siblings[type]) ||
+                        siblings[type] === null
+                    ) {
+                        return res.status(400).json({
+                            success: false,
+                            message: `Invalid ${type} sibling data`
+                        });
+                    }
+
+                    const total =
+                        siblings[type].total !== undefined
+                            ? Number(siblings[type].total)
+                            : Number(profile.siblings?.[type]?.total || 0);
+
+                    const married =
+                        siblings[type].married !== undefined
+                            ? Number(siblings[type].married)
+                            : Number(profile.siblings?.[type]?.married || 0);
+
+                    if (
+                        !Number.isInteger(total) ||
+                        !Number.isInteger(married) ||
+                        total < 0 ||
+                        married < 0 ||
+                        married > total
+                    ) {
+                        return res.status(400).json({
+                            success: false,
+                            message: `Invalid ${type} sibling values`
+                        });
+                    }
+                }
+            }
+
+            profile.siblings = {
+                ...profile.siblings,
+                ...siblings,
+                eb: {
+                    ...profile.siblings?.eb,
+                    ...siblings.eb
+                },
+                yb: {
+                    ...profile.siblings?.yb,
+                    ...siblings.yb
+                },
+                es: {
+                    ...profile.siblings?.es,
+                    ...siblings.es
+                },
+                ys: {
+                    ...profile.siblings?.ys,
+                    ...siblings.ys
+                }
+            };
+        }
+
+        if (partnerExpectations !== undefined) {
+            if (
+                typeof partnerExpectations !== "object" ||
+                Array.isArray(partnerExpectations) ||
+                partnerExpectations === null
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid partner expectations data"
+                });
+            }
+
+            profile.partnerExpectations = {
+                ...profile.partnerExpectations,
+                ...partnerExpectations
+            };
+        }
+
+        if (profilePhoto !== undefined) {
+            if (typeof profilePhoto !== "string") {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid profile photo"
+                });
+            }
+
+            profile.profilePhoto = profilePhoto;
+        }
+
+        if (additionalPhotos !== undefined) {
+            if (!Array.isArray(additionalPhotos)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Additional photos must be an array"
+                });
+            }
+
+            if (additionalPhotos.length > 4) {
+                return res.status(400).json({
+                    success: false,
+                    message: "You can upload a maximum of 4 additional photos"
+                });
+            }
+
+            profile.additionalPhotos = additionalPhotos;
+        }
+if (horoscopeImage !== undefined) {
+    if (
+        horoscopeImage !== null &&
+        typeof horoscopeImage !== "string"
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid horoscope image"
+        });
+    }
+
+    profile.horoscopeImage = horoscopeImage;
+}
+        await user.save();
+        await profile.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            profile
+        });
+    } catch (error) {
+        console.error("User Update Profile Error:", error);
+
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                success: false,
+                message: error.message
+            });
+        }
+
+        if (error.code === 11000) {
+            return res.status(400).json({
+                success: false,
+                message: "Username already exists"
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update profile",
+            error: error.message
+        });
+    }
+});
+
+
 // ===========================================
 // ✅ GET MY UNLOCKED PROFILES API
 // ===========================================
@@ -3975,18 +4486,10 @@ app.get("/user/dashboard-stats", isAuthenticatedUser, async (req, res) => {
 });
 
 
-// ===========================================
-// GET PROFILE UNLOCK REPORT (ADMIN ONLY)
-// ===========================================
-
-app.get(
-    "/admin/reports/profile-views",
-    isAuthenticatedUser,
-    isAdmin,
+//  ✅ GET PROFILE UNLOCK REPORT (🛡️ADMIN Only)
+app.get("/admin/reports/profile-views",isAuthenticatedUser,isAdmin,
     async (req, res) => {
-
         try {
-
             const {
                 page = 1,
                 limit = 10,
@@ -4008,43 +4511,28 @@ app.get(
             // ===========================================
             // Date Filter
             // ===========================================
-
             const filter = {};
 
             if (fromDate || toDate) {
-
                 filter.viewedAt = {};
-
                 if (fromDate) {
-
                     filter.viewedAt.$gte =
                         new Date(fromDate);
-
                 }
 
                 if (toDate) {
-
                     const endDate =
                         new Date(toDate);
-
                     endDate.setHours(
                         23,
                         59,
                         59,
                         999
                     );
-
-                    filter.viewedAt.$lte =
-                        endDate;
-
+                    filter.viewedAt.$lte = endDate;                   
                 }
-
             }
-
-            // ===========================================
-            // Get Unlock Records
-            // ===========================================
-
+            // Get Unlock Records           
             const reports = await ProfileView
                 .find(filter)
                 .populate(

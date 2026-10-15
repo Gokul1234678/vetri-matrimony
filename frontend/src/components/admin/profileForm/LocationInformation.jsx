@@ -58,7 +58,6 @@ function LocationInformation({
                     <option value="Andhra Pradesh" />
                     <option value="Telangana" />
                     <option value="Maharashtra" />
-                    <option value="Karnataka" />
                     <option value="Delhi" />
                     <option value="Gujarat" />
                     <option value="Rajasthan" />
@@ -106,7 +105,8 @@ function LocationInformation({
                 required
                 error={errors.address}
                 placeholder="Example: No. 123, Anna Nagar West, Chennai, Tamil Nadu - 600040"
-            />
+                 maxLength={300}
+           />
 
         </SectionCard>
     );

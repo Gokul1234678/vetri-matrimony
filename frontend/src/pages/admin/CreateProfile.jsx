@@ -59,7 +59,7 @@ const initialFormData = {
     qualification: "",
     occupation: "",
     companyName: "",
-    employmentType: "",
+    // employmentType: "",
     annualIncome: "",
 
     // Family
@@ -78,7 +78,7 @@ siblings: {
     eatingHabit: "",
     smokingHabit: "",
     drinkingHabit: "",
-    physicalStatus: "",
+    // physicalStatus: "",
 
     // About Me
     aboutMe: "",
@@ -220,7 +220,7 @@ const handleChange = (e) => {
                     additionalPhotos: [
                         ...prev.additionalPhotos,
                         ...Array.from(files),
-                    ].slice(0, 5), // Maximum 5 photos
+                    ].slice(0, 4), // Maximum 5 photos
                 }));
                 break;
 

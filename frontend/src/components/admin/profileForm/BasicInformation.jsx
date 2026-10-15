@@ -6,6 +6,8 @@ function BasicInformation({
     formData,
     errors,
     handleChange,
+    showProfileId = true,
+    showStatus = true,
 }) {
     return (
         <SectionCard
@@ -14,15 +16,15 @@ function BasicInformation({
             icon="bi-person"
         >
             <div className="form-grid">
-                {/* Profile ID */}
-                <InputField
-                    label="Profile ID"
-                    value="Auto Generated"
-                    readOnly
-                    placeholder="Auto Generated"
-                />
+                {showProfileId && (
+                    <InputField
+                        label="Profile ID"
+                        value="Auto Generated"
+                        readOnly
+                        placeholder="Auto Generated"
+                    />
+                )}
 
-                {/* Gender */}
                 <SelectField
                     label="Gender"
                     name="gender"
@@ -42,7 +44,6 @@ function BasicInformation({
                     ]}
                 />
 
-                {/* Full Name */}
                 <InputField
                     label="Full Name"
                     name="fullName"
@@ -53,7 +54,6 @@ function BasicInformation({
                     placeholder="Example: Gokul Selvan"
                 />
 
-                {/* Date of Birth */}
                 <InputField
                     label="Date of Birth"
                     type="date"
@@ -64,7 +64,6 @@ function BasicInformation({
                     error={errors.dateOfBirth}
                 />
 
-                {/* Age - Automatically Calculated */}
                 <InputField
                     label="Age"
                     type="number"
@@ -75,7 +74,6 @@ function BasicInformation({
                     placeholder="Automatically calculated"
                 />
 
-                {/* Mobile Number */}
                 <InputField
                     label="Mobile Number"
                     type="tel"
@@ -89,7 +87,6 @@ function BasicInformation({
                     inputMode="numeric"
                 />
 
-                {/* WhatsApp Number */}
                 <InputField
                     label="WhatsApp Number"
                     type="tel"
@@ -102,25 +99,26 @@ function BasicInformation({
                     inputMode="numeric"
                 />
 
-                {/* Profile Status */}
-                <SelectField
-                    label="Profile Status"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    required
-                    error={errors.status}
-                    options={[
-                        {
-                            value: "active",
-                            label: "Active",
-                        },
-                        {
-                            value: "inactive",
-                            label: "Inactive",
-                        },
-                    ]}
-                />
+                {showStatus && (
+                    <SelectField
+                        label="Profile Status"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        required
+                        error={errors.status}
+                        options={[
+                            {
+                                value: "active",
+                                label: "Active",
+                            },
+                            {
+                                value: "inactive",
+                                label: "Inactive",
+                            },
+                        ]}
+                    />
+                )}
             </div>
         </SectionCard>
     );

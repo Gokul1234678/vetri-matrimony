@@ -1,11 +1,8 @@
-
-
 import { useEffect, useState } from "react";
-
+import { useAuth } from "../../context/AuthContext";
 import PageLoader from "../../components/common/PageLoader";
 
 import "../../assets/css/user/myProfile.css";
-
 
 import UserNavbar from "../../components/common/UserNavbar";
 import Footer from "../../components/common/Footer";
@@ -30,11 +27,11 @@ import ProfileChangesNotice from "../../components/user/ProfileChangesNotice";
 import api from "../../services/api";
 
 function MyProfile() {
-
+const { user } = useAuth();
     const [profile, setProfile] = useState(null);
 
     const [loading, setLoading] = useState(true);
-
+  
     const fetchProfile = async () => {
 
         try {
@@ -90,7 +87,10 @@ function MyProfile() {
 
                             <>
 
-                                <ProfileStats profile={profile} />
+                                <ProfileStats
+    profile={profile}
+    username={user?.username}
+/>
 
                                 <MyProfileHeader profile={profile} />
 
@@ -114,7 +114,6 @@ function MyProfile() {
 
                                 <PartnerExpectations profile={profile} />
                                 <CreditsSummary profile={profile} />
-                                <ProfileChangesNotice />
                             </>
 
                     }

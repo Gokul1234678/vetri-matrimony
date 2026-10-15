@@ -1,20 +1,20 @@
 /* ==========================================================
    Vetri Matrimony — Navbar
-   Colors pulled from logo: deep green + golden yellow
+   Colors: Deep Green + Golden Yellow
 ========================================================== */
 
 :root {
     --vm-green: #1b6b2e;
     --vm-green-dark: #12481f;
+    --vm-green-hover: #155a26;
     --vm-gold: #f5a623;
-    --vm-gold-dark: #e0930f;
+    --vm-gold-dark: #d99212;
     --vm-text: #2b2b2b;
-    --vm-text-light: #6b6b6b;
     --vm-white: #ffffff;
 }
 
 /* ==========================================================
-   Header / Container
+   Header
 ========================================================== */
 
 .navbar-container {
@@ -33,6 +33,7 @@
 }
 
 .navbar-wrapper {
+    width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 14px 32px;
@@ -40,6 +41,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 24px;
+    box-sizing: border-box;
 }
 
 /* ==========================================================
@@ -54,14 +56,14 @@
 }
 
 .logo {
-    height: 68px;   
+    display: block;
     width: auto;
+    height: 68px;
     object-fit: contain;
-    
 }
 
 /* ==========================================================
-   Desktop Menu
+   Desktop Navigation
 ========================================================== */
 
 .desktop-menu {
@@ -71,16 +73,13 @@
     margin-left: auto;
 }
 
-.desktop-menu a {
-font-weight: 600;
-}
 .nav-link {
     position: relative;
     text-decoration: none;
+    color: var(--vm-text);
     font-size: 15px;
     font-weight: 600;
     letter-spacing: 0.3px;
-    color: var(--vm-text);
     text-transform: uppercase;
     padding-bottom: 6px;
     transition: color 0.2s ease;
@@ -120,50 +119,112 @@ font-weight: 600;
 .right-section {
     display: flex;
     align-items: center;
-    gap: 18px;
-}
-
-.login-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: var(--vm-gold);
-    color: var(--vm-white);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    padding: 10px 22px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.login-btn i {
-    font-size: 16px;
-}
-
-.login-btn:hover {
-    background-color: var(--vm-gold-dark);
-    transform: translateY(-1px);
+    gap: 10px;
+    margin-left: 20px;
+    flex-shrink: 0;
 }
 
 /* ==========================================================
-   Mobile Menu Button (Hamburger)
+   Desktop Login Button
+========================================================== */
+
+.login-btn-nav {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 104px !important;
+    min-width: 104px !important;
+    max-width: 104px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: var(--vm-green);
+    border: 1px solid var(--vm-green);
+    color: var(--vm-white);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.login-btn-nav i {
+    font-size: 15px;
+}
+
+.login-btn-nav:hover {
+    background-color: var(--vm-green-hover);
+    border-color: var(--vm-green-hover);
+    color: var(--vm-white);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(27, 107, 46, 0.22);
+}
+
+/* ==========================================================
+   Desktop Register Button
+========================================================== */
+
+.register-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 104px !important;
+    min-width: 104px !important;
+    max-width: 104px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: var(--vm-gold);
+    border: 1px solid var(--vm-gold);
+    color: #1f2521;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.register-btn:hover {
+    background-color: var(--vm-gold-dark);
+    border-color: var(--vm-gold-dark);
+    color: #1f2521;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(245, 166, 35, 0.25);
+}
+
+/* ==========================================================
+   Hamburger Button
 ========================================================== */
 
 .menu-btn {
     display: none;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
     gap: 5px;
-    width: 32px;
-    height: 32px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    margin: 0;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    flex-shrink: 0;
     z-index: 1100;
 }
 
@@ -173,7 +234,9 @@ font-weight: 600;
     height: 2.5px;
     background-color: var(--vm-green-dark);
     border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
 }
 
 .menu-btn.menu-open span:nth-child(1) {
@@ -189,69 +252,145 @@ font-weight: 600;
 }
 
 /* ==========================================================
-   Mobile Menu Panel
+   Mobile Menu
 ========================================================== */
 
 .mobile-menu {
     display: none;
 }
 
+.mobile-link {
+    text-decoration: none;
+    color: var(--vm-text);
+}
+
+/* ==========================================================
+   Mobile Login Button
+========================================================== */
+
+.mobile-login-btn-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 16px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: var(--vm-green);
+    border: 1px solid var(--vm-green);
+    color: var(--vm-white);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.mobile-login-btn-nav:hover {
+    background-color: var(--vm-green-hover);
+    color: var(--vm-white);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(27, 107, 46, 0.2);
+}
+
+/* ==========================================================
+   Mobile Register Button
+========================================================== */
+
+.mobile-register-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 16px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: var(--vm-gold);
+    border: 1px solid var(--vm-gold);
+    color: #1f2521;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.mobile-register-btn:hover {
+    background-color: var(--vm-gold-dark);
+    color: #1f2521;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(245, 166, 35, 0.22);
+}
+
+/* ==========================================================
+   Backdrop
+========================================================== */
+
 .menu-backdrop {
     display: none;
 }
 
 /* ==========================================================
-   Responsive — Tablet & Mobile
+   RESPONSIVE
+   Important: 1100px breakpoint
 ========================================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
 
     .navbar-wrapper {
         padding: 12px 20px;
     }
 
     .logo {
-        height: 44px;
+        height: 48px;
     }
 
+    /* Hide desktop navigation */
     .desktop-menu {
         display: none;
     }
 
+    /* Hide desktop Login/Register */
+    .login-btn-nav,
+    .register-btn {
+        display: none !important;
+    }
+
+    /* Keep hamburger on right */
     .right-section {
-        gap: 14px;
-    }
-
-    .login-btn span {
-        display: none;
-    }
-
-    .login-btn {
-        padding: 10px;
-        border-radius: 50%;
-    }
-
-    .login-btn i {
-        font-size: 18px;
-        margin: 0;
+        margin-left: auto;
+        gap: 8px;
     }
 
     .menu-btn {
         display: flex;
     }
 
-    /* Slide-in mobile panel */
+    /* ======================================================
+       Mobile Side Menu
+    ====================================================== */
+
     .mobile-menu {
         display: flex;
         flex-direction: column;
         position: fixed;
         top: 0;
         right: -280px;
-        width: 260px;
+        width: 280px;
         height: 100vh;
-        background-color: var(--vm-white);
         padding: 90px 24px 24px;
+        box-sizing: border-box;
         gap: 6px;
+        background-color: var(--vm-white);
         box-shadow: -4px 0 16px rgba(0, 0, 0, 0.12);
         transition: right 0.3s ease;
         z-index: 1050;
@@ -261,16 +400,20 @@ font-weight: 600;
         right: 0;
     }
 
+    /* ======================================================
+       Mobile Links
+    ====================================================== */
+
     .mobile-link {
-        text-decoration: none;
         font-size: 15px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.3px;
-        color: var(--vm-text);
         padding: 14px 4px;
         border-bottom: 1px solid #f0f0f0;
-        transition: color 0.2s ease, padding-left 0.2s ease;
+        transition:
+            color 0.2s ease,
+            padding-left 0.2s ease;
     }
 
     .mobile-link:hover,
@@ -279,26 +422,10 @@ font-weight: 600;
         padding-left: 10px;
     }
 
-    .mobile-login-btn {
-        margin-top: 20px;
-        text-align: center;
-        background-color: var(--vm-gold);
-        color: var(--vm-white);
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 12px;
-        border-radius: 6px;
-        transition: background-color 0.2s ease;
-    }
+    /* ======================================================
+       Backdrop
+    ====================================================== */
 
-    .mobile-login-btn:hover {
-        background-color: var(--vm-gold-dark);
-    }
-
-    /* Backdrop behind mobile menu */
     .menu-backdrop {
         display: block;
         position: fixed;
@@ -308,6 +435,10 @@ font-weight: 600;
     }
 }
 
+/* ==========================================================
+   Small Mobile
+========================================================== */
+
 @media (max-width: 480px) {
 
     .navbar-wrapper {
@@ -315,11 +446,17 @@ font-weight: 600;
     }
 
     .logo {
-        height: 38px;
+        height: 40px;
     }
 
     .mobile-menu {
         width: 100%;
         right: -100%;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .mobile-menu.show-menu {
+        right: 0;
     }
 }

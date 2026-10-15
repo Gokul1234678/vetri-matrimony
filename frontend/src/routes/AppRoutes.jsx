@@ -5,6 +5,7 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 // Public Pages
 // import Home from "../pages/public/Home";
 import HomeRedirect from "../components/common/HomeRedirect";
+import Register from "../pages/public/Register";
 import Login from "../pages/public/Login";
 import ContactUs from "../pages/public/ContactUs";
 import NotFound from "../pages/public/NotFound";
@@ -19,6 +20,7 @@ import BrowseProfiles from "../pages/user/BrowseProfiles";
 import ProfileDetails from "../pages/user/ProfileDetails";
 import MyProfile from "../pages/user/MyProfile";
 import UnlockedProfiles from "../pages/user/UnlockedProfiles";
+import UserEditProfile from "../pages/user/EditProfile";
 
 // // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
@@ -40,13 +42,18 @@ function AppRoutes() {
             <Route path="/" element={<HomeRedirect />} />
 
             {/* <Route path="/login" element={<Login />} /> */}
-            <Route
-                path="/login"
+            <Route path="/login"
                 element={
                     // GuestRoute is a wrapper component that checks if the user is authenticated. If the user is authenticated, it redirects them to their respective dashboard based on their role. If the user is not authenticated, it renders the child component (in this case, the Login component).
                     <GuestRoute>
                         <Login />
                     </GuestRoute>
+                }
+            />
+
+            <Route path="/register"
+                element={
+                    <GuestRoute><Register /></GuestRoute>
                 }
             />
 
@@ -92,6 +99,15 @@ function AppRoutes() {
                 }
             />
 
+<Route
+    path="/my-profile/edit"
+    element={
+        <ProtectedRoute role="user">
+            <UserEditProfile />
+        </ProtectedRoute>
+    }
+/>
+
             {/* unlocked profiles */}
             <Route
                 path="/unlocked-profiles"
@@ -129,8 +145,8 @@ function AppRoutes() {
 
 
 
-{/* this is a catch-all route for 404 errors */}
-<Route path="*" element={<NotFound />} />
+            {/* this is a catch-all route for 404 errors */}
+            <Route path="*" element={<NotFound />} />
         </Routes>
 
     );

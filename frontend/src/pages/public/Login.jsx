@@ -372,51 +372,18 @@ const handleSubmit = async (e) => {
 
                     </div>
 
-                    {/* Information Box */}
-
-                    <div className="login-info">
-
-                        <div className="info-icon">
-
-                            <i className="bi bi-shield-lock"></i>
-
-                        </div>
-
-                        <div>
-
-                            <h5>
-
-                                Single Login For All
-
-                            </h5>
-
-                            <p>
-
-                                Use the same login to access both user and admin panels.
-
-                            </p>
-
-                        </div>
-
-                    </div>
 
                     {/* Footer */}
 
-                    <div className="login-footer">
+<div className="login-footer">
+    <span>
+        Don't have an account?
+    </span>
 
-                        <span>
-
-                            Don't have an account?
-
-                        </span>
-
-                        <Link to="/contact-us">
-
-                            Contact Admin
-
-                        </Link>
-
-                    </div>
+    <Link to="/register">
+        Register Now
+    </Link>
+</div>
 
                 </div>
 

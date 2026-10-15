@@ -48,6 +48,8 @@ function PersonalInformation({
                     onChange={handleChange}
                     error={errors.weight}
                     placeholder="Example: 70"
+                     min="1"
+                    max="300"
                 />
 
 

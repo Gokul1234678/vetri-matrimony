@@ -13,7 +13,7 @@ function AboutMeSection({
     icon="bi-person-lines-fill"
 >
             <TextAreaField
-                label="About Me"
+                // label="About Me"
                 name="aboutMe"
                 value={formData.aboutMe}
                 onChange={handleChange}
