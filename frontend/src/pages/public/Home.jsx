@@ -15,17 +15,11 @@ function Home() {
 // ==========================
 
 const [searchFilters, setSearchFilters] = useState({
-
     gender: "",
-
     ageFrom: "",
-
     ageTo: "",
-
     religion: "",
-
     caste: ""
-
 });
 
 // ==========================

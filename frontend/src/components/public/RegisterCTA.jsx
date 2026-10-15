@@ -1,64 +1,38 @@
 import "../../assets/css/public/RegisterCTA.css";
-import { SITE_CONFIG } from "../../config/siteConfig";
+import { Link } from "react-router-dom";
 
 function RegisterCTA() {
-
     return (
-
-        <section className="register-cta">
-
-            <div className="register-box">
-
-                {/* Left */}
-
-                <div className="register-left">
-
-                    <div className="register-icon">
-
+        <section className="register-cta-section">
+            <div className="register-cta-box">
+                <div className="register-cta-content">
+                    <div className="register-cta-icon">
                         <i className="bi bi-person-vcard"></i>
-
                     </div>
-
-                    <div>
-
-                        <h3>
-                            Want to see full profile details?
+                    <div className="register-cta-copy">
+                        <h3 className="register-cta-title">
+                            Create Your Matrimonial Profile
                         </h3>
-
-                        <p>
-                            Please visit our office and register with us to view complete details and contact information.
+                        <p className="register-cta-description">
+                            Register online and create your matrimonial profile to discover suitable matches and connect with the right partner.
                         </p>
-
                     </div>
-
                 </div>
-
-                {/* Right */}
-
-                <div className="register-right">
-
-                    <a
-                        href={`tel:${SITE_CONFIG.phone}`}
-                        className="register-btn"
+                <div className="register-cta-action">
+                    <Link
+                        to="/register"
+                        className="register-cta-button"
                     >
                         REGISTER NOW
-
-                        <i className="bi bi-arrow-right ms-2"></i>
-
-                    </a>
-
-                    <small>
-                        or visit our office to register
+                        <i className="bi bi-arrow-right"></i>
+                    </Link>
+                    <small className="register-cta-note">
+                        Create your profile online in a few simple steps
                     </small>
-
                 </div>
-
             </div>
-
         </section>
-
     );
-
 }
 
 export default RegisterCTA;

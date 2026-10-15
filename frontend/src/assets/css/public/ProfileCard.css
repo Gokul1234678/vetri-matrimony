@@ -47,7 +47,7 @@
 
     object-fit:cover;
 
-    filter:blur(10px);
+    /* filter:blur(10px); */
 
     transition:.3s;
 

@@ -6,14 +6,14 @@ export const NAV_LINKS = [
     },
 
     
-    {
-        name: "About Us",
-        path: "/about-us"
-    },
+    // {
+    //     name: "About Us",
+    //     path: "/about-us"
+    // },
 
     {
         name: "Contact Us",
-        path: "/contact-us"
+        path: "/guest-contact-us"
     }
 
 ];

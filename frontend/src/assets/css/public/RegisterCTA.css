@@ -1,211 +1,171 @@
-/* ==============================
-   REGISTER CTA
-================================*/
-
-.register-cta{
-
-    padding:40px 20px;
-
+.register-cta-section {
+    width: 100%;
+    padding: 40px 20px;
+    box-sizing: border-box;
 }
 
-.register-box{
-
-    max-width:1250px;
-
-    margin:auto;
-
-    background:#3d2415;
-
-    border-radius:12px;
-
-    padding:35px 45px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:40px;
-
+.register-cta-box {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 35px 45px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    background: #3d2415;
+    border-radius: 12px;
 }
 
-/* Left */
-
-.register-left{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:25px;
-
+.register-cta-content {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
-.register-icon{
-
-    width:90px;
-
-    height:90px;
-
-    border:2px solid #f4b400;
-
-    border-radius:12px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    flex-shrink:0;
-
+.register-cta-icon {
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    border: 2px solid #f4b400;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
-.register-icon i{
-
-    color:#f4b400;
-
-    font-size:45px;
-
+.register-cta-icon i {
+    color: #f4b400;
+    font-size: 45px;
 }
 
-.register-left h3{
-
-    color:#fff;
-
-    font-size:32px;
-
-    margin-bottom:10px;
-
-    font-weight:700;
-
+.register-cta-copy {
+    min-width: 0;
 }
 
-.register-left p{
-
-    color:#ddd;
-
-    margin:0;
-
-    font-size:17px;
-
-    max-width:600px;
-
+.register-cta-title {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
-/* Right */
-
-.register-right{
-
-    text-align:center;
-
+.register-cta-description {
+    max-width: 600px;
+    margin: 0;
+    color: #ddd;
+    font-size: 17px;
+    line-height: 1.5;
 }
 
-.register-btn{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:10px;
-
-    background:#f4b400;
-
-    color:#222;
-
-    padding:18px 40px;
-
-    text-decoration:none;
-
-    border-radius:8px;
-
-    font-weight:700;
-
-    transition:.3s;
-
+.register-cta-action {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-.register-btn:hover{
-
-    background:#d89a00;
-
-    color:#fff;
-
+.register-cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 170px;
+    padding: 16px 30px;
+    box-sizing: border-box;
+    background: #f4b400;
+    color: #222;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-.register-right small{
-
-    display:block;
-
-    margin-top:10px;
-
-    color:#ddd;
-
+.register-cta-button i {
+    font-size: 16px;
 }
 
-/* Tablet */
+.register-cta-button:hover {
+    background: #d89a00;
+    color: #fff;
+    transform: translateY(-1px);
+}
 
-@media(max-width:992px){
+.register-cta-note {
+    display: block;
+    margin-top: 10px;
+    color: #ddd;
+    font-size: 12px;
+    line-height: 1.4;
+}
 
-    .register-box{
-
-        flex-direction:column;
-
-        text-align:center;
-
+@media (max-width: 992px) {
+    .register-cta-box {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .register-left{
-
-        flex-direction:column;
-
+    .register-cta-content {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
     }
 
+    .register-cta-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .register-cta-description {
+        max-width: 650px;
+    }
+
+    .register-cta-action {
+        width: 100%;
+    }
 }
 
-/* Mobile */
-
-@media(max-width:576px){
-
-    .register-box{
-
-        padding:25px;
-
+@media (max-width: 576px) {
+    .register-cta-section {
+        padding: 30px 15px;
     }
 
-    .register-left h3{
-
-        font-size:24px;
-
+    .register-cta-box {
+        padding: 25px 20px;
+        gap: 25px;
+        border-radius: 10px;
     }
 
-    .register-left p{
-
-        font-size:15px;
-
+    .register-cta-icon {
+        width: 70px;
+        height: 70px;
+        min-width: 70px;
     }
 
-    .register-icon{
-
-        width:70px;
-
-        height:70px;
-
+    .register-cta-icon i {
+        font-size: 34px;
     }
 
-    .register-icon i{
-
-        font-size:34px;
-
+    .register-cta-title {
+        font-size: 24px;
     }
 
-    .register-btn{
-
-        width:100%;
-
+    .register-cta-description {
+        font-size: 15px;
     }
 
+    .register-cta-button {
+        width: 100%;
+        min-width: 0;
+        padding: 15px 25px;
+    }
 }

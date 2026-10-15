@@ -40,19 +40,15 @@ function ContactUs() {
 
                                 </div>
 
-                                <h1>
-                                    Contact Us
-                                </h1>
+<h1>
+    Contact Us
+</h1>
 
-                                <p>
-
-                                    Whether you're planning to register,
-                                    update your profile,
-                                    recharge your credits,
-                                    or need any assistance,
-                                    our team is here to help.
-
-                                </p>
+<p>
+    Have questions about your profile, finding suitable matches,
+    unlocking contact details, or using Vetri Matrimony?
+    Our team is here to help.
+</p>
 
                             </div>
 
@@ -270,119 +266,97 @@ function ContactUs() {
 
                 </section>
 
-                {/* ================= HOW CAN WE HELP ================= */}
+{/* ================= HOW CAN WE HELP ================= */}
 
-                <section className="contact-help">
+<section className="contact-help">
 
-                    <div className="container">
+    <div className="container">
 
-                        <div className="section-title">
+        <div className="section-title">
 
-                            <h2>
+            <h2>
+                How Can We Help?
+            </h2>
 
-                                How Can We Help?
+            <div className="section-decoration">
 
-                            </h2>
+                <span></span>
 
-                            <div className="section-decoration">
+                <i className="bi bi-heart"></i>
 
-                                <span></span>
+                <span></span>
 
-                                <i className="bi bi-heart"></i>
+            </div>
 
-                                <span></span>
+        </div>
 
-                            </div>
+        <div className="help-grid">
 
-                        </div>
+            <div className="help-item">
 
-                        <div className="help-grid">
+                <div className="help-icon">
+                    <i className="bi bi-person-plus-fill"></i>
+                </div>
 
-                            <div className="help-item">
+                <p>
+                    Register and create a new matrimonial profile.
+                </p>
 
-                                <div className="help-icon">
+            </div>
 
-                                    <i className="bi bi-person-plus-fill"></i>
+            <div className="help-item">
 
-                                </div>
+                <div className="help-icon">
+                    <i className="bi bi-search-heart-fill"></i>
+                </div>
 
-                                <p>
+                <p>
+                    Browse profiles and find suitable matches.
+                </p>
 
-                                    Create a new matrimony profile.
+            </div>
 
-                                </p>
+            <div className="help-item">
 
-                            </div>
+                <div className="help-icon">
+                    <i className="bi bi-unlock-fill"></i>
+                </div>
 
-                            <div className="help-item">
+                <p>
+                    Use credits to unlock profile contact details.
+                </p>
 
-                                <div className="help-icon">
+            </div>
 
-                                    <i className="bi bi-pencil-square"></i>
+            <div className="help-item">
 
-                                </div>
+                <div className="help-icon">
+                    <i className="bi bi-pencil-square"></i>
+                </div>
 
-                                <p>
+                <p>
+                    Update your profile information and photos.
+                </p>
 
-                                    Update your existing profile information.
+            </div>
 
-                                </p>
+            <div className="help-item">
 
-                            </div>
+                <div className="help-icon">
+                    <i className="bi bi-headset"></i>
+                </div>
 
-                            <div className="help-item">
+                <p>
+                    Get assistance with your account and matrimony enquiries.
+                </p>
 
-                                <div className="help-icon">
+            </div>
 
-                                    <i className="bi bi-credit-card-2-front-fill"></i>
+        </div>
 
-                                </div>
+    </div>
 
-                                <p>
-
-                                    Recharge your profile credits.
-
-                                </p>
-
-                            </div>
-
-                            <div className="help-item">
-
-                                <div className="help-icon">
-
-                                    <i className="bi bi-images"></i>
-
-                                </div>
-
-                                <p>
-
-                                    Replace profile or horoscope photos.
-
-                                </p>
-
-                            </div>
-
-                            <div className="help-item">
-
-                                <div className="help-icon">
-
-                                    <i className="bi bi-chat-dots-fill"></i>
-
-                                </div>
-
-                                <p>
-
-                                    General enquiries and customer support.
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
+</section>
 
                 {/* ================= CTA ================= */}
 

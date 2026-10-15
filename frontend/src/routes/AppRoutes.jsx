@@ -8,6 +8,7 @@ import HomeRedirect from "../components/common/HomeRedirect";
 import Register from "../pages/public/Register";
 import Login from "../pages/public/Login";
 import ContactUs from "../pages/public/ContactUs";
+import GuestContactUs from "../pages/public/GuestContactUs";
 import NotFound from "../pages/public/NotFound";
 
 // it is a guest route, meaning only unauthenticated users can access it
@@ -57,8 +58,11 @@ function AppRoutes() {
                 }
             />
 
-            <Route path="/contact-us" element={<ContactUs />} />
-
+           
+            <Route
+                path="/guest-contact-us"
+                element={<GuestContactUs />}
+            />
 
 
             {/* User Routes */}
@@ -99,14 +103,23 @@ function AppRoutes() {
                 }
             />
 
-<Route
-    path="/my-profile/edit"
+            <Route
+    path="/contact-us"
     element={
         <ProtectedRoute role="user">
-            <UserEditProfile />
+            <ContactUs />
         </ProtectedRoute>
     }
 />
+
+            <Route
+                path="/my-profile/edit"
+                element={
+                    <ProtectedRoute role="user">
+                        <UserEditProfile />
+                    </ProtectedRoute>
+                }
+            />
 
             {/* unlocked profiles */}
             <Route

@@ -109,7 +109,7 @@ function Footer() {
                     Information
                 =========================== */}
 
-                <div className="footer-column">
+                {/* <div className="footer-column">
 
                     <h4>Information</h4>
 
@@ -141,7 +141,7 @@ function Footer() {
 
                     </ul>
 
-                </div>
+                </div> */}
 
                 {/* ===========================
                     Contact
