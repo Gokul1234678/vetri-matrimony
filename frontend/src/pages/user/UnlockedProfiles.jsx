@@ -168,7 +168,7 @@ function UnlockedProfiles() {
 
             </main>
 
-            <Footer />
+            <Footer isUser />
 
         </>
 

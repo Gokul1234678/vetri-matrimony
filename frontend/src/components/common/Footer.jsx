@@ -5,9 +5,12 @@ import "../../assets/css/common/Footer.css";
 import logo from "../../assets/images/logo.png";
 
 import { SITE_CONFIG } from "../../config/siteConfig";
-import { NAV_LINKS } from "../../config/navigation";
+import {
+    GUEST_NAV_LINKS,
+    USER_NAV_LINKS
+} from "../../config/navigation";
 
-function Footer() {
+function Footer({ isUser = false }) {
 
     return (
 
@@ -76,34 +79,19 @@ function Footer() {
                 {/* ===========================
                     Quick Links
                 =========================== */}
+<div className="footer-column">
+    <h4>Quick Links</h4>
 
-                <div className="footer-column">
-
-                    <h4>Quick Links</h4>
-
-                    <ul>
-
-                        {
-
-                            NAV_LINKS.map((item) => (
-
-                                <li key={item.name}>
-
-                                    <NavLink to={item.path}>
-
-                                        {item.name}
-
-                                    </NavLink>
-
-                                </li>
-
-                            ))
-
-                        }
-
-                    </ul>
-
-                </div>
+    <ul>
+        {(isUser ? USER_NAV_LINKS : GUEST_NAV_LINKS).map((item) => (
+            <li key={item.name}>
+                <NavLink to={item.path}>
+                    {item.name}
+                </NavLink>
+            </li>
+        ))}
+    </ul>
+</div>
 
                 {/* ===========================
                     Information

@@ -174,7 +174,7 @@ function ProfileDetails() {
 
             </section>
 
-            <Footer />
+            <Footer isUser />
 
         </>
 

@@ -420,7 +420,7 @@ function ContactUs() {
 
             </main>
 
-            <Footer />
+            <Footer isUser />
 
         </>
 

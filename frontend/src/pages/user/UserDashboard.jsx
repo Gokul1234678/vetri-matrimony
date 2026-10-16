@@ -363,7 +363,7 @@ useEffect(() => {
 
             </section>
 
-            <Footer />
+            <Footer isUser />
 
         </>
 

@@ -8,31 +8,30 @@ import "../../assets/css/common/UserNavbar.css";
 import logo from "../../assets/images/logo.png";
 
 const USER_NAV_LINKS = [
-
     {
         name: "Home",
         path: "/user/dashboard"
     },
-
     {
         name: "Browse Profiles",
         path: "/browse-profiles"
     },
-
     {
         name: "Unlocked Profiles",
         path: "/unlocked-profiles"
     },
-
     {
         name: "My Profile",
         path: "/my-profile"
     },
     {
-        name: "contact us",
+        name: "Plans",
+        path: "/plans"
+    },
+    {
+        name: "Contact Us",
         path: "/contact-us"
     }
-
 ];
 
 function UserNavbar() {

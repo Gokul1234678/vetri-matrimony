@@ -15,7 +15,7 @@ function Login() {
 
     const navigate = useNavigate();
 
-const { login } = useAuth();
+    const { login } = useAuth();
 
     // ==========================
     // Form State
@@ -53,73 +53,47 @@ const { login } = useAuth();
     // Handle Login
     // ==========================
 
-const handleSubmit = async (e) => {
+    const [errors, setErrors] = useState({});
 
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    // ==========================
-    // Basic Validation
-    // ==========================
+        const newErrors = {};
 
-    if (!formData.username.trim()) {
-
-        alert("Please enter username");
-
-        return;
-
-    }
-
-    if (!formData.password.trim()) {
-
-        alert("Please enter password");
-
-        return;
-
-    }
-
-    try {
-
-        setLoading(true);
-
-        const data = await login(formData);
-
-        // ==========================
-        // Redirect Based On Role
-        // ==========================
-
-        if (data.role === "admin") {
-
-            navigate("/admin/dashboard");
-
+        if (!formData.username.trim()) {
+            newErrors.username = "Please enter username";
         }
 
-        else {
-
-            navigate("/user/dashboard");
-
+        if (!formData.password.trim()) {
+            newErrors.password = "Please enter password";
         }
 
-    }
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
 
-    catch (error) {
+        try {
+            setLoading(true);
+            setErrors({});
 
-        alert(
+            const data = await login(formData);
 
-            error.response?.data?.message ||
-
-            "Login failed"
-
-        );
-
-    }
-
-    finally {
-
-        setLoading(false);
-
-    }
-
-};
+            if (data.role === "admin") {
+                navigate("/admin/dashboard");
+            } else {
+                navigate("/user/dashboard");
+            }
+        } catch (error) {
+            setErrors({
+                general:
+                    error.response?.data?.message ||
+                    "Login failed. Please check your username and password."
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
 
@@ -232,6 +206,11 @@ const handleSubmit = async (e) => {
                                     onChange={handleChange}
 
                                 />
+                                {errors.username && (
+                                    <small className="login-error">
+                                        {errors.username}
+                                    </small>
+                                )}
 
                             </div>
 
@@ -263,6 +242,11 @@ const handleSubmit = async (e) => {
                                     onChange={handleChange}
 
                                 />
+                                {errors.password && (
+                                    <small className="login-error">
+                                        {errors.password}
+                                    </small>
+                                )}
 
                                 <button
 
@@ -280,9 +264,9 @@ const handleSubmit = async (e) => {
 
                                         className={`bi ${showPassword
 
-                                                ? "bi-eye-slash"
+                                            ? "bi-eye-slash"
 
-                                                : "bi-eye"
+                                            : "bi-eye"
 
                                             }`}
 
@@ -303,7 +287,7 @@ const handleSubmit = async (e) => {
                                 Forgot Username / Password?<span> </span>
                                 <Link to="/contact-us">
 
-                                    Contact Admin 
+                                    Contact Admin
 
                                 </Link>
                             </span>
@@ -313,7 +297,12 @@ const handleSubmit = async (e) => {
                         </div>
 
                         {/* Login Button */}
-
+                        {errors.general && (
+                            <div className="login-general-error">
+                                <i className="bi bi-exclamation-circle"></i>
+                                {errors.general}
+                            </div>
+                        )}
                         <button
 
                             type="submit"
@@ -375,15 +364,15 @@ const handleSubmit = async (e) => {
 
                     {/* Footer */}
 
-<div className="login-footer">
-    <span>
-        Don't have an account?
-    </span>
+                    <div className="login-footer">
+                        <span>
+                            Don't have an account?
+                        </span>
 
-    <Link to="/register">
-        Register Now
-    </Link>
-</div>
+                        <Link to="/register">
+                            Register Now
+                        </Link>
+                    </div>
 
                 </div>
 

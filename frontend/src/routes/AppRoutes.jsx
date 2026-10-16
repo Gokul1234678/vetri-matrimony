@@ -14,6 +14,8 @@ import NotFound from "../pages/public/NotFound";
 // it is a guest route, meaning only unauthenticated users can access it
 import GuestRoute from "../components/common/GuestRoute";
 
+import GuestPlans from "../pages/public/GuestPlans";
+import UserPlans from "../pages/user/UserPlans";
 
 // User Pages
 import UserDashboard from "../pages/user/UserDashboard";
@@ -64,6 +66,11 @@ function AppRoutes() {
                 element={<GuestContactUs />}
             />
 
+<Route
+    path="/guest-plans"
+    element={<GuestPlans />}
+/>
+
 
             {/* User Routes */}
 
@@ -108,6 +115,14 @@ function AppRoutes() {
     element={
         <ProtectedRoute role="user">
             <ContactUs />
+        </ProtectedRoute>
+    }
+/>
+<Route
+    path="/plans"
+    element={
+        <ProtectedRoute role="user">
+            <UserPlans />
         </ProtectedRoute>
     }
 />

@@ -122,7 +122,7 @@ const { user } = useAuth();
 
             </section>
 
-            <Footer />
+            <Footer isUser />
 
         </>
 

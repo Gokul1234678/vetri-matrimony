@@ -2669,10 +2669,10 @@ app.get("/public/profiles", async (req, res) => {
         const page = Number(req.query.page) || 1;
 
         // for protection
-        // const limit = Number(req.query.limit) || 8;
+        const limit = Number(req.query.limit) || 10;
 
         // for testing
-        const limit = Number(req.query.limit) || 3;
+        // const limit = Number(req.query.limit) || 3;
 
         // Search Filters
         const gender = req.query.gender;

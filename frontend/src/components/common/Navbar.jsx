@@ -5,7 +5,7 @@ import logo from "../../assets/images/logo.png";
 
 const NAV_LINKS = [
     { name: "Home", path: "/" },
-    // { name: "Browse Profiles", path: "/browse-profiles" },
+    { name: "Plans", path: "/guest-plans" },
     // { name: "About Us", path: "/about-us" },
     { name: "Contact Us", path: "/guest-contact-us" }
 ];

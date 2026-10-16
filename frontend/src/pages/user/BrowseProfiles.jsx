@@ -286,7 +286,7 @@ function BrowseProfiles() {
 
             </section>
 
-            <Footer />
+            <Footer isUser />
 
         </>
 

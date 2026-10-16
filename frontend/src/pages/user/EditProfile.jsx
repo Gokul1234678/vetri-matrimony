@@ -846,7 +846,7 @@ function EditProfile() {
                     </div>
                 </section>
 
-                <Footer />
+                <Footer isUser />
             </>
         );
     }
@@ -1120,7 +1120,7 @@ function EditProfile() {
                 </div>
             </section>
 
-            <Footer />
+            <Footer isUser />
         </>
     );
 }

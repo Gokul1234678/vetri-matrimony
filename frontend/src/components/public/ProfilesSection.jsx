@@ -41,7 +41,7 @@ function ProfilesSection({ filters }) {
             params.append("page", currentPage);
 
             // Pagination
-            params.append("limit", 8); // change to 8 later
+            params.append("limit", 10); // change to 10 later
 
             // Gender
             if (filters.gender) {
