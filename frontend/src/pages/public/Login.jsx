@@ -285,7 +285,7 @@ function Login() {
                             <span>
 
                                 Forgot Username / Password?<span> </span>
-                                <Link to="/contact-us">
+                                <Link to="/guest-contact-us">
 
                                     Contact Admin
 
