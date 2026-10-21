@@ -76,7 +76,7 @@
     margin: 0;
 }
 
-.view-edit-btn {
+/* .view-edit-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -89,13 +89,13 @@
     border-radius: 8px;
     cursor: pointer;
     transition: .25s;
-}
+} */
 
-.view-edit-btn:hover {
+/* .view-edit-btn:hover {
     background: #0a5e28;
     transform: translateY(-2px);
     box-shadow: 0 8px 18px rgba(14,122,52,.25);
-}
+} */
 
 .view-profile-overview {
     display: flex;
@@ -528,10 +528,10 @@
         align-items: flex-start;
     }
 
-    .view-edit-btn {
+    /* .view-edit-btn {
         width: 100%;
         justify-content: center;
-    }
+    } */
 
     .profile-gallery {
         grid-template-columns: repeat(2,1fr);
@@ -610,5 +610,127 @@
         width: 100%;
         max-width: 200px;
         height: 200px;
+    }
+}
+/* 
+.view-print-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 8px;
+    background: #0b7d39;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.view-print-btn:hover {
+    background: #08642d;
+    transform: translateY(-1px);
+}
+
+.view-print-btn i {
+    font-size: 15px;
+}
+
+@media print {
+    .view-print-btn {
+        display: none !important;
+    }
+} */
+
+.view-profile-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.view-edit-btn,
+.view-print-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 130px;
+    height: 42px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.view-edit-btn {
+    background: #0e7a34;
+}
+
+.view-edit-btn:hover {
+    background: #0a5e28;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(14, 122, 52, 0.2);
+}
+
+.view-print-btn {
+    background: #2563a6;
+}
+
+.view-print-btn:hover {
+    background: #1d4f84;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(37, 99, 166, 0.2);
+}
+
+.view-edit-btn i,
+.view-print-btn i {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .view-profile-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .view-edit-btn,
+    .view-print-btn {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .view-profile-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .view-edit-btn,
+    .view-print-btn {
+        width: 100%;
+        flex: none;
+    }
+}
+
+@media print {
+    .view-profile-actions {
+        display: none !important;
     }
 }

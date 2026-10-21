@@ -1,0 +1,311 @@
+.print-profile-wrapper {
+    display: none;
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    html,
+    body {
+        width: 210mm;
+        margin: 0;
+        padding: 0;
+        background: #fff !important;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    .print-profile-wrapper,
+    .print-profile-wrapper * {
+        visibility: visible !important;
+    }
+
+    .print-profile-wrapper {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 190mm;
+        margin: 0 auto;
+        background: #fff;
+    }
+
+    .print-profile {
+        width: 190mm;
+        margin: 0 auto;
+        background: #fff;
+        color: #222;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 9pt;
+    }
+
+.print-page {
+    width: 190mm;
+    box-sizing: border-box;
+    position: relative;
+    background: #fff;
+}
+
+.print-page-break {
+    break-before: auto;
+    page-break-before: auto;
+}
+
+    .print-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 7px;
+        margin-bottom: 9px;
+        border-bottom: 2px solid #0b7d39;
+    }
+
+    .print-header h1 {
+        margin: 0;
+        font-size: 19pt;
+        font-weight: 700;
+        color: #0b7d39;
+    }
+
+    .print-header p {
+        margin: 2px 0 0;
+        font-size: 8.5pt;
+        color: #666;
+    }
+
+    .print-profile-id {
+        padding: 5px 9px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 8.5pt;
+        font-weight: 700;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .print-profile-overview {
+        display: grid;
+        grid-template-columns: 30mm minmax(0, 1fr) 30mm;
+        gap: 10px;
+        align-items: center;
+        padding: 8px;
+        margin-bottom: 9px;
+        border: 1px solid #d9d9d9;
+        border-radius: 6px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .print-profile-photo {
+        width: 30mm;
+        height: 35mm;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #f5f5f5;
+    }
+
+    .print-profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .print-no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+        font-size: 7pt;
+    }
+
+    .print-profile-main {
+        min-width: 0;
+    }
+
+    .print-profile-main h2 {
+        margin: 0 0 7px;
+        font-size: 16pt;
+        color: #222;
+    }
+
+    .print-profile-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px 14px;
+        font-size: 8.5pt;
+        color: #444;
+    }
+
+    .print-qr-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+    }
+
+    .print-qr-section svg {
+        width: 25mm !important;
+        height: 25mm !important;
+        display: block;
+    }
+
+    .print-qr-section span {
+        font-size: 7pt;
+        color: #555;
+    }
+
+    .print-section {
+        margin-bottom: 7px;
+        border: 1px solid #d8d8d8;
+        border-radius: 5px;
+        overflow: hidden;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .print-section-title {
+        padding: 5px 8px;
+        background: #f0f7f2;
+        border-bottom: 1px solid #d7e6db;
+        color: #0b7d39;
+        font-size: 9.5pt;
+        font-weight: 700;
+    }
+
+    .print-section-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .print-item {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 44% 56%;
+        align-items: start;
+        padding: 4px 7px;
+        box-sizing: border-box;
+        min-height: 22px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .print-item:nth-child(odd) {
+        border-right: 1px solid #eeeeee;
+    }
+
+    .print-item:nth-last-child(-n + 2) {
+        border-bottom: none;
+    }
+
+    .print-item-label {
+        min-width: 0;
+        padding-right: 7px;
+        font-size: 8.2pt;
+        line-height: 1.25;
+        font-weight: 600;
+        color: #555;
+        white-space: nowrap;
+    }
+
+    .print-item-value {
+        min-width: 0;
+        font-size: 8.4pt;
+        line-height: 1.25;
+        color: #222;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .print-item-full {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 19% 81%;
+        border-right: none !important;
+    }
+
+    .print-item-full .print-item-label {
+        white-space: nowrap;
+    }
+
+    .print-full-text {
+        grid-column: 1 / -1;
+        padding: 7px 8px;
+        line-height: 1.45;
+        color: #333;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 8.5pt;
+    }
+
+    .print-photo-gallery {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 7px;
+    }
+
+    .print-small-photo {
+        width: 20mm;
+        height: 25mm;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        overflow: hidden;
+        background: #f5f5f5;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .print-small-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .print-horoscope {
+        grid-column: 1 / -1;
+        padding: 7px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .print-horoscope img {
+        width: 45mm;
+        height: 38mm;
+        object-fit: contain;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        display: block;
+    }
+
+    .print-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid #ccc;
+        color: #666;
+        font-size: 7.5pt;
+    }
+
+    .print-section,
+    .print-profile-overview,
+    .print-small-photo,
+    .print-horoscope {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

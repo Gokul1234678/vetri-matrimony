@@ -7,6 +7,8 @@ import api from "../../services/api";
 
 import "../../assets/css/admin/view-profile.css";
 
+import PrintableProfile from "../../components/admin/PrintableProfile";
+
 function ViewProfile() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -101,9 +103,9 @@ function ViewProfile() {
     // =========================================
     const galleryImages = profile
         ? [
-              ...(profile.profilePhoto ? [profile.profilePhoto] : []),
-              ...(profile.additionalPhotos || []),
-          ]
+            ...(profile.profilePhoto ? [profile.profilePhoto] : []),
+            ...(profile.additionalPhotos || []),
+        ]
         : [];
 
     return (
@@ -144,19 +146,27 @@ function ViewProfile() {
                                     <p>Profile details and information</p>
                                 </div>
 
-                                <div className="view-profile-actions">
-                                    <button
-                                        type="button"
-                                        className="view-edit-btn"
-                                       onClick={() =>
-    window.location.href =
-        `/admin/profiles/edit/${profile._id}`
-}
-                                    >
-                                        <i className="bi bi-pencil"></i>
-                                        Edit Profile
-                                    </button>
-                                </div>
+<div className="view-profile-actions">
+    <button
+        type="button"
+        className="view-edit-btn"
+        onClick={() =>
+            window.location.href = `/admin/profiles/edit/${profile._id}`
+        }
+    >
+        <i className="bi bi-pencil"></i>
+        <span>Edit Profile</span>
+    </button>
+
+    <button
+        type="button"
+        className="view-print-btn"
+        onClick={() => window.print()}
+    >
+        <i className="bi bi-printer"></i>
+        <span>Print Profile</span>
+    </button>
+</div>
 
                             </div>
 
@@ -206,11 +216,10 @@ function ViewProfile() {
                                     </span>
 
                                     <span
-                                        className={`view-status ${
-                                            profile.status === "active"
+                                        className={`view-status ${profile.status === "active"
                                                 ? "active"
                                                 : "inactive"
-                                        }`}
+                                            }`}
                                     >
                                         <span className="status-dot"></span>
                                         {profile.status}
@@ -259,111 +268,111 @@ function ViewProfile() {
                             <InfoItem label="Annual Income" value={profile.annualIncome} />
                         </ProfileSection>
 
-<ProfileSection title="Family Information" icon="bi-people">
-    <InfoItem
-        label="Father's Name"
-        value={profile.fatherName}
-    />
+                        <ProfileSection title="Family Information" icon="bi-people">
+                            <InfoItem
+                                label="Father's Name"
+                                value={profile.fatherName}
+                            />
 
-    <InfoItem
-        label="Father's Occupation"
-        value={profile.fatherOccupation}
-    />
+                            <InfoItem
+                                label="Father's Occupation"
+                                value={profile.fatherOccupation}
+                            />
 
-    <InfoItem
-        label="Mother's Name"
-        value={profile.motherName}
-    />
+                            <InfoItem
+                                label="Mother's Name"
+                                value={profile.motherName}
+                            />
 
-    <InfoItem
-        label="Mother's Occupation"
-        value={profile.motherOccupation}
-    />
+                            <InfoItem
+                                label="Mother's Occupation"
+                                value={profile.motherOccupation}
+                            />
 
-    <InfoItem
-        label="Elder Brothers"
-        value={profile.siblings?.eb?.total}
-    />
+                            <InfoItem
+                                label="Elder Brothers"
+                                value={profile.siblings?.eb?.total}
+                            />
 
-    <InfoItem
-        label="Elder Brothers Married"
-        value={profile.siblings?.eb?.married}
-    />
+                            <InfoItem
+                                label="Elder Brothers Married"
+                                value={profile.siblings?.eb?.married}
+                            />
 
-    <InfoItem
-        label="Elder Brothers Unmarried"
-        value={
-            Math.max(
-                0,
-                (profile.siblings?.eb?.total || 0) -
-                (profile.siblings?.eb?.married || 0)
-            )
-        }
-    />
+                            <InfoItem
+                                label="Elder Brothers Unmarried"
+                                value={
+                                    Math.max(
+                                        0,
+                                        (profile.siblings?.eb?.total || 0) -
+                                        (profile.siblings?.eb?.married || 0)
+                                    )
+                                }
+                            />
 
-    <InfoItem
-        label="Younger Brothers"
-        value={profile.siblings?.yb?.total}
-    />
+                            <InfoItem
+                                label="Younger Brothers"
+                                value={profile.siblings?.yb?.total}
+                            />
 
-    <InfoItem
-        label="Younger Brothers Married"
-        value={profile.siblings?.yb?.married}
-    />
+                            <InfoItem
+                                label="Younger Brothers Married"
+                                value={profile.siblings?.yb?.married}
+                            />
 
-    <InfoItem
-        label="Younger Brothers Unmarried"
-        value={
-            Math.max(
-                0,
-                (profile.siblings?.yb?.total || 0) -
-                (profile.siblings?.yb?.married || 0)
-            )
-        }
-    />
+                            <InfoItem
+                                label="Younger Brothers Unmarried"
+                                value={
+                                    Math.max(
+                                        0,
+                                        (profile.siblings?.yb?.total || 0) -
+                                        (profile.siblings?.yb?.married || 0)
+                                    )
+                                }
+                            />
 
-    <InfoItem
-        label="Elder Sisters"
-        value={profile.siblings?.es?.total}
-    />
+                            <InfoItem
+                                label="Elder Sisters"
+                                value={profile.siblings?.es?.total}
+                            />
 
-    <InfoItem
-        label="Elder Sisters Married"
-        value={profile.siblings?.es?.married}
-    />
+                            <InfoItem
+                                label="Elder Sisters Married"
+                                value={profile.siblings?.es?.married}
+                            />
 
-    <InfoItem
-        label="Elder Sisters Unmarried"
-        value={
-            Math.max(
-                0,
-                (profile.siblings?.es?.total || 0) -
-                (profile.siblings?.es?.married || 0)
-            )
-        }
-    />
+                            <InfoItem
+                                label="Elder Sisters Unmarried"
+                                value={
+                                    Math.max(
+                                        0,
+                                        (profile.siblings?.es?.total || 0) -
+                                        (profile.siblings?.es?.married || 0)
+                                    )
+                                }
+                            />
 
-    <InfoItem
-        label="Younger Sisters"
-        value={profile.siblings?.ys?.total}
-    />
+                            <InfoItem
+                                label="Younger Sisters"
+                                value={profile.siblings?.ys?.total}
+                            />
 
-    <InfoItem
-        label="Younger Sisters Married"
-        value={profile.siblings?.ys?.married}
-    />
+                            <InfoItem
+                                label="Younger Sisters Married"
+                                value={profile.siblings?.ys?.married}
+                            />
 
-    <InfoItem
-        label="Younger Sisters Unmarried"
-        value={
-            Math.max(
-                0,
-                (profile.siblings?.ys?.total || 0) -
-                (profile.siblings?.ys?.married || 0)
-            )
-        }
-    />
-</ProfileSection>
+                            <InfoItem
+                                label="Younger Sisters Unmarried"
+                                value={
+                                    Math.max(
+                                        0,
+                                        (profile.siblings?.ys?.total || 0) -
+                                        (profile.siblings?.ys?.married || 0)
+                                    )
+                                }
+                            />
+                        </ProfileSection>
 
                         <ProfileSection title="Lifestyle" icon="bi-heart">
                             <InfoItem label="Eating Habit" value={profile.eatingHabit} />
@@ -510,7 +519,7 @@ function ViewProfile() {
                     )}
                 </div>
             )}
-
+ <PrintableProfile profile={profile} />b
         </AdminLayout>
     );
 }
