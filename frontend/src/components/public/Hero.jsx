@@ -29,7 +29,7 @@ function Hero() {
             <style>{styles}</style>
             <img
                 src={heroBanner}
-                alt="Vetri Matrimony Banner"
+                alt="Anbinai Matrimony Banner"
                 className="hero-image"
             />
 

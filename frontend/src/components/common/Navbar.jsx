@@ -47,7 +47,7 @@ function Navbar() {
             <div className="navbar-wrapper">
 
                 <NavLink to="/" className="logo-container" onClick={closeMenu}>
-                    <img src={logo} alt="Vetri Matrimony" className="logo" />
+                    <img src={logo} alt="Anbinai Matrimony" className="logo" />
                 </NavLink>
 
                 <nav className="desktop-menu">

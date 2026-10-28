@@ -6,7 +6,7 @@ function AdminFooter() {
 
         <footer className="admin-footer">
 
-            © 2026 Vetri Matrimony. All Rights Reserved.
+            © 2026 Anbinai Matrimony. All Rights Reserved.
 
         </footer>
 

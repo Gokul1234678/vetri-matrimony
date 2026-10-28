@@ -6,7 +6,9 @@ function PrintableProfile({ profile }) {
         return null;
     }
 
-    const qrUrl = `https://example.com/profile/${profile.profileId}`;
+    // const qrUrl = `https://example.com/profile/${profile.profileId}`;
+
+const qrUrl = `${import.meta.env.VITE_FRONTEND_URL}/profiles/${profile._id}`;
 
     const formatDate = (date) => {
         if (!date) {
@@ -54,7 +56,7 @@ function PrintableProfile({ profile }) {
 
                     <header className="print-header">
                         <div>
-                            <h1>Vetri Matrimony</h1>
+                            <h1>Anbinai Matrimony</h1>
                             <p>Matrimonial Profile</p>
                         </div>
 
@@ -350,7 +352,7 @@ function PrintableProfile({ profile }) {
                         LIFESTYLE
                     ========================================= */}
 
-                    <PrintSection title="Lifestyle">
+                    {/* <PrintSection title="Lifestyle">
 
                         <PrintItem
                             label="Eating Habit"
@@ -367,19 +369,19 @@ function PrintableProfile({ profile }) {
                             value={profile.drinkingHabit}
                         />
 
-                    </PrintSection>
+                    </PrintSection> */}
 
                     {/* =========================================
                         ABOUT ME
                     ========================================= */}
 
-                    <PrintSection title="About Me">
+                    {/* <PrintSection title="About Me">
 
                         <div className="print-full-text">
                             {displayValue(profile.aboutMe)}
                         </div>
 
-                    </PrintSection>
+                    </PrintSection> */}
 
                     {/* =========================================
                         PARTNER EXPECTATIONS
@@ -490,7 +492,7 @@ function PrintableProfile({ profile }) {
                     <footer className="print-footer">
 
                         <div>
-                            Vetri Matrimony
+                            Anbinai Matrimony
                         </div>
 
                         <div>

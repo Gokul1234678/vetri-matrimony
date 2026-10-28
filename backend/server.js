@@ -3082,13 +3082,9 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
         // Validate MongoDB ObjectId
         // ===========================================
         if (!mongoose.Types.ObjectId.isValid(id)) {
-
             return res.status(400).json({
-
                 success: false,
-
                 message: "Invalid profile id"
-
             });
 
         }
@@ -3100,13 +3096,9 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
         const profile = await Profile.findById(id).select("-__v");
 
         if (!profile) {
-
             return res.status(404).json({
-
                 success: false,
-
                 message: "Profile not found"
-
             });
 
         }
@@ -3116,44 +3108,26 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
         // (Credits are stored in Profile collection)
         // ===========================================
         const myProfile = await Profile.findOne({
-
             userId: req.user._id
-
         });
 
         if (!myProfile) {
-
             return res.status(404).json({
-
                 success: false,
-
                 message: "Your profile not found"
-
             });
 
         }
 
-        // ===========================================
+
         // Own Profile
         // Return Complete Profile
-        // ===========================================
-        if (
-
-            profile.userId.toString() ===
-            req.user._id.toString()
-
-        ) {
-
-            return res.status(200).json({
-
+        if ( profile.userId.toString() === req.user._id.toString() ) {
+                return res.status(200).json({
                 success: true,
-
                 isUnlocked: true,
-
                 credits: myProfile.credits,
-
                 profile
-
             });
         }
 
@@ -3161,11 +3135,8 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
         // Check Whether Profile Is Already Unlocked
         // ===========================================
         const unlocked = await ProfileView.findOne({
-
             viewerId: req.user._id,
-
             viewedProfileId: profile._id
-
         });
 
         // ===========================================
@@ -3173,64 +3144,38 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
         // Return Only Basic Information
         // ===========================================
         if (!unlocked) {
-
             return res.status(200).json({
-
                 success: true,
-
                 isUnlocked: false,
-
                 credits: myProfile.credits,
-
                 profile: {
-
                     _id: profile._id,
-
                     profileId: profile.profileId,
-
                     fullName: profile.fullName,
-
                     age: profile.age,
-
                     district: profile.district,
-
                     profilePhoto: profile.profilePhoto
-
                 }
 
             });
-
         }
-
-        // ===========================================
         // Profile Already Unlocked
         // Return Complete Profile
-        // ===========================================
         return res.status(200).json({
             success: true,
             isUnlocked: true,
             credits: myProfile.credits,
             profile
         });
-
     }
-
     catch (error) {
-
         console.error(error);
-
         return res.status(500).json({
-
             success: false,
-
             message: "Failed to fetch profile",
-
             error: error.message
-
         });
-
     }
-
 });
 
 

@@ -23,13 +23,13 @@ function GuestContactUs() {
                                 <h1>Contact Us</h1>
                                 <p>
                                     Have questions about registration, finding suitable matches,
-                                    or using Vetri Matrimony? Our team is here to help.
+                                    or using Anbinai Matrimony? Our team is here to help.
                                 </p>
                             </div>
                             <div className="contact-right">
                                 <img
                                     src={contactBanner}
-                                    alt="Vetri Matrimony"
+                                    alt="Anbinai Matrimony"
                                 />
                             </div>
                         </div>

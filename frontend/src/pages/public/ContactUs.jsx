@@ -46,7 +46,7 @@ function ContactUs() {
 
 <p>
     Have questions about your profile, finding suitable matches,
-    unlocking contact details, or using Vetri Matrimony?
+    unlocking contact details, or using Anbinai Matrimony?
     Our team is here to help.
 </p>
 
@@ -56,7 +56,7 @@ function ContactUs() {
 
                                 <img
                                     src={contactBanner}
-                                    alt="Vetri Matrimony"
+                                    alt="Anbinai Matrimony"
                                 />
 
                             </div>

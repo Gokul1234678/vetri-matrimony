@@ -380,7 +380,7 @@ function Register() {
 <div className="register-header">
     <img
         src={logo}
-        alt="Vetri Matrimony"
+        alt="Anbinai Matrimony"
         className="register-logo"
     />
 

@@ -58,11 +58,11 @@ function AdminSidebar({
 
                     src={logo}
 
-                    alt="Vetri Matrimony"
+                    alt="Anbinai Matrimony"
 
                 />
 
-                <h2>Vetri Matrimony</h2>
+                <h2>Anbinai Matrimony</h2>
 
                 <span>Admin Panel</span>
 

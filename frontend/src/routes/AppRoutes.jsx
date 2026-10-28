@@ -60,16 +60,16 @@ function AppRoutes() {
                 }
             />
 
-           
+
             <Route
                 path="/guest-contact-us"
                 element={<GuestContactUs />}
             />
 
-<Route
-    path="/guest-plans"
-    element={<GuestPlans />}
-/>
+            <Route
+                path="/guest-plans"
+                element={<GuestPlans />}
+            />
 
 
             {/* User Routes */}
@@ -92,10 +92,17 @@ function AppRoutes() {
                 } />
 
             {/* profile details */}
-            <Route
+            {/* <Route
                 path="/profiles/:id"
                 element={
                     <ProtectedRoute role="user">
+                        <ProfileDetails />
+                    </ProtectedRoute> } /> */}
+                
+            <Route
+                path="/profiles/:id"
+                element={
+                    <ProtectedRoute>
                         <ProfileDetails />
                     </ProtectedRoute>
                 } />
@@ -111,21 +118,21 @@ function AppRoutes() {
             />
 
             <Route
-    path="/contact-us"
-    element={
-        <ProtectedRoute role="user">
-            <ContactUs />
-        </ProtectedRoute>
-    }
-/>
-<Route
-    path="/plans"
-    element={
-        <ProtectedRoute role="user">
-            <UserPlans />
-        </ProtectedRoute>
-    }
-/>
+                path="/contact-us"
+                element={
+                    <ProtectedRoute role="user">
+                        <ContactUs />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/plans"
+                element={
+                    <ProtectedRoute role="user">
+                        <UserPlans />
+                    </ProtectedRoute>
+                }
+            />
 
             <Route
                 path="/my-profile/edit"
@@ -149,27 +156,61 @@ function AppRoutes() {
 
 
 
-            {/* Admin Routes */}
+{/* Admin Routes */}
 
-            <Route
-                path="/admin/dashboard"
-                element={
-                    <ProtectedRoute role="admin">
-                        <AdminDashboard />
-                    </ProtectedRoute>
-                }
-            />
+<Route
+    path="/admin/dashboard"
+    element={
+        <ProtectedRoute role="admin">
+            <AdminDashboard />
+        </ProtectedRoute>
+    }
+/>
 
-            <Route path="/admin/profiles/create" element={<CreateProfile />} />
+<Route
+    path="/admin/profiles/create"
+    element={
+        <ProtectedRoute role="admin">
+            <CreateProfile />
+        </ProtectedRoute>
+    }
+/>
 
-            <Route path="/admin/profiles" element={<ManageProfiles />} />
+<Route
+    path="/admin/profiles"
+    element={
+        <ProtectedRoute role="admin">
+            <ManageProfiles />
+        </ProtectedRoute>
+    }
+/>
 
-            <Route path="/admin/profiles/view/:id" element={<ViewProfile />} />
+<Route
+    path="/admin/profiles/view/:id"
+    element={
+        <ProtectedRoute role="admin">
+            <ViewProfile />
+        </ProtectedRoute>
+    }
+/>
 
-            <Route path="/admin/profiles/edit/:id" element={<EditProfile />} />
+<Route
+    path="/admin/profiles/edit/:id"
+    element={
+        <ProtectedRoute role="admin">
+            <EditProfile />
+        </ProtectedRoute>
+    }
+/>
 
-            <Route path="/admin/reports" element={<Reports />} />
-
+<Route
+    path="/admin/reports"
+    element={
+        <ProtectedRoute role="admin">
+            <Reports />
+        </ProtectedRoute>
+    }
+/>
 
 
 

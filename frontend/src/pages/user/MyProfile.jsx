@@ -105,7 +105,7 @@ const { user } = useAuth();
                                     <ContactInformation
                                         profile={profile}
                                         title="Registered Contact Information"
-                                        subtitle="These are the contact details currently registered with Vetri Matrimony."
+                                        subtitle="These are the contact details currently registered with Anbinai Matrimony."
                                         showUnlockNotice={false}
                                     />
                                 </div>

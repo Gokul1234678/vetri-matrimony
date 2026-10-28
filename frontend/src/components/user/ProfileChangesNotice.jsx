@@ -18,8 +18,8 @@ function ProfileChangesNotice() {
             <div className="profile-changes-notice">
 
                 <p>
-                    Profile information can only be updated by the Vetri
-                    Matrimony office after verification.
+                    Profile information can only be updated by the Anbinai Matrimony
+                    office after verification.
                 </p>
 
                 <ul>

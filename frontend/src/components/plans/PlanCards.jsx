@@ -84,7 +84,7 @@ function PlanCards({ contactPath }) {
 
                     <p>
                         Payment is currently handled directly through the
-                        Vetri Matrimony admin. After payment confirmation,
+                        Anbinai Matrimony admin. After payment confirmation,
                         the selected credits will be added to your account.
                     </p>
                 </div>

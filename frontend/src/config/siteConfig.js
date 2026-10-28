@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
 
-    companyName: "Vetri Matrimony",
+    companyName: "Anbinai Matrimony",
 
     phone: "+91 98765 43210",
 
