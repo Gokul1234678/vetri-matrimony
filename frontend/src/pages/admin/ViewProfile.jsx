@@ -519,7 +519,7 @@ function ViewProfile() {
                     )}
                 </div>
             )}
- <PrintableProfile profile={profile} />b
+ <PrintableProfile profile={profile} />
         </AdminLayout>
     );
 }

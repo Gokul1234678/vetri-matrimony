@@ -680,3 +680,48 @@
     background:#ff1f1f;
 
 }
+
+
+
+
+.credits-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.credits-tooltip-text {
+    position: absolute;
+    bottom: -42px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 220px;
+    padding: 8px 12px;
+    background: #222;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 1000;
+}
+
+.credits-tooltip-text::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: #222;
+}
+
+.credits-tooltip:hover .credits-tooltip-text {
+    opacity: 1;
+    visibility: visible;
+}

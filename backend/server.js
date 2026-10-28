@@ -3149,13 +3149,20 @@ app.get("/profiles/:id", isAuthenticatedUser, async (req, res) => {
                 isUnlocked: false,
                 credits: myProfile.credits,
                 profile: {
-                    _id: profile._id,
-                    profileId: profile.profileId,
-                    fullName: profile.fullName,
-                    age: profile.age,
-                    district: profile.district,
-                    profilePhoto: profile.profilePhoto
-                }
+                _id: profile._id,
+                profileId: profile.profileId,
+                fullName: profile.fullName,
+                age: profile.age,
+                gender: profile.gender,
+                district: profile.district,
+                religion: profile.religion,
+                caste: profile.caste,
+                subCaste: profile.subCaste,
+                qualification: profile.qualification,
+                occupation: profile.occupation,
+                maritalStatus: profile.maritalStatus,
+                profilePhoto: profile.profilePhoto
+            }
 
             });
         }

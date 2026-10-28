@@ -177,21 +177,19 @@ function UserNavbar() {
 
                     {/* Credits */}
 
-                    <div className="credits-card">
+<div className="credits-card credits-tooltip">
+    <small>
+        Credits
+    </small>
 
-                        <small>
+    <h5>
+        {user?.credits ?? 0}
+    </h5>
 
-                            Credits
-
-                        </small>
-
-                        <h5>
-
-                            {user?.credits ?? 0}
-
-                        </h5>
-
-                    </div>
+    <span className="credits-tooltip-text">
+        Choose a plan to get more Credits
+    </span>
+</div>
 
                     {/* User Dropdown */}
 
@@ -352,17 +350,16 @@ function UserNavbar() {
 
                 }
 
-                <div className="mobile-credits">
+<div className="mobile-credits credits-tooltip">
+    Credits :
+    <strong>
+        {user?.credits ?? 0}
+    </strong>
 
-                    Credits :
-
-                    <strong>
-
-                        {user?.credits ?? 0}
-
-                    </strong>
-
-                </div>
+    <span className="credits-tooltip-text">
+        Choose a plan to get more Credits
+    </span>
+</div>
 
                 <button
 
